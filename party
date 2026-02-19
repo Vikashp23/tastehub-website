@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TasteHub | Party / Bulk Orders – Kannuru Nearby Only</title>
+<meta name="description" content="TasteHub party and bulk orders near Kannuru. Choose category, budget, people count, and send request on WhatsApp." />
+<style>
+  :root{
+    --panel: rgba(18,24,36,.78);
+    --stroke:rgba(255,255,255,.10);
+    --text:#f6f7fb;
+    --muted:rgba(246,247,251,.72);
+    --brand:#20c997;
+    --shadow: 0 18px 60px rgba(0,0,0,.55);
+    --r2:24px;
+    --max:900px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(32,201,151,.20), transparent 55%),
+      radial-gradient(900px 600px at 95% 0%, rgba(255,176,32,.10), transparent 55%),
+      linear-gradient(180deg, #080b10, #0b0f14 55%, #080b10);
+    min-height:100vh;
+  }
+  a{color:inherit}
+  .wrap{max-width:var(--max); margin:0 auto; padding:18px 14px 40px;}
+  .card{
+    background: var(--panel);
+    border:1px solid var(--stroke);
+    border-radius: var(--r2);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+  .head{
+    padding:16px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+  }
+  .title{display:flex; flex-direction:column; gap:6px;}
+  h1{margin:0; font-size:18px;}
+  .sub{margin:0; color:var(--muted); font-size:13px; line-height:1.35;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 12px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    text-decoration:none;
+    color:var(--text);
+    font-weight:900;
+    font-size:13px;
+  }
+  .btn.primary{
+    background: linear-gradient(135deg, rgba(32,201,151,.95), rgba(32,201,151,.70));
+    border:none;
+    color:#052015;
+  }
+  .body{padding:16px;}
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media (max-width:640px){ .grid{grid-template-columns:1fr;} }
+  label{font-size:12px; color:rgba(246,247,251,.78); font-weight:900;}
+  input, textarea, select{
+    width:100%;
+    background: rgba(0,0,0,.18);
+    border:1px solid rgba(255,255,255,.12);
+    color:var(--text);
+    border-radius:14px;
+    padding:10px 12px;
+    outline:none;
+    font-size:14px;
+  }
+  textarea{min-height:90px; resize:vertical;}
+  .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
+  .note{
+    margin-top:12px;
+    padding:12px;
+    border-radius:16px;
+    border:1px solid rgba(32,201,151,.22);
+    background: rgba(32,201,151,.10);
+    color:#dffdf1;
+    font-size:12.5px;
+    line-height:1.35;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="head">
+      <div class="title">
+        <h1>🎉 Party / Bulk Orders</h1>
+        <p class="sub">Nearby Kannuru only • Apartments & small gatherings • Custom menu + budget</p>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn" href="index.html">← Back to Menu</a>
+        <a class="btn primary" href="https://wa.me/919632035612" target="_blank" rel="noopener">💬 WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="grid">
+        <div>
+          <label for="name">Your name *</label>
+          <input id="name" placeholder="Name" />
+        </div>
+        <div>
+          <label for="phone">Phone (optional)</label>
+          <input id="phone" placeholder="10-digit number" inputmode="numeric" />
+        </div>
+
+        <div>
+          <label for="apartment">Apartment / Location *</label>
+          <input id="apartment" placeholder="Kolte Patil Raaga / Sobha City / ..." />
+        </div>
+        <div>
+          <label for="people">People count *</label>
+          <input id="people" type="number" min="5" placeholder="e.g., 10" />
+        </div>
+
+        <div>
+          <label for="category">Category</label>
+          <select id="category">
+            <option>Breakfast</option>
+            <option>Lunch</option>
+            <option>Dinner</option>
+            <option>Custom / Mixed</option>
+          </select>
+        </div>
+        <div>
+          <label for="budget">Budget range (per person)</label>
+          <select id="budget">
+            <option value="₹80–₹120">₹80–₹120</option>
+            <option value="₹120–₹180">₹120–₹180</option>
+            <option value="₹180–₹250">₹180–₹250</option>
+            <option value="₹250+">₹250+</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;">
+        <label for="items">Preferred items / cuisine (optional)</label>
+        <textarea id="items" placeholder="Example: North Indian veg, no onion/garlic, paneer items, sweets, etc."></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="sendBtn" type="button">📲 Send Request on WhatsApp</button>
+        <button class="btn" id="copyBtn" type="button">📋 Copy Request Text</button>
+      </div>
+
+      <div class="note">
+        ✅ We serve <b>nearby Kannuru apartments only</b>. After confirmation we share pickup time and location.<br/>
+        🚚 Delivery can be self-booked by customer via Porter/Rapido/Uber.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const WHATSAPP_NUMBER = "919632035612";
+
+  function buildText(){
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const apartment = document.getElementById('apartment').value.trim();
+    const people = document.getElementById('people').value.trim();
+    const category = document.getElementById('category').value;
+    const budget = document.getElementById('budget').value;
+    const items = document.getElementById('items').value.trim();
+
+    let msg = `Hi TasteHub 👋\n\nParty/Bulk Order Request (Kannuru Nearby)\n`;
+    msg += `Name: ${name || "—"}\n`;
+    if(phone) msg += `Phone: ${phone}\n`;
+    msg += `Apartment/Location: ${apartment || "—"}\n`;
+    msg += `People: ${people || "—"}\n`;
+    msg += `Category: ${category}\n`;
+    msg += `Budget (per person): ${budget}\n`;
+    if(items) msg += `\nPreferences:\n${items}\n`;
+    msg += `\nPlease suggest a menu + total price.\nThanks!`;
+    return msg;
+  }
+
+  document.getElementById('sendBtn').addEventListener('click', () => {
+    const apartment = document.getElementById('apartment').value.trim();
+    const people = document.getElementById('people').value.trim();
+    if(!apartment || !people){
+      alert("Please enter Apartment/Location and People count.");
+      return;
+    }
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildText())}`;
+    window.open(url, "_blank");
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', async () => {
+    const msg = buildText();
+    try{
+      await navigator.clipboard.writeText(msg);
+      alert("Copied! Now paste in WhatsApp.");
+    }catch(e){
+      alert("Copy failed. Please copy manually:\n\n" + msg);
+    }
+  });
+</script>
+</body>
+</html>
