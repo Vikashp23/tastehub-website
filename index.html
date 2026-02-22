@@ -382,6 +382,7 @@
 
   // Date chip
   const d = new Date();
+  d.setDate(d.getDate()+1)  // show tommorrow
   document.getElementById('dateChip').textContent =
     d.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short' });
 
