@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>TasteHub | Kannuru Nearby Only – Menu & Order</title>
-<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. View menu, add to cart, checkout on WhatsApp. Admin toggles for Sold Out." />
+<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. View menu, add to cart, checkout on WhatsApp." />
 
 <style>
   :root{
@@ -79,6 +79,7 @@
   }
   .chip.green{background: rgba(32,201,151,.12); border-color: rgba(32,201,151,.25); color:#caffef;}
   .chip.red{background: rgba(255,77,79,.14); border-color: rgba(255,77,79,.30); color:#ffe1e1;}
+
   .hero{
     margin-top:14px;
     display:grid;
@@ -99,6 +100,7 @@
   }
   .titleRow h2{margin:0; font-size:15px; letter-spacing:-.01em;}
   .sub{margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.35;}
+
   .tabs{
     display:flex; gap:10px; overflow:auto; padding:12px 14px;
     border-top:1px solid rgba(255,255,255,.06);
@@ -137,8 +139,6 @@
     font-size:12px;
     color: rgba(246,247,251,.70);
   }
-  .sectionInfo.open{ color: rgba(32,201,151,.95); }
-  .sectionInfo.closed{ color: rgba(255,176,32,.95); }
 
   .menuGrid{
     display:grid;
@@ -246,35 +246,27 @@
   .lt .s{font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .arr{opacity:.8; font-size:18px;}
 
-  .adminBar{
-    margin-top:10px;
-    padding:12px;
-    border-radius:18px;
-    border:1px solid rgba(255,255,255,.10);
-    background: rgba(0,0,0,.18);
-    display:grid; gap:10px;
+  /* Right-side floating social */
+  .floatSocial{
+    position:fixed;
+    right:14px;
+    top:110px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    z-index:80;
   }
-  .adminRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;}
-  .toggle{
-    display:inline-flex; align-items:center; gap:10px;
-    padding:10px 12px;
-    border-radius:14px;
+  .floatBtn{
+    width:46px; height:46px;
+    border-radius:16px;
     border:1px solid rgba(255,255,255,.14);
-    background: rgba(255,255,255,.06);
-    cursor:pointer;
-    user-select:none;
+    background: rgba(18,24,36,.75);
+    backdrop-filter: blur(10px);
+    display:grid; place-items:center;
+    box-shadow: 0 10px 24px rgba(0,0,0,.35);
+    text-decoration:none;
     font-weight:1000;
-    font-size:12px;
   }
-  .toggle .dot{
-    width:10px; height:10px; border-radius:999px;
-    background: rgba(255,255,255,.25);
-    box-shadow: 0 0 0 4px rgba(255,255,255,.07);
-  }
-  .toggle.on{border-color: rgba(255,77,79,.28); background: rgba(255,77,79,.10);}
-  .toggle.on .dot{background: var(--danger); box-shadow: 0 0 0 4px rgba(255,77,79,.12);}
-
-  .hint{font-size:12px; color: rgba(246,247,251,.62); line-height:1.35;}
 
   .cartBar{
     position:fixed; left:0; right:0; bottom:0; z-index:50;
@@ -377,28 +369,6 @@
   }
   textarea{min-height:80px; resize:vertical;}
   .mutedSmall{font-size:12px; color:rgba(246,247,251,.60); line-height:1.35;}
-
-  /* Right-side floating social */
-  .floatSocial{
-    position:fixed;
-    right:14px;
-    top:110px;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    z-index:80;
-  }
-  .floatBtn{
-    width:46px; height:46px;
-    border-radius:16px;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(18,24,36,.75);
-    backdrop-filter: blur(10px);
-    display:grid; place-items:center;
-    box-shadow: 0 10px 24px rgba(0,0,0,.35);
-    text-decoration:none;
-    font-weight:1000;
-  }
 </style>
 </head>
 
@@ -439,22 +409,6 @@
             <span class="chip green">Kannuru Nearby Only</span>
           </div>
           <p class="sub" id="menuNote">Add items to cart and checkout on WhatsApp. Limited quantity daily.</p>
-
-          <!-- Admin toggles (no code editing needed) -->
-          <div class="adminBar" id="adminBar">
-            <div class="adminRow">
-              <div style="font-weight:1000;">Admin quick toggles</div>
-              <div class="hint">Tap to mark Sold Out (saved on your phone/browser).</div>
-            </div>
-            <div class="adminRow" style="justify-content:flex-start;">
-              <div class="toggle" id="toggleSite"><span class="dot"></span><span>Whole day SOLD OUT</span></div>
-              <div class="toggle" data-sec="breakfast"><span class="dot"></span><span>Breakfast SOLD OUT</span></div>
-              <div class="toggle" data-sec="lunch"><span class="dot"></span><span>Lunch SOLD OUT</span></div>
-              <div class="toggle" data-sec="snacks"><span class="dot"></span><span>Snacks SOLD OUT</span></div>
-              <div class="toggle" data-sec="dinner"><span class="dot"></span><span>Dinner SOLD OUT</span></div>
-            </div>
-            <div class="hint">To hide admin box for customers: set <b>ADMIN_MODE=false</b> in the Admin Edit Area.</div>
-          </div>
         </div>
 
         <div class="tabs" id="tabs"></div>
@@ -588,14 +542,22 @@
   </div>
 
 <!-- =========================
-     ADMIN EDIT AREA (ONLY)
+     EDIT AREA (ONLY)
      ========================= -->
 <script>
-  // Show admin quick toggles (set false when sharing to customers)
-  const ADMIN_MODE = true;
-
   // WhatsApp number (no +)
   const WHATSAPP_NUMBER = "919632035612";
+
+  // If whole day sold out, set true
+  const SOLD_OUT_SITE = false;
+
+  // If a section sold out, set true
+  const SOLD_OUT_SECTIONS = {
+    breakfast: false,
+    lunch: false,
+    snacks: false,
+    dinner: false
+  };
 
   // Menu (leave [] to show "Not available" + suggestions)
   const MENU = {
@@ -607,14 +569,6 @@
     lunch: [],
     snacks: [],
     dinner: []
-  };
-
-  // Timing windows (24h). Disables ADD when outside time.
-  const TIME_WINDOWS = {
-    breakfast: { start: 5,  end: 7,  label: "Breakfast (5 AM – 7 AM)" },
-    lunch:     { start: 11, end: 13, label: "Lunch (11 AM – 1 PM)" },
-    snacks:    { start: 15, end: 18, label: "Snacks (3 PM – 6 PM)" },
-    dinner:    { start: 19, end: 21, label: "Dinner (7 PM – 9 PM)" }
   };
 
   // When section is empty, show 4 suggestions (edit anytime)
@@ -640,66 +594,11 @@
   document.getElementById('dateChip').textContent =
     d.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short' });
 
-  // Admin mode show/hide
-  const adminBar = document.getElementById('adminBar');
-  adminBar.style.display = ADMIN_MODE ? 'grid' : 'none';
-
-  function nowHour(){
-    const dd = new Date();
-    return dd.getHours() + dd.getMinutes()/60;
-  }
-  function fmtTime(h){
-    const hh = Math.floor(h);
-    const mm = Math.round((h - hh) * 60);
-    const ampm = hh >= 12 ? "PM" : "AM";
-    const hh12 = ((hh + 11) % 12) + 1;
-    return `${hh12}:${String(mm).padStart(2,'0')} ${ampm}`;
-  }
-  function sectionStatus(key){
-    const w = TIME_WINDOWS[key];
-    if(!w) return { open:true, msg:"" };
-    const t = nowHour();
-    if(t < w.start) return { open:false, msg:`Opens at ${fmtTime(w.start)}` };
-    if(t > w.end)   return { open:false, msg:`Closed (order before ${fmtTime(w.end)})` };
-    return { open:true, msg:`Open now • Order before ${fmtTime(w.end)}` };
-  }
-
-  // Sold-out state (saved in your browser)
-  const LS_KEY = "tastehub_sold_state_v1";
-  const state = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
-  state.site = !!state.site;
-  state.sections = state.sections || {};
-  ['breakfast','lunch','snacks','dinner'].forEach(k => state.sections[k] = !!state.sections[k]);
-
-  function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
-
-  function applySoldChips(){
-    const chip = document.getElementById('siteSoldChip');
-    chip.style.display = state.site ? 'inline-flex' : 'none';
-    document.getElementById('menuNote').textContent =
-      state.site ? "Sold out today. Message us to check tomorrow’s menu." : "Add items to cart and checkout on WhatsApp. Limited quantity daily.";
-  }
-
-  function syncToggleUI(){
-    document.getElementById('toggleSite').classList.toggle('on', state.site);
-    document.querySelectorAll('.toggle[data-sec]').forEach(btn => {
-      const sec = btn.getAttribute('data-sec');
-      btn.classList.toggle('on', !!state.sections[sec]);
-    });
-  }
-
-  if(ADMIN_MODE){
-    document.getElementById('toggleSite').addEventListener('click', () => {
-      state.site = !state.site; saveState();
-      applySoldChips(); syncToggleUI(); renderTabs(); renderMenu();
-    });
-    document.querySelectorAll('.toggle[data-sec]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const sec = btn.getAttribute('data-sec');
-        state.sections[sec] = !state.sections[sec]; saveState();
-        applySoldChips(); syncToggleUI(); renderTabs(); renderMenu();
-      });
-    });
+  // Sold out chip
+  const siteChip = document.getElementById('siteSoldChip');
+  siteChip.style.display = SOLD_OUT_SITE ? 'inline-flex' : 'none';
+  if(SOLD_OUT_SITE){
+    document.getElementById('menuNote').textContent = "Sold out today. Message us to check tomorrow’s menu.";
   }
 
   const sections = [
@@ -731,10 +630,8 @@
   function renderTabs(){
     tabsEl.innerHTML = sections.map(s => {
       const active = s.key === activeKey ? "active" : "";
-      const sold = state.site || state.sections[s.key];
-      const st = sectionStatus(s.key);
-      const hint = sold ? "Sold out" : (st.msg || "");
-      return `<button class="tab ${active}" data-key="${s.key}" title="${hint}">${s.label}${sold ? " • Sold" : ""}</button>`;
+      const sold = SOLD_OUT_SITE || !!SOLD_OUT_SECTIONS[s.key];
+      return `<button class="tab ${active}" data-key="${s.key}" title="${sold ? "Sold out" : ""}">${s.label}${sold ? " • Sold" : ""}</button>`;
     }).join('');
     tabsEl.querySelectorAll('.tab').forEach(b => {
       b.addEventListener('click', () => {
@@ -745,17 +642,12 @@
   }
 
   function renderMenu(){
-    const sold = state.site || state.sections[activeKey];
-    const status = sectionStatus(activeKey);
+    const sold = SOLD_OUT_SITE || !!SOLD_OUT_SECTIONS[activeKey];
     const items = MENU[activeKey] || [];
 
     sectionTitleEl.textContent = activeKey.toUpperCase();
-
-    const w = TIME_WINDOWS[activeKey];
-    const timingText = w?.label ? w.label : "";
-    const openText = status.msg ? (" • " + status.msg) : "";
-    sectionInfoEl.textContent = sold ? "Sold out (admin set)" : (timingText + openText).trim();
-    sectionInfoEl.className = "sectionInfo " + (sold ? "closed" : (status.open ? "open" : "closed"));
+    sectionInfoEl.textContent = sold ? "Sold out" : "Available (Kannuru nearby only)";
+    sectionInfoEl.style.color = sold ? "rgba(255,176,32,.95)" : "rgba(32,201,151,.95)";
 
     if(items.length === 0){
       const sugg = (SUGGESTIONS[activeKey] || []).slice(0,4);
@@ -764,7 +656,7 @@
           <div class="emptyTitle">Not available right now</div>
           <div class="emptySub">We will update this section when menu is ready. Suggestions:</div>
           <div class="emptySub" style="margin-top:8px">• ${sugg.join("<br/>• ")}</div>
-          <div class="emptySub" style="margin-top:10px">Join WhatsApp group for updates.</div>
+          <div class="emptySub" style="margin-top:10px">For custom items, order 1 day prior on WhatsApp.</div>
         </div>
       `;
       return;
@@ -775,7 +667,7 @@
       const q = getCartQty(id);
       const price = formatPrice(it.price);
 
-      const disabled = sold || !status.open;
+      const disabled = sold;
       const disabledAttr = disabled ? "disabled" : "";
 
       const rightUI = sold
@@ -786,7 +678,7 @@
               <div class="qnum">${q}</div>
               <button class="qbtn" ${disabledAttr} data-act="inc" data-id="${id}">+</button>
             </div>
-          ` : `<button class="addBtn primary" ${disabledAttr} data-act="add" data-id="${id}">${status.open ? "ADD" : "CLOSED"}</button>`);
+          ` : `<button class="addBtn primary" ${disabledAttr} data-act="add" data-id="${id}">ADD</button>`);
 
       return `
         <div class="item">
@@ -897,7 +789,7 @@
     msg += `Items:\n${lines.join("\n")}\n`;
     if(total > 0) msg += `\nTotal (food only): ₹${total}\n`;
     if(notes) msg += `\nNotes: ${notes}\n`;
-    msg += `\nDelivery: I can self-book Porter/Rapido/Uber if needed.\nThanks!`;
+    msg += `\nCustom items: please order 1 day prior.\nDelivery: I can self-book Porter/Rapido/Uber if needed.\nThanks!`;
     return msg;
   }
 
@@ -924,7 +816,7 @@
   });
 
   // init
-  applySoldChips(); syncToggleUI(); renderTabs(); renderMenu(); updateCartUI();
+  renderTabs(); renderMenu(); updateCartUI();
 </script>
 </body>
 </html>
