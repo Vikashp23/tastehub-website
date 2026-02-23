@@ -787,9 +787,9 @@
     msg += `Items:\n${lines.join("\n")}\n`;
     if(total > 0) msg += `\nTotal (food only): ₹${total}\n`;
     if(notes) msg += `\nNotes: ${notes}\n`;
-    msg += `\nCustom items: please order 1 day prior.\nDelivery: I can self-book Porter/Rapido/Uber if needed.\nThanks!`;
-    return msg;
+     return msg;
   }
+   
 
   function checkoutOnWhatsApp(){
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppText())}`;
