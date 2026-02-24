@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>TasteHub | Kannuru Nearby Only – Menu & Order</title>
-<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. View menu, add to cart, checkout on WhatsApp." />
+<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. View menu, add to cart, checkout on WhatsApp. Admin toggles for Sold Out." />
 
 <style>
   :root{
@@ -79,7 +79,6 @@
   }
   .chip.green{background: rgba(32,201,151,.12); border-color: rgba(32,201,151,.25); color:#caffef;}
   .chip.red{background: rgba(255,77,79,.14); border-color: rgba(255,77,79,.30); color:#ffe1e1;}
-
   .hero{
     margin-top:14px;
     display:grid;
@@ -100,7 +99,6 @@
   }
   .titleRow h2{margin:0; font-size:15px; letter-spacing:-.01em;}
   .sub{margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.35;}
-
   .tabs{
     display:flex; gap:10px; overflow:auto; padding:12px 14px;
     border-top:1px solid rgba(255,255,255,.06);
@@ -139,6 +137,8 @@
     font-size:12px;
     color: rgba(246,247,251,.70);
   }
+  .sectionInfo.open{ color: rgba(32,201,151,.95); }
+  .sectionInfo.closed{ color: rgba(255,176,32,.95); }
 
   .menuGrid{
     display:grid;
@@ -246,27 +246,35 @@
   .lt .s{font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .arr{opacity:.8; font-size:18px;}
 
-  /* Right-side floating social */
-  .floatSocial{
-    position:fixed;
-    right:14px;
-    top:110px;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    z-index:80;
+  .adminBar{
+    margin-top:10px;
+    padding:12px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.10);
+    background: rgba(0,0,0,.18);
+    display:grid; gap:10px;
   }
-  .floatBtn{
-    width:46px; height:46px;
-    border-radius:16px;
+  .adminRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;}
+  .toggle{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:10px 12px;
+    border-radius:14px;
     border:1px solid rgba(255,255,255,.14);
-    background: rgba(18,24,36,.75);
-    backdrop-filter: blur(10px);
-    display:grid; place-items:center;
-    box-shadow: 0 10px 24px rgba(0,0,0,.35);
-    text-decoration:none;
+    background: rgba(255,255,255,.06);
+    cursor:pointer;
+    user-select:none;
     font-weight:1000;
+    font-size:12px;
   }
+  .toggle .dot{
+    width:10px; height:10px; border-radius:999px;
+    background: rgba(255,255,255,.25);
+    box-shadow: 0 0 0 4px rgba(255,255,255,.07);
+  }
+  .toggle.on{border-color: rgba(255,77,79,.28); background: rgba(255,77,79,.10);}
+  .toggle.on .dot{background: var(--danger); box-shadow: 0 0 0 4px rgba(255,77,79,.12);}
+
+  .hint{font-size:12px; color: rgba(246,247,251,.62); line-height:1.35;}
 
   .cartBar{
     position:fixed; left:0; right:0; bottom:0; z-index:50;
@@ -369,6 +377,28 @@
   }
   textarea{min-height:80px; resize:vertical;}
   .mutedSmall{font-size:12px; color:rgba(246,247,251,.60); line-height:1.35;}
+
+  /* Right-side floating social */
+  .floatSocial{
+    position:fixed;
+    right:14px;
+    top:110px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    z-index:80;
+  }
+  .floatBtn{
+    width:46px; height:46px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(18,24,36,.75);
+    backdrop-filter: blur(10px);
+    display:grid; place-items:center;
+    box-shadow: 0 10px 24px rgba(0,0,0,.35);
+    text-decoration:none;
+    font-weight:1000;
+  }
 </style>
 </head>
 
@@ -381,13 +411,14 @@
           <img id="logoImg" src="logo.png" alt="TasteHub logo">
         </div>
         <div class="bt">
-          <h1>TasteHub – Homemade Veg Meals</h1>
-          <p>📍 Nearby Kannuru only • Kolte Patil Raaga & nearby apartments</p>
+          <h1>TasteHub</h1>
+          <p>📍 J 1301, Kolte Patil Raaga, Kannuru, Bangalore 560077 • FSSAI: 21226008000011</p>
         </div>
       </div>
 
       <div class="chipRow">
-<span class="chip">100% Veg</span>
+        <span class="chip green" id="dateChip">Today</span>
+        <span class="chip">100% Veg</span>
         <span class="chip red" id="siteSoldChip" style="display:none;">SOLD OUT</span>
       </div>
     </div>
@@ -408,6 +439,22 @@
             <span class="chip green">Kannuru Nearby Only</span>
           </div>
           <p class="sub" id="menuNote">Add items to cart and checkout on WhatsApp. Limited quantity daily.</p>
+
+          <!-- Admin toggles (no code editing needed) -->
+          <div class="adminBar" id="adminBar">
+            <div class="adminRow">
+              <div style="font-weight:1000;">Admin quick toggles</div>
+              <div class="hint">Tap to mark Sold Out (saved on your phone/browser).</div>
+            </div>
+            <div class="adminRow" style="justify-content:flex-start;">
+              <div class="toggle" id="toggleSite"><span class="dot"></span><span>Whole day SOLD OUT</span></div>
+              <div class="toggle" data-sec="breakfast"><span class="dot"></span><span>Breakfast SOLD OUT</span></div>
+              <div class="toggle" data-sec="lunch"><span class="dot"></span><span>Lunch SOLD OUT</span></div>
+              <div class="toggle" data-sec="snacks"><span class="dot"></span><span>Snacks SOLD OUT</span></div>
+              <div class="toggle" data-sec="dinner"><span class="dot"></span><span>Dinner SOLD OUT</span></div>
+            </div>
+            <div class="hint">To hide admin box for customers: set <b>ADMIN_MODE=false</b> in the Admin Edit Area.</div>
+          </div>
         </div>
 
         <div class="tabs" id="tabs"></div>
@@ -457,10 +504,10 @@
                 <span class="chip">Kannuru only</span>
               </div>
               <div class="sub" style="margin-top:6px;">
-                Breakfast: <b>6 AM – 7 AM</b><br/>
-                Lunch: <b>12 AM – 1 PM</b><br/>
-                Snacks: <b>2 PM – 6 PM</b><br/>
-                Dinner: <b>6 PM – 9 PM</b>
+                Breakfast: <b>5 AM – 7 AM</b><br/>
+                Lunch: <b>11 AM – 1 PM</b><br/>
+                Snacks: <b>3 PM – 6 PM</b><br/>
+                Dinner: <b>7 PM – 9 PM</b>
               </div>
             </div>
           </div>
@@ -482,7 +529,37 @@
         </div>
 
       </div>
-    </div>
+    
+        
+        <div class="panel">
+          <div class="pad">
+            <div class="titleRow">
+              <h2>About TasteHub</h2>
+              <span class="chip">Since 2023</span>
+            </div>
+            <p class="sub" style="margin-top:8px;">
+              Hi, I’m <b>Neha Pathak</b> — chef &amp; owner of TasteHub. I started TasteHub in <b>2023</b> from my home kitchen in our apartment and created a WhatsApp group to share the daily menu with nearby Kannuru.
+              <br/><br/>
+              ✅ Fresh, homemade vegetarian meals • 100% Veg<br/>
+              ✅ Daily menu updates &amp; availability on WhatsApp
+            </p>
+          </div>
+        </div>
+<div class="panel">
+          <div class="pad">
+            <div class="titleRow">
+              <h2>About TasteHub</h2>
+              <span class="chip">Since 2023</span>
+            </div>
+            <p class="sub" style="margin-top:8px;">
+              Hi, I’m <b>Neha Pathak</b> — chef &amp; owner of TasteHub. I started TasteHub in <b>2023</b> from my home kitchen in our apartment and created a WhatsApp group to share the daily menu with nearby Kannuru.
+              <br/><br/>
+              ✅ Fresh, homemade vegetarian meals • 100% Veg<br/>
+              ✅ Daily menu updates &amp; availability on WhatsApp
+            </p>
+          </div>
+        </div>
+</div>
   </div>
 
   <div class="cartBar" id="cartBar" style="display:none;">
@@ -540,17 +617,18 @@
     </div>
   </div>
 
+
 <!-- =========================
      EDIT AREA (ONLY)
      ========================= -->
 <script>
-  // WhatsApp number (no +)
-  const WHATSAPP_NUMBER = "919570415857";
+  // ====== BASIC SETTINGS ======
+  const WHATSAPP_NUMBER = "919632035612"; // no +
 
-  // If whole day sold out, set true
-  const SOLD_OUT_SITE = TRUE;
+  // Show SOLD OUT for whole site
+  const SOLD_OUT_SITE = false;
 
-  // If a section sold out, set true
+  // Sold out per section
   const SOLD_OUT_SECTIONS = {
     breakfast: false,
     lunch: false,
@@ -558,23 +636,35 @@
     dinner: false
   };
 
-  // Menu (leave [] to show "Not available" + suggestions)
+  // Order cut-off times (24h). After this time the section becomes CLOSED for today.
+  // You said: Breakfast closed, Lunch till 12pm, Snacks 4pm, Dinner till 7pm
+  const ORDER_CUTOFFS = {
+    breakfast: 7,   // 7:00 AM
+    lunch: 12,      // 12:00 PM
+    snacks: 16,     // 4:00 PM
+    dinner: 19      // 7:00 PM
+  };
+
+  // ====== TODAY MENU + TOMORROW BREAKFAST (pre-order) ======
   const MENU = {
-    breakfast: [],
+    // Tomorrow breakfast items (customers can pre-order)
+    breakfast: [
+      {name:"Palak chilla (3 pieces) with chutney", price:90, desc:"Tomorrow breakfast (pre-order)"},
+      {name:"Extra chilla", price:30, desc:"Add-on"}
+    ],
     lunch: [
-      {name:"Jeera rice with palak fry daal + papad", price:150, desc:""}
+      {name:"Plain paratha/chapati (4 pieces) with dal tadka + aloo jeera", price:160, desc:"Order before 12 PM"}
     ],
     snacks: [
-      {name:"Dahi papadi chat", price:70, desc:""},
-      {name:"Vada pav", price:40, desc:""}
+      {name:"Aloo palak chilla with chutney", price:70, desc:"Order before 4 PM"}
     ],
     dinner: [
-      {name:"Plain paratha/chapati (4 pieces) with brown chana ghugni", price:140, desc:""},
-      {name:"Extra Paratha/Chapati", price:15, desc:"Add-on"}
+      {name:"Aloo masala puri (4 pieces) with chhole", price:140, desc:"Order before 7 PM"},
+      {name:"Extra puri", price:15, desc:"Add-on"}
     ]
   };
 
-  // When section is empty, show 4 suggestions (edit anytime)
+  // When section is empty, show 4 suggestions
   const SUGGESTIONS = {
     breakfast: ["Poha", "Idli-Sambar", "Upma", "Paratha + Curd"],
     lunch: ["Jeera Rice + Chhole", "Rajma Chawal", "Kadhi Chawal", "Paneer Sabzi + Paratha"],
@@ -591,6 +681,37 @@
     img.onload = () => { img.style.display='block'; fb.style.display='none'; };
     img.onerror = () => { img.style.display='none'; fb.style.display='grid'; };
   })();
+
+  function nowHour(){
+    const d = new Date();
+    return d.getHours() + d.getMinutes()/60;
+  }
+  function fmtTime(h){
+    const hh = Math.floor(h);
+    const mm = Math.round((h - hh) * 60);
+    const ampm = hh >= 12 ? "PM" : "AM";
+    const hh12 = ((hh + 11) % 12) + 1;
+    return `${hh12}:${String(mm).padStart(2,'0')} ${ampm}`;
+  }
+
+  // For breakfast: show as CLOSED today, but still allow pre-order (tomorrow menu shown)
+  function sectionStatus(key){
+    const cutoff = ORDER_CUTOFFS[key];
+    if(typeof cutoff !== "number") return { open:true, msg:"" };
+
+    const t = nowHour();
+
+    if(key === "breakfast"){
+      const closedToday = t > cutoff;
+      return {
+        open: true, // allow pre-order
+        msg: closedToday ? "Breakfast closed today • Pre-order for tomorrow" : `Pre-order for tomorrow • Before ${fmtTime(cutoff)}`
+      };
+    }
+
+    if(t > cutoff) return { open:false, msg:`Closed (order before ${fmtTime(cutoff)})` };
+    return { open:true, msg:`Open now • Order before ${fmtTime(cutoff)}` };
+  }
 
   // Sold out chip
   const siteChip = document.getElementById('siteSoldChip');
@@ -629,7 +750,10 @@
     tabsEl.innerHTML = sections.map(s => {
       const active = s.key === activeKey ? "active" : "";
       const sold = SOLD_OUT_SITE || !!SOLD_OUT_SECTIONS[s.key];
-      return `<button class="tab ${active}" data-key="${s.key}" title="${sold ? "Sold out" : ""}">${s.label}${sold ? " • Sold" : ""}</button>`;
+      const st = sectionStatus(s.key);
+      const hint = sold ? "Sold out" : (st.msg || "");
+      const closed = (!st.open && !sold);
+      return `<button class="tab ${active}" data-key="${s.key}" title="${hint}">${s.label}${sold ? " • Sold" : (closed ? " • Closed" : "")}</button>`;
     }).join('');
     tabsEl.querySelectorAll('.tab').forEach(b => {
       b.addEventListener('click', () => {
@@ -641,11 +765,18 @@
 
   function renderMenu(){
     const sold = SOLD_OUT_SITE || !!SOLD_OUT_SECTIONS[activeKey];
+    const status = sectionStatus(activeKey);
     const items = MENU[activeKey] || [];
 
     sectionTitleEl.textContent = activeKey.toUpperCase();
-    sectionInfoEl.textContent = sold ? "Sold out" : "Available (Kannuru nearby only)";
-    sectionInfoEl.style.color = sold ? "rgba(255,176,32,.95)" : "rgba(32,201,151,.95)";
+
+    if(sold){
+      sectionInfoEl.textContent = "Sold out";
+      sectionInfoEl.style.color = "rgba(255,176,32,.95)";
+    }else{
+      sectionInfoEl.textContent = status.msg || "Available (Kannuru nearby only)";
+      sectionInfoEl.style.color = status.open ? "rgba(32,201,151,.95)" : "rgba(255,176,32,.95)";
+    }
 
     if(items.length === 0){
       const sugg = (SUGGESTIONS[activeKey] || []).slice(0,4);
@@ -665,7 +796,7 @@
       const q = getCartQty(id);
       const price = formatPrice(it.price);
 
-      const disabled = sold;
+      const disabled = sold || (!status.open && activeKey !== "breakfast"); // breakfast allows pre-order
       const disabledAttr = disabled ? "disabled" : "";
 
       const rightUI = sold
@@ -676,7 +807,7 @@
               <div class="qnum">${q}</div>
               <button class="qbtn" ${disabledAttr} data-act="inc" data-id="${id}">+</button>
             </div>
-          ` : `<button class="addBtn primary" ${disabledAttr} data-act="add" data-id="${id}">ADD</button>`);
+          ` : `<button class="addBtn primary" ${disabledAttr} data-act="add" data-id="${id}">${disabled ? "CLOSED" : "ADD"}</button>`);
 
       return `
         <div class="item">
@@ -787,9 +918,8 @@
     msg += `Items:\n${lines.join("\n")}\n`;
     if(total > 0) msg += `\nTotal (food only): ₹${total}\n`;
     if(notes) msg += `\nNotes: ${notes}\n`;
-     return msg;
+    return msg;
   }
-   
 
   function checkoutOnWhatsApp(){
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppText())}`;
