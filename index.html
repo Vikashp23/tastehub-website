@@ -55,7 +55,6 @@ button:hover{
   padding:14px;
   border-top:1px solid #222;
   display:none;
-  display:flex;
   justify-content:space-between;
   align-items:center;
 }
@@ -76,7 +75,6 @@ button:hover{
   </small>
 </header>
 
-<!-- Breakfast -->
 <div class="section">
   <h2>Breakfast</h2>
   <div class="card">
@@ -85,35 +83,31 @@ button:hover{
   </div>
 </div>
 
-<!-- Lunch -->
 <div class="section">
   <h2>Lunch</h2>
   <div class="card">
     Plain Paratha / Chapati (4 pieces) with Dal Tadka & Aloo Jeera – ₹160
     <br><br>
-    <button onclick="addToCart('Plain Paratha / Chapati Meal',160)">Add</button>
+    <button onclick="addToCart('Chapati Meal',160)">Add</button>
   </div>
 </div>
 
-<!-- Snacks -->
 <div class="section">
   <h2>Snacks</h2>
   <div class="card">
     Aloo Palak Chilla with Chutney – ₹70
     <br><br>
-    <button onclick="addToCart('Aloo Palak Chilla',70)">Add</button>
+    <button onclick="addToCart('Chilla',70)">Add</button>
   </div>
 </div>
 
-<!-- Dinner -->
 <div class="section">
   <h2>Dinner</h2>
   <div class="card">
     Aloo Masala Puri (4 pieces) with Chole – ₹140
     <br><br>
-    <button onclick="addToCart('Aloo Masala Puri with Chole',140)">Add</button>
+    <button onclick="addToCart('Puri Chole',140)">Add</button>
   </div>
-
   <div class="card">
     Extra Puri – ₹15
     <br><br>
@@ -121,12 +115,9 @@ button:hover{
   </div>
 </div>
 
-<!-- Cart -->
 <div class="cartbar" id="cartbar">
   <span id="carttext"></span>
-  <div>
-    <button class="invoice-btn" onclick="generateInvoice()">Invoice</button>
-  </div>
+  <button class="invoice-btn" onclick="generateInvoice()">Invoice</button>
 </div>
 
 <script>
@@ -139,7 +130,8 @@ function addToCart(name,price){
 
 function updateCart(){
   let total=cart.reduce((sum,item)=>sum+item.price,0);
-  document.getElementById("cartbar").style.display="flex";
+  let bar=document.getElementById("cartbar");
+  bar.style.display="flex";
   document.getElementById("carttext").innerText=
     cart.length+" items | Total ₹"+total;
 }
@@ -158,16 +150,13 @@ function generateInvoice(){
   let invoice=
     "TASTE HUB\n"+
     "----------------------------------\n"+
-    "Address: J 1301 Kolte Patil Raaga\n"+
-    "Kannuru, Bengaluru 560077\n"+
     "FSSAI: 21226008000011\n"+
     "Date: "+today+"\n"+
     "----------------------------------\n\n"+
     items+
     "\n\n----------------------------------\n"+
     "Total Amount: ₹"+total+
-    "\n----------------------------------\n\n"+
-    "Thank You For Ordering!\n";
+    "\n----------------------------------";
 
   alert(invoice);
 }
