@@ -6,161 +6,297 @@
 <title>TasteHub | Kannuru Nearby</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#0b0f14;
-  color:#fff;
-}
-header{
-  padding:18px;
-  background:#111827;
-  border-bottom:1px solid #222;
-}
-h1{margin:0;font-size:22px;}
-small{color:#bbb;line-height:1.6;}
-.section{padding:18px;}
-.section h2{
-  border-bottom:1px solid #222;
-  padding-bottom:6px;
-}
-.card{
-  background:#1f2937;
-  padding:15px;
-  border-radius:10px;
-  margin-bottom:12px;
-}
-.sold{
-  color:#ff4d4f;
-  font-weight:bold;
-  margin-top:8px;
-}
-button{
-  padding:8px 14px;
-  border:none;
-  border-radius:6px;
-  background:#20c997;
-  font-weight:bold;
-  cursor:pointer;
-}
-button:hover{
-  opacity:0.9;
-}
-.cartbar{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:#111827;
-  padding:14px;
-  border-top:1px solid #222;
-  display:none;
-  justify-content:space-between;
-  align-items:center;
-}
-.invoice-btn{
-  background:#f59e0b;
-  margin-left:10px;
-}
+  :root{
+    --bg:#0b0f14;
+    --panel:#111827;
+    --card:#1f2937;
+    --stroke:#222;
+    --text:#fff;
+    --muted:#b9c0cc;
+    --brand:#20c997;
+    --warn:#f59e0b;
+    --danger:#ff4d4f;
+  }
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header{
+    padding:14px 14px 10px;
+    background: var(--panel);
+    border-bottom:1px solid var(--stroke);
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  .topRow{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+  h1{margin:0;font-size:18px;letter-spacing:.2px;}
+  .addr{color:var(--muted);font-size:12px;line-height:1.35;margin-top:4px;}
+  .chipRow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end;}
+  .chip{
+    font-size:12px;
+    padding:6px 10px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.06);
+    border-radius:999px;
+    color: rgba(255,255,255,.92);
+    white-space:nowrap;
+  }
+  .chip.red{
+    border-color: rgba(255,77,79,.30);
+    background: rgba(255,77,79,.14);
+    color:#ffe1e1;
+    font-weight:800;
+  }
+  .chip.green{
+    border-color: rgba(32,201,151,.30);
+    background: rgba(32,201,151,.14);
+    color:#caffef;
+    font-weight:800;
+  }
+
+  .wrap{max-width:900px;margin:0 auto;padding:14px 14px 90px;}
+  .section{padding:4px 0 12px;}
+  .sectionHead{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin:10px 0 8px;
+  }
+  .sectionHead h2{margin:0;font-size:16px;}
+  .status{
+    font-size:12px;
+    color: var(--muted);
+  }
+  .status.open{color:#8ff1d4;}
+  .status.closed{color:#ffd18a;}
+  .card{
+    background: var(--card);
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:10px;
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .itemRow{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:flex-start;
+  }
+  .itemName{font-weight:800;}
+  .price{font-weight:900;color:#caffef;}
+  .sub{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.35;}
+  .sold{
+    margin-top:8px;
+    color: var(--danger);
+    font-weight:900;
+  }
+  .btnRow{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;}
+  button{
+    padding:8px 12px;
+    border:none;
+    border-radius:8px;
+    background: var(--brand);
+    font-weight:900;
+    cursor:pointer;
+    color:#052015;
+  }
+  button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+  }
+  .btnWarn{background: var(--warn); color:#1b1200;}
+  .links{
+    display:grid;
+    gap:10px;
+    margin-top:14px;
+  }
+  .linkBtn{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.06);
+    text-decoration:none;
+    color: var(--text);
+  }
+  .linkBtn small{color:var(--muted)}
+  .cartbar{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background: var(--panel);
+    padding:10px 14px;
+    border-top:1px solid var(--stroke);
+    display:none;
+  }
+  .cartInner{
+    max-width:900px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .cartText{font-weight:900}
+  .cartBtns{display:flex;gap:8px;flex-wrap:wrap}
+  .ghost{
+    background: rgba(255,255,255,.10);
+    color: #fff;
+    border:1px solid rgba(255,255,255,.10);
+  }
+
+  /* Right floating social */
+  .floatSocial{
+    position:fixed;
+    right:12px;
+    top:110px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    z-index:20;
+  }
+  .floatBtn{
+    width:44px;height:44px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(17,24,39,.85);
+    display:grid;
+    place-items:center;
+    text-decoration:none;
+    color:#fff;
+    font-weight:1000;
+  }
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>TasteHub</h1>
-  <small>
-  J 1301, Kolte Patil Raaga, Kannuru, Bengaluru 560077<br>
-  FSSAI License No: 21226008000011
-  </small>
+  <div class="topRow">
+    <div>
+      <h1>TasteHub</h1>
+      <div class="addr">
+        J 1301, Kolte Patil Raaga, Kannuru, Bengaluru 560077<br>
+        FSSAI: <b>21226008000011</b>
+      </div>
+    </div>
+    <div class="chipRow">
+      <span class="chip">100% Veg</span>
+      <span class="chip green" id="dayChip">Today</span>
+      <span class="chip red" id="siteSoldChip" style="display:none;">SOLD OUT</span>
+    </div>
+  </div>
 </header>
 
-<div class="section">
-  <h2>Breakfast</h2>
-  <div class="card">
-    Tomorrow's Breakfast Menu Will Be Updated at Night
-    <div class="sold">SOLD OUT FOR TODAY</div>
-  </div>
+<!-- Right floating social -->
+<div class="floatSocial" aria-label="Social links">
+  <a class="floatBtn" href="https://www.instagram.com/tastehub_22/" target="_blank" rel="noopener" title="Instagram">📷</a>
+  <a class="floatBtn" href="https://www.facebook.com/profile.php?id=61587586960844" target="_blank" rel="noopener" title="Facebook">f</a>
 </div>
 
-<div class="section">
-  <h2>Lunch</h2>
+<div class="wrap">
+
+  <!-- About -->
   <div class="card">
-    Plain Paratha / Chapati (4 pieces) with Dal Tadka & Aloo Jeera – ₹160
-    <br><br>
-    <button onclick="addToCart('Chapati Meal',160)">Add</button>
+    <div class="itemName">About TasteHub</div>
+    <div class="sub">
+      I’m <b>Neha Pathak</b>, chef & owner of TasteHub. Started in <b>2023</b> from my residing apartment and built a WhatsApp group for daily homemade veg meals.
+      <br><br>
+      <b>Service area:</b> Kannuru nearby (Kolte Patil Raaga & nearby apartments).
+    </div>
   </div>
-</div>
 
-<div class="section">
-  <h2>Snacks</h2>
-  <div class="card">
-    Aloo Palak Chilla with Chutney – ₹70
-    <br><br>
-    <button onclick="addToCart('Chilla',70)">Add</button>
+  <!-- Breakfast -->
+  <div class="section" id="sec-breakfast">
+    <div class="sectionHead">
+      <h2>Breakfast</h2>
+      <div class="status" id="status-breakfast"></div>
+    </div>
+    <div class="card">
+      <div class="sub">Tomorrow’s breakfast menu will be updated at night.</div>
+      <div class="sold">SOLD OUT FOR TODAY</div>
+    </div>
   </div>
-</div>
 
-<div class="section">
-  <h2>Dinner</h2>
-  <div class="card">
-    Aloo Masala Puri (4 pieces) with Chole – ₹140
-    <br><br>
-    <button onclick="addToCart('Puri Chole',140)">Add</button>
+  <!-- Lunch -->
+  <div class="section" id="sec-lunch">
+    <div class="sectionHead">
+      <h2>Lunch</h2>
+      <div class="status" id="status-lunch"></div>
+    </div>
+
+    <div class="card">
+      <div class="itemRow">
+        <div>
+          <div class="itemName">Chapati (4 pcs) with Dal Tadka & Aloo Jeera</div>
+          <div class="sub">Homestyle veg meal.</div>
+        </div>
+        <div class="price">₹160</div>
+      </div>
+      <div class="btnRow">
+        <button id="btn-lunch-1" onclick="addToCart('Chapati (4 pcs) with Dal Tadka & Aloo Jeera',160)">Add</button>
+      </div>
+    </div>
   </div>
-  <div class="card">
-    Extra Puri – ₹15
-    <br><br>
-    <button onclick="addToCart('Extra Puri',15)">Add</button>
+
+  <!-- Snacks -->
+  <div class="section" id="sec-snacks">
+    <div class="sectionHead">
+      <h2>Snacks</h2>
+      <div class="status" id="status-snacks"></div>
+    </div>
+
+    <div class="card">
+      <div class="itemRow">
+        <div>
+          <div class="itemName">Aloo Palak Chilla with Chutney</div>
+          <div class="sub">Fresh and light snack.</div>
+        </div>
+        <div class="price">₹70</div>
+      </div>
+      <div class="btnRow">
+        <button id="btn-snacks-1" onclick="addToCart('Aloo Palak Chilla with Chutney',70)">Add</button>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="cartbar" id="cartbar">
-  <span id="carttext"></span>
-  <button class="invoice-btn" onclick="generateInvoice()">Invoice</button>
-</div>
+  <!-- Dinner -->
+  <div class="section" id="sec-dinner">
+    <div class="sectionHead">
+      <h2>Dinner</h2>
+      <div class="status" id="status-dinner"></div>
+    </div>
 
-<script>
-let cart=[];
+    <div class="card">
+      <div class="itemRow">
+        <div>
+          <div class="itemName">Aloo Masala Puri (4 pcs) with Chole</div>
+          <div class="sub">Comfort food dinner.</div>
+        </div>
+        <div class="price">₹140</div>
+      </div>
+      <div class="btnRow">
+        <button id="btn-dinner-1" onclick="addToCart('Aloo Masala Puri (4 pcs) with Chole',140)">Add</button>
+      </div>
+    </div>
 
-function addToCart(name,price){
-  cart.push({name,price});
-  updateCart();
-}
-
-function updateCart(){
-  let total=cart.reduce((sum,item)=>sum+item.price,0);
-  let bar=document.getElementById("cartbar");
-  bar.style.display="flex";
-  document.getElementById("carttext").innerText=
-    cart.length+" items | Total ₹"+total;
-}
-
-function generateInvoice(){
-  if(cart.length===0){
-    alert("Cart empty");
-    return;
-  }
-
-  let total=cart.reduce((sum,item)=>sum+item.price,0);
-  let items=cart.map(i=>i.name+" - ₹"+i.price).join("\n");
-
-  let today=new Date().toLocaleDateString();
-
-  let invoice=
-    "TASTE HUB\n"+
-    "----------------------------------\n"+
-    "FSSAI: 21226008000011\n"+
-    "Date: "+today+"\n"+
-    "----------------------------------\n\n"+
-    items+
-    "\n\n----------------------------------\n"+
-    "Total Amount: ₹"+total+
-    "\n----------------------------------";
-
-  alert(invoice);
-}
-</script>
-
-</body>
-</html>
+    <div class="card">
+      <div class="itemRow">
+        <div>
+          <div class
