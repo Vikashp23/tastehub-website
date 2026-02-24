@@ -886,6 +886,11 @@ function buildWhatsAppText(){
 function checkoutOnWhatsApp(){
   const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppText())}`;
   window.open(url, "_blank");
+
+  // Show payment QR after WhatsApp opens
+  setTimeout(() => {
+    showPaymentQR();
+  }, 800);
 }
 
 /* Invoice */
