@@ -13,138 +13,35 @@ body{
   color:#fff;
 }
 header{
-  padding:15px;
+  padding:18px;
   background:#111827;
   border-bottom:1px solid #222;
 }
-h1{margin:0;font-size:20px;}
-small{color:#bbb;}
-.section{padding:15px;}
+h1{margin:0;font-size:22px;}
+small{color:#bbb;line-height:1.6;}
+.section{padding:18px;}
+.section h2{
+  border-bottom:1px solid #222;
+  padding-bottom:6px;
+}
 .card{
   background:#1f2937;
-  padding:12px;
-  border-radius:8px;
-  margin-bottom:10px;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:12px;
 }
 .sold{
   color:#ff4d4f;
   font-weight:bold;
+  margin-top:8px;
 }
 button{
-  padding:6px 10px;
+  padding:8px 14px;
   border:none;
-  border-radius:5px;
+  border-radius:6px;
   background:#20c997;
   font-weight:bold;
   cursor:pointer;
 }
-.cartbar{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:#111827;
-  padding:10px;
-  border-top:1px solid #222;
-  display:none;
-}
-.invoice-btn{
-  background:#f59e0b;
-  margin-left:10px;
-}
-</style>
-</head>
-
-<body>
-
-<header>
-  <h1>TasteHub</h1>
-  <small>
-  J 1301, Kolte Patil Raaga, Kannuru, Bengaluru 560077<br>
-  FSSAI: 21226008000011
-  </small>
-</header>
-
-<!-- Breakfast -->
-<div class="section">
-  <h2>Breakfast</h2>
-  <div class="card">
-    Tomorrow's Breakfast Menu Will Be Updated at Night
-    <div class="sold">SOLD OUT FOR TODAY</div>
-  </div>
-</div>
-
-<!-- Lunch -->
-<div class="section">
-  <h2>Lunch</h2>
-  <div class="card">
-    Chapati (4 pcs) with Dal Tadka & Aloo Jeera – ₹160
-    <br><br>
-    <button onclick="addToCart('Chapati Meal',160)">Add</button>
-  </div>
-</div>
-
-<!-- Snacks -->
-<div class="section">
-  <h2>Snacks</h2>
-  <div class="card">
-    Aloo Palak Chilla with Chutney – ₹70
-    <br><br>
-    <button onclick="addToCart('Chilla',70)">Add</button>
-  </div>
-</div>
-
-<!-- Dinner -->
-<div class="section">
-  <h2>Dinner</h2>
-  <div class="card">
-    Aloo Masala Puri (4 pcs) with Chole – ₹140
-    <br><br>
-    <button onclick="addToCart('Puri Chole',140)">Add</button>
-  </div>
-  <div class="card">
-    Extra Puri – ₹15
-    <br><br>
-    <button onclick="addToCart('Extra Puri',15)">Add</button>
-  </div>
-</div>
-
-<!-- Cart -->
-<div class="cartbar" id="cartbar">
-  <span id="carttext"></span>
-  <button class="invoice-btn" onclick="generateInvoice()">Invoice</button>
-</div>
-
-<script>
-let cart=[];
-
-function addToCart(name,price){
-  cart.push({name,price});
-  updateCart();
-}
-
-function updateCart(){
-  let total=cart.reduce((sum,item)=>sum+item.price,0);
-  document.getElementById("cartbar").style.display="block";
-  document.getElementById("carttext").innerText=
-    cart.length+" items | Total ₹"+total;
-}
-
-function generateInvoice(){
-  if(cart.length===0){
-    alert("Cart empty");
-    return;
-  }
-  let total=cart.reduce((sum,item)=>sum+item.price,0);
-  let items=cart.map(i=>i.name+" - ₹"+i.price).join("\\n");
-  let invoice=
-    "TasteHub Invoice\\n\\n"+
-    "FSSAI: 21226008000011\\n\\n"+
-    items+
-    "\\n\\nTotal: ₹"+total;
-  alert(invoice);
-}
-</script>
-
-</body>
-</html>
+button:hover{
+  opacity:0.9
