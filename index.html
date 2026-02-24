@@ -21,7 +21,11 @@
     --r:18px;
     --r2:24px;
     --max:1120px;
+
+    /* ✅ LOGO SIZE (change this number to reduce/increase logo) */
+    --logo:52px;
   }
+
   *{box-sizing:border-box}
   body{
     margin:0;
@@ -45,19 +49,20 @@
   .appbarInner{
     max-width:var(--max); margin:0 auto;
     padding:12px 14px;
-    display:flex; gap:12px; align-items:center; justify-content:space-between;
+    display:flex; gap:12px; align-items:flex-start; justify-content:space-between;
   }
   .brandRow{display:flex; gap:12px; align-items:center; min-width:0;}
-  .logoImg{
-    width:60px; height:60px; border-radius:18px;
+  .brandRow img{
+    width:var(--logo);
+    height:var(--logo);
+    border-radius:16px;
     object-fit:cover;
     border:1px solid rgba(255,255,255,.15);
     box-shadow:0 10px 25px rgba(0,0,0,.35);
-    background: rgba(255,255,255,.06);
-    display:block;
+    background: rgba(255,255,255,.05);
   }
   .titleBlock{min-width:0}
-  .titleBlock h1{margin:0; font-size:20px; font-weight:1000; letter-spacing:-.3px; line-height:1.1;}
+  .titleBlock h1{margin:0; font-size:18px; font-weight:1000; letter-spacing:-.01em; line-height:1.1;}
   .titleBlock .meta{margin:4px 0 0; font-size:12px; color:var(--muted); line-height:1.35;}
 
   .chipRow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; align-items:center;}
@@ -67,11 +72,12 @@
     border-radius:999px;
     background: rgba(255,255,255,.06);
     border:1px solid rgba(255,255,255,.10);
-    color:rgba(246,247,251,.92);
+    color:rgba(246,247,251,.90);
     white-space:nowrap;
   }
   .chip.green{background: rgba(32,201,151,.12); border-color: rgba(32,201,151,.25); color:#caffef;}
   .chip.red{background: rgba(255,77,79,.14); border-color: rgba(255,77,79,.30); color:#ffe1e1;}
+  .chip.warn{background: rgba(255,176,32,.12); border-color: rgba(255,176,32,.26); color:#ffeac7;}
 
   .grid{
     margin-top:14px;
@@ -167,10 +173,12 @@
     border:1px solid rgba(32,201,151,.55);
     background: rgba(32,201,151,.25);
     box-shadow: 0 0 0 3px rgba(32,201,151,.08);
+    flex:0 0 auto;
   }
   .iname{font-weight:1000; font-size:14px; letter-spacing:-.01em;}
   .iprice{font-weight:1000; font-size:13px; color:#d9ffe9; margin-top:2px;}
   .idesc{margin:6px 0 0; color:var(--muted); font-size:12.5px; line-height:1.35;}
+
   .iRight{display:flex; flex-direction:column; gap:8px; align-items:flex-end;}
 
   .badge{
@@ -185,7 +193,7 @@
   }
   .badge.av{border-color: rgba(32,201,151,.25); background: rgba(32,201,151,.10); color:#caffef;}
   .badge.na{border-color: rgba(255,77,79,.28); background: rgba(255,77,79,.12); color:#ffe1e1;}
-  .badge.stock{border-color: rgba(255,176,32,.25); background: rgba(255,176,32,.10); color:#ffe9c7;}
+  .badge.pre{border-color: rgba(255,176,32,.26); background: rgba(255,176,32,.12); color:#ffeac7;}
 
   .qty{
     display:flex; gap:8px; align-items:center;
@@ -353,14 +361,13 @@
   }
   textarea{min-height:76px; resize:vertical;}
   .mutedSmall{font-size:12px; color:rgba(246,247,251,.60); line-height:1.35;}
-
   .payBox{
     border:1px solid rgba(255,255,255,.12);
     background: rgba(255,255,255,.04);
     border-radius:16px;
     padding:12px;
     display:grid;
-    gap:10px;
+    gap:8px;
   }
   .payRow{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}
   .payId{font-weight:1000;}
@@ -373,7 +380,6 @@
     display:grid; place-items:center;
   }
   .qr img{max-width:100%; height:auto; display:block; border-radius:10px;}
-
   .toast{
     position:fixed; left:50%; bottom:84px; transform:translateX(-50%);
     background: rgba(0,0,0,.75);
@@ -390,217 +396,215 @@
 </head>
 
 <body>
-
-<!-- TOP BAR -->
-<div class="appbar">
-  <div class="appbarInner">
-    <div class="brandRow">
-      <img class="logoImg" src="logo.png" alt="TasteHub Logo"
-           onerror="this.style.display='none';" />
-      <div class="titleBlock">
-        <h1>TasteHub</h1>
-        <div class="meta">
-          J 1301, Kolte Patil Raaga, Kannuru, Bengaluru 560077<br>
-          FSSAI: 21226008000011
+  <!-- HEADER -->
+  <div class="appbar">
+    <div class="appbarInner">
+      <div class="brandRow">
+        <!-- ✅ Put your logo file in same folder: logo.png -->
+        <img src="logo.png" alt="TasteHub Logo"
+             onerror="this.style.display='none';">
+        <div class="titleBlock">
+          <h1>TasteHub</h1>
+          <div class="meta">
+            J 1301, Kolte Patil Raaga, Kannuru, Bengaluru 560077<br>
+            FSSAI: 21226008000011
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="chipRow">
-      <span class="chip green" id="dateChip">Today</span>
-      <span class="chip green">100% Veg</span>
-      <span class="chip red" id="siteSoldChip" style="display:none;">SOLD OUT</span>
+      <div class="chipRow">
+        <span class="chip green">100% Veg</span>
+        <span class="chip" id="statusChip">Live</span>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="wrap">
-  <div class="grid">
+  <div class="wrap">
+    <div class="grid">
+      <!-- LEFT: MENU -->
+      <div class="panel">
+        <div class="pad">
+          <div class="row">
+            <div style="font-weight:1000;">Menu</div>
+            <div class="chip green">Kannuru Nearby Only</div>
+          </div>
+          <p class="sub" id="menuNote">Search any dish, check availability, add to cart, then pay & checkout on WhatsApp.</p>
 
-    <!-- LEFT: MENU -->
-    <div class="panel">
-      <div class="pad">
-        <div class="row">
-          <div style="font-weight:1000;">Menu</div>
-          <div class="chip green">Kannuru Nearby Only</div>
+          <div class="searchBox" style="margin-top:10px;">
+            🔎 <input id="searchInput" placeholder="Search dishes (e.g., idli, chole, paratha, rice)..." autocomplete="off" />
+          </div>
+          <div class="searchHint" id="searchHint">Tip: Search shows items from all meals with their availability.</div>
         </div>
-        <p class="sub" id="menuNote">Search any dish, check availability, add to cart, then pay & checkout on WhatsApp.</p>
 
-        <div class="searchBox" style="margin-top:10px;">
-          🔎 <input id="searchInput" placeholder="Search dishes (e.g., chole, paratha, rice)..." autocomplete="off" />
-        </div>
-        <div class="searchHint" id="searchHint">Tip: Search shows items from all meals with their availability.</div>
+        <div class="tabs" id="tabs"></div>
+
+        <div class="sectionTitle" id="sectionTitle">Items</div>
+        <div class="sectionInfo" id="sectionInfo"></div>
+        <div class="menuGrid" id="menuGrid"></div>
       </div>
 
-      <div class="tabs" id="tabs"></div>
+      <!-- RIGHT: INFO -->
+      <div class="panel">
+        <div class="pad">
+          <div class="row">
+            <div style="font-weight:1000;">Quick Links</div>
+            <div class="chip">Fast access</div>
+          </div>
 
-      <div class="sectionTitle" id="sectionTitle">Items</div>
-      <div class="sectionInfo" id="sectionInfo"></div>
-      <div class="menuGrid" id="menuGrid"></div>
-    </div>
+          <div class="links">
+            <a class="linkBtn" href="https://wa.me/919632035612" target="_blank" rel="noopener">
+              <div class="lL"><div class="ic">💬</div><div class="lt"><div class="t">WhatsApp Order Help</div><div class="s">Ask availability / plans</div></div></div>
+              <div class="arr">›</div>
+            </a>
 
-    <!-- RIGHT: INFO -->
-    <div class="panel">
-      <div class="pad">
-        <div class="row">
-          <div style="font-weight:1000;">Quick Links</div>
-          <div class="chip">Fast access</div>
-        </div>
+            <a class="linkBtn" href="https://chat.whatsapp.com/JMvEqWg2awXGj2bXiMV9uD?mode=gi_t" target="_blank" rel="noopener">
+              <div class="lL"><div class="ic">👥</div><div class="lt"><div class="t">Join WhatsApp Group</div><div class="s">Daily menu updates</div></div></div>
+              <div class="arr">›</div>
+            </a>
 
-        <div class="links">
-          <a class="linkBtn" href="https://wa.me/919632035612" target="_blank" rel="noopener">
-            <div class="lL"><div class="ic">💬</div><div class="lt"><div class="t">WhatsApp Order Help</div><div class="s">Ask availability / plans</div></div></div>
-            <div class="arr">›</div>
-          </a>
+            <a class="linkBtn" href="https://maps.app.goo.gl/ZkxNT4HRU3ppFe65A" target="_blank" rel="noopener">
+              <div class="lL"><div class="ic">📍</div><div class="lt"><div class="t">Google Maps</div><div class="s">Kolte Patil Raaga (Kannuru)</div></div></div>
+              <div class="arr">›</div>
+            </a>
 
-          <a class="linkBtn" href="https://chat.whatsapp.com/JMvEqWg2awXGj2bXiMV9uD?mode=gi_t" target="_blank" rel="noopener">
-            <div class="lL"><div class="ic">👥</div><div class="lt"><div class="t">Join WhatsApp Group</div><div class="s">Daily menu updates</div></div></div>
-            <div class="arr">›</div>
-          </a>
+            <a class="linkBtn" href="party.html">
+              <div class="lL"><div class="ic">🎉</div><div class="lt"><div class="t">Party / Bulk Order</div><div class="s">Custom menu + budget</div></div></div>
+              <div class="arr">›</div>
+            </a>
+          </div>
 
-          <a class="linkBtn" href="https://maps.app.goo.gl/ZkxNT4HRU3ppFe65A" target="_blank" rel="noopener">
-            <div class="lL"><div class="ic">📍</div><div class="lt"><div class="t">Google Maps</div><div class="s">Kolte Patil Raaga (Kannuru)</div></div></div>
-            <div class="arr">›</div>
-          </a>
+          <div class="sub" style="margin-top:12px;">
+            <b>About TasteHub:</b><br>
+            I’m <b>Neha Pathak</b>, Chef & Owner of TasteHub. Started in <b>2023</b> from my residence (Kolte Patil Raaga) and built a WhatsApp community for daily homemade veg meals.
+          </div>
 
-          <a class="linkBtn" href="party.html">
-            <div class="lL"><div class="ic">🎉</div><div class="lt"><div class="t">Party / Bulk Order</div><div class="s">Custom menu + budget</div></div></div>
-            <div class="arr">›</div>
-          </a>
-        </div>
-
-        <div class="sub" style="margin-top:12px;">
-          <b>About TasteHub:</b><br>
-          I’m <b>Neha Pathak</b>, Chef & Owner of TasteHub. Started in <b>2023</b> from my residence (Kolte Patil Raaga) and built a WhatsApp community for daily homemade veg meals.
-        </div>
-
-        <div class="sub" style="margin-top:10px;">
-          ⭐⭐⭐⭐☆ <b>4.6</b> (Google feedback)<br>
-          <span style="color:rgba(246,247,251,.7)">Fresh homemade food, clean taste, and on-time updates.</span>
+          <div class="sub" style="margin-top:10px;">
+            ⭐⭐⭐⭐☆ <b>4.6</b> (Google feedback)<br>
+            <span style="color:rgba(246,247,251,.7)">Fresh homemade food, clean taste, and on-time updates.</span>
+          </div>
         </div>
       </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- Cart Bar -->
-<div class="cartBar" id="cartBar" style="display:none;">
-  <div class="cartInner">
-    <div style="min-width:0">
-      <div style="font-weight:1000; font-size:14px;" id="cartSummary">0 items</div>
-      <div style="font-size:12px; color:var(--muted);" id="cartHint">Open cart to pay & checkout</div>
-    </div>
-    <div style="display:flex; gap:10px; align-items:center;">
-      <button class="ghostBtn" id="viewCartBtn" type="button">View Cart</button>
-      <button class="checkoutBtn" id="checkoutBtn" type="button">Checkout</button>
     </div>
   </div>
-</div>
 
-<!-- Drawer -->
-<div class="drawerOverlay" id="drawerOverlay">
-  <div class="drawer">
-    <div class="drawerHead">
-      <h3>Cart & Checkout</h3>
-      <button class="closeBtn" id="closeDrawer" type="button">✕</button>
+  <!-- Cart Bar -->
+  <div class="cartBar" id="cartBar" style="display:none;">
+    <div class="cartInner">
+      <div style="min-width:0">
+        <div style="font-weight:1000; font-size:14px;" id="cartSummary">0 items</div>
+        <div style="font-size:12px; color:var(--muted);" id="cartHint">Open cart to pay & checkout</div>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <button class="ghostBtn" id="viewCartBtn" type="button">View Cart</button>
+        <button class="checkoutBtn" id="checkoutBtn" type="button">Checkout</button>
+      </div>
     </div>
+  </div>
 
-    <div class="drawerBody">
-      <div class="cartList" id="cartList"></div>
-    </div>
-
-    <div class="drawerFoot">
-
-      <div class="formGrid">
-        <div><label for="custName">Name *</label><input id="custName" placeholder="Customer name" /></div>
-        <div><label for="custPhone">Phone (optional)</label><input id="custPhone" placeholder="10-digit number" inputmode="numeric" /></div>
+  <!-- Drawer -->
+  <div class="drawerOverlay" id="drawerOverlay">
+    <div class="drawer">
+      <div class="drawerHead">
+        <h3>Cart & Checkout</h3>
+        <button class="closeBtn" id="closeDrawer" type="button">✕</button>
       </div>
 
-      <div class="formGrid">
-        <div><label for="custFlat">Apartment / Flat *</label><input id="custFlat" placeholder="J 1301, Raaga..." /></div>
-        <div>
-          <label for="custTime">Preferred Meal</label>
-          <select id="custTime">
-            <option value="Breakfast">Breakfast</option>
-            <option value="Lunch">Lunch</option>
-            <option value="Snacks" selected>Snacks</option>
-            <option value="Dinner">Dinner</option>
-          </select>
+      <div class="drawerBody">
+        <div class="cartList" id="cartList"></div>
+      </div>
+
+      <div class="drawerFoot">
+        <div class="formGrid">
+          <div><label for="custName">Name *</label><input id="custName" placeholder="Customer name" /></div>
+          <div><label for="custPhone">Phone (optional)</label><input id="custPhone" placeholder="10-digit number" inputmode="numeric" /></div>
         </div>
-      </div>
 
-      <div><label for="custNotes">Notes (optional)</label><textarea id="custNotes" placeholder="Less spicy, no onion/garlic, etc."></textarea></div>
-
-      <div class="payBox">
-        <div class="payRow">
+        <div class="formGrid">
+          <div><label for="custFlat">Apartment / Flat *</label><input id="custFlat" placeholder="J 1301, Raaga..." /></div>
           <div>
-            <div style="font-weight:1000;">Pay by UPI</div>
-            <div class="mutedSmall">UPI ID: <span class="payId" id="upiIdText"></span></div>
+            <label for="custTime">Preferred Meal</label>
+            <select id="custTime">
+              <option value="Breakfast">Breakfast</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Snacks">Snacks</option>
+              <option value="Dinner">Dinner</option>
+            </select>
           </div>
-          <button class="ghostBtn" id="copyUpiBtn" type="button">Copy UPI</button>
         </div>
 
-        <div class="payRow">
-          <div class="qr" title="Upload your QR as upi-qr.png in same folder">
-            <img id="qrImg" src="upi-qr.png" alt="UPI QR (upload upi-qr.png)"
-                 onerror="this.style.display='none'; this.parentElement.innerHTML='Upload <b>upi-qr.png</b><br><span style=&quot;font-size:12px;color:rgba(246,247,251,.65)&quot;>to show QR here</span>';">
+        <div><label for="custNotes">Notes (optional)</label><textarea id="custNotes" placeholder="Less spicy, no onion/garlic, etc."></textarea></div>
+
+        <div class="payBox">
+          <div class="payRow">
+            <div>
+              <div style="font-weight:1000;">Pay by UPI</div>
+              <div class="mutedSmall">UPI ID: <span class="payId" id="upiIdText"></span></div>
+            </div>
+            <button class="ghostBtn" id="copyUpiBtn" type="button">Copy UPI</button>
           </div>
 
-          <div style="flex:1; min-width:200px;">
-            <div class="mutedSmall">Optional: Enter UTR/Txn ID after payment</div>
-            <input id="txnId" placeholder="UTR / Transaction ID (optional)" />
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-              <button class="checkoutBtn" id="payNowBtn" type="button">Pay Now</button>
-              <button class="ghostBtn" id="invoiceBtn" type="button">Invoice</button>
+          <div class="payRow">
+            <div class="qr" title="Upload your QR as upi-qr.png in same folder">
+              <!-- ✅ Put your QR file in same folder: upi-qr.png -->
+              <img id="qrImg" src="upi-qr.png" alt="UPI QR (upload upi-qr.png)"
+                onerror="this.style.display='none'; this.parentElement.innerHTML='Upload <b>upi-qr.png</b><br><span style=&quot;font-size:12px;color:rgba(246,247,251,.65)&quot;>to show QR here</span>';">
+            </div>
+
+            <div style="flex:1; min-width:200px;">
+              <div class="mutedSmall">Optional: Enter UTR/Txn ID after payment</div>
+              <input id="txnId" placeholder="UTR / Transaction ID (optional)" />
+              <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+                <button class="checkoutBtn" id="invoiceBtn" type="button">Invoice</button>
+                <button class="ghostBtn" id="clearCart" type="button">Clear</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <button class="checkoutBtn" id="drawerCheckout" type="button">📲 Send Order on WhatsApp</button>
-        <button class="ghostBtn" id="clearCart" type="button">Clear</button>
-      </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="checkoutBtn" id="drawerCheckout" type="button">📲 Send Order on WhatsApp</button>
+        </div>
 
-      <div class="mutedSmall">Note: Availability is shown as Available / Not Available (no timing shown).</div>
+        <div class="mutedSmall">Availability is shown as Available / Not Available (no timing & no stock shown).</div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="toast" id="toast"></div>
+  <div class="toast" id="toast"></div>
 
 <script>
 /* =========================
-   EDIT AREA
-========================= */
-const WHATSAPP_NUMBER = "919632035612";
+   EDIT AREA (ONLY)
+   ========================= */
+const WHATSAPP_NUMBER = "919632035612";     // your WhatsApp
 const UPI_ID = "email.vikashpathak-1@okicici"; // your UPI ID
 
-// Section availability (you said: breakfast & lunch sold out; snacks & dinner running)
-const SECTION_AVAILABLE = {
-  breakfast: false,
-  lunch: false,
-  snacks: true,
-  dinner: true
+// Section availability:
+// "available" = customers can order now
+// "not_available" = not available now
+// "preorder" = tomorrow / preorder open
+const SECTION_STATUS = {
+  breakfast: "preorder",     // ✅ Tomorrow breakfast menu is shown here
+  lunch: "not_available",
+  snacks: "available",
+  dinner: "available"
 };
 
-// Menu (normal text style, professional English names)
+// ✅ MENU DATA (your tomorrow breakfast added)
 const MENU = {
   breakfast: [
-    breakfast: [
-  { name: "Idli (4 pcs) with Sambar & Chutney", price: 90, desc: "" },
-  { name: "Extra Idli", price: 15, desc: "Add-on" }
-],
+    { name: "Idli (4 pieces) with Sambar & Chutney", price: 90, desc: "Tomorrow breakfast. Please order before 7 AM." },
+    { name: "Extra Idli", price: 15, desc: "Add-on" }
+  ],
   lunch: [
-    { name: "Chapati/Phulka (4 pcs) with Dal Tadka & Aloo Jeera", price: 160, desc: "", stock: 0 }
+    { name: "Plain Paratha/Chapati (4 pieces) with Dal Tadka & Aloo Jeera", price: 160, desc: "" }
   ],
   snacks: [
-    { name: "Aloo Palak Chilla with Chutney", price: 70, desc: "", stock: 00 } // total quantity 10
+    { name: "Aloo Palak Chilla with Chutney", price: 70, desc: "" }
   ],
   dinner: [
-    { name: "Aloo Masala Puri (4 pcs) with Chole", price: 140, desc: "", stock: 999 },
-    { name: "Extra Puri", price: 15, desc: "Add-on", stock: 10 }
+    { name: "Aloo Masala Puri (4 pieces) with Chole", price: 140, desc: "" },
+    { name: "Extra Puri", price: 15, desc: "Add-on" }
   ]
 };
 /* ========================= */
@@ -617,203 +621,152 @@ const gridEl = document.getElementById('menuGrid');
 const sectionTitleEl = document.getElementById('sectionTitle');
 const sectionInfoEl = document.getElementById('sectionInfo');
 const searchInput = document.getElementById('searchInput');
-const searchHint = document.getElementById('searchHint');
+const statusChip = document.getElementById('statusChip');
 
-document.getElementById("upiIdText").textContent = UPI_ID;
+document.getElementById('upiIdText').textContent = UPI_ID;
 
-// date chip
-(function(){
-  const d = new Date();
-  const wd = d.toLocaleDateString(undefined, { weekday: 'short' });
-  const dd = d.toLocaleDateString(undefined, { day:'2-digit', month:'short' });
-  document.getElementById('dateChip').textContent = `${wd}, ${dd}`;
-})();
-
-let activeKey = 'snacks';
-
-// cart stores: id -> { itemRef, qty }
-const cart = new Map();
+let activeKey = 'breakfast';
+const cart = new Map(); // id -> {item, qty, sectionKey}
 
 function toast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.style.display = 'block';
-  clearTimeout(window.__toastTimer);
-  window.__toastTimer = setTimeout(()=> t.style.display='none', 1600);
+  clearTimeout(window.__t);
+  window.__t = setTimeout(()=> t.style.display='none', 1600);
 }
 
-function formatPrice(p){ return `₹${p}`; }
+function formatPrice(p){ return (!p || p<=0) ? "" : `₹${p}`; }
 
-function itemId(sectionKey, idx){ return `${sectionKey}:${idx}`; }
-
-function getCartQty(id){
-  return cart.has(id) ? cart.get(id).qty : 0;
+function statusLabel(key){
+  const s = SECTION_STATUS[key] || "not_available";
+  if(s === "available") return {text:"Available", cls:"av"};
+  if(s === "preorder") return {text:"Preorder (Tomorrow)", cls:"pre"};
+  return {text:"Not Available", cls:"na"};
 }
 
-function getRemainingStock(sectionKey, idx){
-  const it = MENU[sectionKey][idx];
-  const baseStock = Number.isFinite(it.stock) ? it.stock : 999;
-  if(baseStock >= 900) return 999; // treat as unlimited
-  const id = itemId(sectionKey, idx);
-  const used = getCartQty(id);
-  return Math.max(0, baseStock - used);
+function setHeaderStatus(){
+  // if ANY available -> Live else Closed
+  const any = Object.values(SECTION_STATUS).some(v => v === "available" || v === "preorder");
+  statusChip.textContent = any ? "Live" : "Closed";
+  statusChip.className = "chip " + (any ? "green" : "red");
 }
-
-function canAdd(sectionKey, idx){
-  if(!SECTION_AVAILABLE[sectionKey]) return false;
-  const remaining = getRemainingStock(sectionKey, idx);
-  return remaining > 0;
-}
-
-function setQty(id, item, qty){
-  if(qty <= 0) cart.delete(id);
-  else cart.set(id, {item, qty});
-  updateCartUI();
-}
+setHeaderStatus();
 
 function renderTabs(){
   tabsEl.innerHTML = sections.map(s => {
     const active = s.key === activeKey ? "active" : "";
-    const ok = SECTION_AVAILABLE[s.key];
-    return `<button class="tab ${active}" data-key="${s.key}">${s.label} • ${ok ? "Available" : "Not Available"}</button>`;
+    return `<button class="tab ${active}" data-key="${s.key}">${s.label}</button>`;
   }).join('');
-
   tabsEl.querySelectorAll('.tab').forEach(b => {
     b.addEventListener('click', () => {
       activeKey = b.dataset.key;
       searchInput.value = "";
-      searchHint.textContent = "Tip: Search shows items from all meals with their availability.";
       renderMenu();
       renderTabs();
     });
   });
 }
 
-function renderSearchResults(q){
-  const query = q.trim().toLowerCase();
-  const results = [];
+function itemId(sectionKey, idx){ return `${sectionKey}:${idx}`; }
+function getCartQty(id){ return cart.has(id) ? cart.get(id).qty : 0; }
 
-  sections.forEach(s => {
-    (MENU[s.key] || []).forEach((it, idx) => {
-      const hay = `${it.name} ${it.desc || ""} ${s.label}`.toLowerCase();
-      if(hay.includes(query)){
-        results.push({ sec: s.key, idx, item: it });
-      }
-    });
-  });
-
-  sectionTitleEl.textContent = "SEARCH RESULTS";
-  sectionInfoEl.textContent = results.length ? `Found ${results.length} item(s)` : "No items found";
-  gridEl.innerHTML = results.length ? results.map(r => renderItemCard(r.sec, r.idx)).join('') : `
-    <div class="emptyState">
-      <div class="emptyTitle">No match</div>
-      <div class="emptySub">Try searching with keywords like: chilla, puri, chole, dal, chapati.</div>
-    </div>
-  `;
-
-  attachItemHandlers();
-}
-
-function renderItemCard(sec, idx){
-  const it = MENU[sec][idx];
-  const id = itemId(sec, idx);
-  const q = getCartQty(id);
-  const available = SECTION_AVAILABLE[sec];
-  const remaining = getRemainingStock(sec, idx);
-
-  const statusBadge = available && remaining > 0
-    ? `<span class="badge av">✅ Available</span>`
-    : `<span class="badge na">⛔ Not Available</span>`;
-
-  const stockBadge = (Number.isFinite(it.stock) && it.stock < 900)
-    ? `<span class="badge stock">Stock: ${remaining}/${it.stock}</span>`
-    : ``;
-
-  const disabled = !(available && remaining > 0);
-
-  const rightUI = disabled
-    ? `<button class="addBtn" disabled>NOT AVAILABLE</button>`
-    : (q > 0 ? `
-        <div class="qty">
-          <button class="qbtn" data-act="dec" data-id="${id}">−</button>
-          <div class="qnum">${q}</div>
-          <button class="qbtn" data-act="inc" data-id="${id}">+</button>
-        </div>
-      ` : `<button class="addBtn primary" data-act="add" data-id="${id}">ADD</button>`);
-
-  const title = sec.toUpperCase();
-
-  return `
-    <div class="item">
-      <div class="iLeft">
-        <div class="iTop">
-          <span class="vegDot" title="Veg"></span>
-          <div class="iname">${it.name}</div>
-        </div>
-        <div class="iprice">${formatPrice(it.price)}</div>
-        ${it.desc ? `<div class="idesc">${it.desc}</div>` : ``}
-        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
-          ${statusBadge}
-          ${stockBadge}
-          <span class="badge" style="opacity:.85;">${title}</span>
-        </div>
-      </div>
-      <div class="iRight">${rightUI}</div>
-    </div>
-  `;
+function setQty(id, sectionKey, item, qty){
+  if(qty <= 0) cart.delete(id);
+  else cart.set(id, {item, qty, sectionKey});
+  updateCartUI();
 }
 
 function renderMenu(){
-  const available = SECTION_AVAILABLE[activeKey];
-  const items = MENU[activeKey] || [];
+  const q = (searchInput.value || "").trim().toLowerCase();
 
-  sectionTitleEl.textContent = activeKey.toUpperCase();
-  sectionInfoEl.textContent = available ? "Available today" : "Not available today";
+  // Search mode: show ALL items across ALL sections
+  const mode = q.length > 0 ? "search" : "section";
+
+  let items = [];
+  if(mode === "search"){
+    sections.forEach(sec => {
+      (MENU[sec.key] || []).forEach((it, idx) => {
+        const hay = `${it.name} ${it.desc || ""} ${sec.label}`.toLowerCase();
+        if(hay.includes(q)) items.push({secKey: sec.key, secLabel: sec.label, idx, it});
+      });
+    });
+    sectionTitleEl.textContent = "SEARCH RESULTS";
+    sectionInfoEl.textContent = items.length ? `Showing matches for "${q}"` : `No matches for "${q}"`;
+  }else{
+    const sec = sections.find(s => s.key === activeKey);
+    items = (MENU[activeKey] || []).map((it, idx) => ({secKey: activeKey, secLabel: sec.label, idx, it}));
+    sectionTitleEl.textContent = activeKey.toUpperCase();
+    const st = statusLabel(activeKey);
+    sectionInfoEl.innerHTML = `Status: <b class="badge ${st.cls}" style="vertical-align:middle">${st.text}</b>`;
+  }
 
   if(items.length === 0){
     gridEl.innerHTML = `
       <div class="emptyState">
-        <div class="emptyTitle">No items</div>
-        <div class="emptySub">Menu will be updated.</div>
+        <div class="emptyTitle">No items to show</div>
+        <div class="emptySub">Try another search or switch a section.</div>
       </div>
     `;
     return;
   }
 
-  gridEl.innerHTML = items.map((_, idx) => renderItemCard(activeKey, idx)).join('');
-  attachItemHandlers();
-}
+  gridEl.innerHTML = items.map(({secKey, secLabel, idx, it}) => {
+    const id = itemId(secKey, idx);
+    const qty = getCartQty(id);
+    const st = statusLabel(secKey);
+    const canOrder = (SECTION_STATUS[secKey] === "available" || SECTION_STATUS[secKey] === "preorder");
 
-function attachItemHandlers(){
+    // If not available => disable ADD / + / -
+    const disabled = !canOrder;
+
+    const rightUI = !canOrder
+      ? `<span class="badge ${st.cls}">${st.text}</span>`
+      : (qty > 0 ? `
+          <div class="qty">
+            <button class="qbtn" data-act="dec" data-id="${id}">−</button>
+            <div class="qnum">${qty}</div>
+            <button class="qbtn" data-act="inc" data-id="${id}">+</button>
+          </div>
+        ` : `<button class="addBtn primary" data-act="add" data-id="${id}">ADD</button>`);
+
+    const sectionTag = (mode === "search")
+      ? `<div class="idesc"><span class="badge ${st.cls}" style="margin-right:8px">${secLabel}: ${st.text}</span></div>`
+      : ``;
+
+    return `
+      <div class="item">
+        <div class="iLeft">
+          <div class="iTop">
+            <span class="vegDot" title="Veg"></span>
+            <div class="iname">${it.name}</div>
+          </div>
+          <div class="iprice">${formatPrice(it.price)}</div>
+          ${it.desc ? `<div class="idesc">${it.desc}</div>` : ``}
+          ${sectionTag}
+        </div>
+        <div class="iRight">${rightUI}</div>
+      </div>
+    `;
+  }).join('');
+
   gridEl.querySelectorAll('[data-act]').forEach(el => {
     el.addEventListener('click', () => {
       const act = el.dataset.act;
       const id = el.dataset.id;
-      const [sec, idxStr] = id.split(':');
-      const idx = parseInt(idxStr, 10);
-      const item = MENU[sec][idx];
+      const [secKey, idxStr] = id.split(':');
+      const item = (MENU[secKey] || [])[parseInt(idxStr, 10)];
+      if(!item) return;
+
+      const canOrder = (SECTION_STATUS[secKey] === "available" || SECTION_STATUS[secKey] === "preorder");
+      if(!canOrder) return;
+
       const cur = getCartQty(id);
+      if(act === 'add') setQty(id, secKey, item, 1);
+      if(act === 'inc') setQty(id, secKey, item, cur + 1);
+      if(act === 'dec') setQty(id, secKey, item, cur - 1);
 
-      if(act === 'add'){
-        if(!canAdd(sec, idx)) { toast("Not available / Out of stock"); return; }
-        setQty(id, item, 1);
-      }
-      if(act === 'inc'){
-        const remaining = getRemainingStock(sec, idx);
-        if(remaining <= 0){ toast("Stock finished"); return; }
-        setQty(id, item, cur + 1);
-      }
-      if(act === 'dec'){
-        setQty(id, item, cur - 1);
-      }
-
-      // re-render current view so stock & buttons update
-      if(searchInput.value.trim()){
-        renderSearchResults(searchInput.value);
-      } else {
-        renderMenu();
-      }
-      renderCartDrawer();
+      renderMenu();
     });
   });
 }
@@ -834,10 +787,7 @@ function updateCartUI(){
   summary.textContent = `${count} item${count>1?'s':''} • Total ₹${total}`;
 }
 
-function openDrawer(){
-  document.getElementById('drawerOverlay').style.display = 'flex';
-  renderCartDrawer();
-}
+function openDrawer(){ document.getElementById('drawerOverlay').style.display = 'flex'; renderCartDrawer(); }
 function closeDrawer(){ document.getElementById('drawerOverlay').style.display = 'none'; }
 
 function renderCartDrawer(){
@@ -846,14 +796,16 @@ function renderCartDrawer(){
     list.innerHTML = `<div class="mutedSmall">Your cart is empty.</div>`;
     return;
   }
+
   list.innerHTML = Array.from(cart.entries()).map(([id, v]) => {
-    const {item, qty} = v;
-    const price = `₹${item.price}`;
+    const {item, qty, sectionKey} = v;
+    const price = item.price ? `₹${item.price}` : '';
+    const secLabel = sections.find(s=>s.key===sectionKey)?.label || sectionKey;
     return `
       <div class="cartItem">
         <div>
           <div class="name">${item.name}</div>
-          <div class="meta">${price} • Qty: ${qty}</div>
+          <div class="meta">${secLabel} • ${price} • Qty: ${qty}</div>
         </div>
         <div class="qty">
           <button class="qbtn" data-cact="dec" data-id="${id}">−</button>
@@ -868,53 +820,55 @@ function renderCartDrawer(){
     el.addEventListener('click', () => {
       const act = el.dataset.cact;
       const id = el.dataset.id;
-      const [sec, idxStr] = id.split(':');
-      const idx = parseInt(idxStr, 10);
       const cur = getCartQty(id);
-      const item = MENU[sec][idx];
-
-      if(act === 'inc'){
-        const remaining = getRemainingStock(sec, idx);
-        if(remaining <= 0){ toast("Stock finished"); return; }
-        setQty(id, item, cur + 1);
-      }
-      if(act === 'dec') setQty(id, item, cur - 1);
-
-      // refresh UI
+      const entry = cart.get(id);
+      if(!entry) return;
+      const {item, sectionKey} = entry;
+      if(act === 'inc') setQty(id, sectionKey, item, cur + 1);
+      if(act === 'dec') setQty(id, sectionKey, item, cur - 1);
       renderCartDrawer();
-      if(searchInput.value.trim()){
-        renderSearchResults(searchInput.value);
-      } else {
-        renderMenu();
-      }
+      renderMenu();
     });
   });
+}
+
+function buildInvoiceText(){
+  const {total} = cartTotals();
+  const lines = [];
+  cart.forEach(({item, qty}) => lines.push(`${item.name} x${qty} = ₹${(item.price||0)*qty}`));
+  return [
+    "TasteHub Invoice",
+    "J 1301, Kolte Patil Raaga, Kannuru, Bengaluru 560077",
+    "FSSAI: 21226008000011",
+    "----------------------------",
+    ...lines,
+    "----------------------------",
+    `Total: ₹${total}`
+  ].join("\n");
 }
 
 function buildWhatsAppText(){
   const name = document.getElementById('custName').value.trim();
   const phone = document.getElementById('custPhone').value.trim();
   const flat = document.getElementById('custFlat').value.trim();
-  const meal = document.getElementById('custTime').value;
+  const time = document.getElementById('custTime').value;
   const notes = document.getElementById('custNotes').value.trim();
   const txn = document.getElementById('txnId').value.trim();
 
   const lines = [];
   cart.forEach(({item, qty}) => lines.push(`• ${item.name} × ${qty} (₹${item.price})`));
-
   const {total} = cartTotals();
 
   let msg = `Hi TasteHub 👋\n\nOrder Request (Kannuru Nearby)\n`;
   msg += `Name: ${name}\n`;
   if(phone) msg += `Phone: ${phone}\n`;
   msg += `Apartment/Flat: ${flat}\n`;
-  msg += `Preferred Meal: ${meal}\n\n`;
+  msg += `Preferred Meal: ${time}\n\n`;
   msg += `Items:\n${lines.join("\n")}\n`;
   msg += `\nTotal (food only): ₹${total}\n`;
-  msg += `UPI: ${UPI_ID}\n`;
+  msg += `UPI ID: ${UPI_ID}\n`;
   if(txn) msg += `Txn/UTR: ${txn}\n`;
   if(notes) msg += `\nNotes: ${notes}\n`;
-  msg += `\nThanks!`;
   return msg;
 }
 
@@ -923,88 +877,44 @@ function checkoutOnWhatsApp(){
   window.open(url, "_blank");
 }
 
-function showInvoice(){
-  if(cart.size === 0){ alert("Cart empty"); return; }
-  const {total} = cartTotals();
-  const items = [];
-  cart.forEach(({item, qty}) => items.push(`${item.name}  x${qty}  = ₹${item.price * qty}`));
-
-  const inv =
-`TASTE HUB - INVOICE
-FSSAI: 21226008000011
-
-${items.join("\n")}
-
-TOTAL: ₹${total}
-
-UPI: ${UPI_ID}
-(Scan QR on website to pay)`;
-  alert(inv);
-}
-
-function payNow(){
-  const {total} = cartTotals();
-  if(total <= 0){ toast("Cart empty"); return; }
-  // basic UPI deep link
-  const upiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent("TasteHub")}&am=${encodeURIComponent(total)}&cu=INR`;
-  window.location.href = upiUrl;
-}
-
 document.getElementById('viewCartBtn').addEventListener('click', openDrawer);
 document.getElementById('checkoutBtn').addEventListener('click', openDrawer);
 document.getElementById('closeDrawer').addEventListener('click', closeDrawer);
 document.getElementById('drawerOverlay').addEventListener('click', (e) => { if(e.target.id === 'drawerOverlay') closeDrawer(); });
 
-document.getElementById('clearCart').addEventListener('click', () => {
-  cart.clear();
-  updateCartUI();
-  renderCartDrawer();
-  if(searchInput.value.trim()) renderSearchResults(searchInput.value);
-  else renderMenu();
-});
-
 document.getElementById('drawerCheckout').addEventListener('click', () => {
-  const name = document.getElementById('custName').value.trim();
   const flat = document.getElementById('custFlat').value.trim();
+  const name = document.getElementById('custName').value.trim();
   if(!name || !flat){ alert("Please enter Name and Apartment/Flat."); return; }
   if(cart.size === 0){ alert("Your cart is empty."); return; }
   checkoutOnWhatsApp();
 });
 
-document.getElementById('invoiceBtn').addEventListener('click', showInvoice);
-document.getElementById('payNowBtn').addEventListener('click', payNow);
+document.getElementById('invoiceBtn').addEventListener('click', () => {
+  if(cart.size === 0){ alert("Cart is empty."); return; }
+  alert(buildInvoiceText());
+});
+
+document.getElementById('clearCart').addEventListener('click', () => {
+  cart.clear(); updateCartUI(); renderCartDrawer(); renderMenu();
+});
 
 document.getElementById('copyUpiBtn').addEventListener('click', async () => {
   try{
     await navigator.clipboard.writeText(UPI_ID);
-    toast("UPI copied");
+    toast("UPI ID copied");
   }catch(e){
-    // fallback
-    const tmp = document.createElement('textarea');
-    tmp.value = UPI_ID; document.body.appendChild(tmp);
-    tmp.select(); document.execCommand('copy');
-    tmp.remove();
-    toast("UPI copied");
+    toast("Copy not supported on this browser");
   }
 });
 
-searchInput.addEventListener('input', () => {
-  const q = searchInput.value.trim();
-  if(!q){
-    searchHint.textContent = "Tip: Search shows items from all meals with their availability.";
-    renderMenu();
-    return;
-  }
-  searchHint.textContent = "Showing search results across all meals.";
-  renderSearchResults(q);
-});
+searchInput.addEventListener('input', () => renderMenu());
 
 // init
 renderTabs();
 renderMenu();
 updateCartUI();
-renderCartDrawer();
 </script>
-
 </body>
 </html>
+```0
