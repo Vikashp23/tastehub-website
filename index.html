@@ -299,4 +299,168 @@
     <div class="card">
       <div class="itemRow">
         <div>
-          <div class
+          <div class="itemName">Extra Puri</div>
+          <div class="sub">Add-on</div>
+        </div>
+        <div class="price">₹15</div>
+      </div>
+      <div class="btnRow">
+        <button id="btn-dinner-2" onclick="addToCart('Extra Puri',15)">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Links -->
+  <div class="links">
+    <a class="linkBtn" href="https://wa.me/919632035612" target="_blank" rel="noopener">
+      <div>
+        <div><b>WhatsApp Order</b></div>
+        <small>Send order directly on WhatsApp</small>
+      </div>
+      <div>›</div>
+    </a>
+
+    <a class="linkBtn" href="https://chat.whatsapp.com/JMvEqWg2awXGj2bXiMV9uD?mode=gi_t" target="_blank" rel="noopener">
+      <div>
+        <div><b>Join WhatsApp Group</b></div>
+        <small>Daily menu & availability updates</small>
+      </div>
+      <div>›</div>
+    </a>
+
+    <a class="linkBtn" href="https://maps.app.goo.gl/ZkxNT4HRU3ppFe65A" target="_blank" rel="noopener">
+      <div>
+        <div><b>Google Maps</b></div>
+        <small>Pickup location (Raaga, Kannuru)</small>
+      </div>
+      <div>›</div>
+    </a>
+
+    <a class="linkBtn" href="party.html">
+      <div>
+        <div><b>Party / Bulk Order</b></div>
+        <small>Custom menu + budget</small>
+      </div>
+      <div>›</div>
+    </a>
+  </div>
+
+</div>
+
+<!-- Cart -->
+<div class="cartbar" id="cartbar">
+  <div class="cartInner">
+    <div class="cartText" id="carttext">0 items</div>
+    <div class="cartBtns">
+      <button class="ghost" onclick="clearCart()">Clear</button>
+      <button class="btnWarn" onclick="generateInvoice()">Invoice</button>
+      <button onclick="sendWhatsApp()">Checkout</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================
+   EDIT SETTINGS HERE
+   ========================= */
+const WHATSAPP_NUMBER = "919632035612"; // change if needed (no +)
+const FSSAI = "21226008000011";
+
+// Auto closing time rules for TODAY
+// breakfast: always sold out today (handled separately)
+// lunch: open until 12:00
+// snacks: open from 16:00 (4 PM)
+// dinner: open until 19:00 (7 PM)
+const RULES = {
+  lunch:   { openFrom: 0,  closeAt: 12 },  // open now until 12 PM
+  snacks:  { openFrom: 16, closeAt: 24 },  // open from 4 PM
+  dinner:  { openFrom: 0,  closeAt: 19 }   // open until 7 PM
+};
+
+// Optional: whole day sold out
+const SOLD_OUT_SITE = false;
+/* ========================= */
+
+let cart = [];
+
+function hourNow(){
+  const d = new Date();
+  return d.getHours() + d.getMinutes()/60;
+}
+function formatDayChip(){
+  const d = new Date();
+  const t = d.toLocaleDateString('en-IN',{weekday:'short', day:'numeric', month:'short'});
+  document.getElementById("dayChip").textContent = t;
+}
+
+function sectionStatusText(sectionKey){
+  if(sectionKey === "breakfast"){
+    return { open:false, text:"Sold out for today", cls:"closed" };
+  }
+  const r = RULES[sectionKey];
+  if(!r) return { open:true, text:"Available", cls:"open" };
+
+  const h = hourNow();
+  const isOpen = (h >= r.openFrom) && (h < r.closeAt);
+  if(isOpen){
+    return { open:true, text:"Open now", cls:"open" };
+  }
+  // closed message
+  if(h < r.openFrom){
+    return { open:false, text:"Opens at " + to12(r.openFrom), cls:"closed" };
+  }
+  return { open:false, text:"Closed", cls:"closed" };
+}
+
+function to12(h){
+  // h is number 0..24; show like 4:00 PM
+  const hh = Math.floor(h) % 24;
+  const ampm = hh >= 12 ? "PM" : "AM";
+  const hh12 = ((hh + 11) % 12) + 1;
+  return hh12 + ":00 " + ampm;
+}
+
+function applyAutoClose(){
+  // site sold out chip
+  document.getElementById("siteSoldChip").style.display = SOLD_OUT_SITE ? "inline-flex" : "none";
+
+  // Breakfast (always sold out today)
+  const b = document.getElementById("status-breakfast");
+  b.textContent = "Sold out for today";
+  b.className = "status closed";
+
+  // Lunch/snacks/dinner
+  ["lunch","snacks","dinner"].forEach(sec=>{
+    const st = sectionStatusText(sec);
+    const el = document.getElementById("status-" + sec);
+    el.textContent = st.text;
+    el.className = "status " + st.cls;
+
+    // disable buttons if closed OR sold out site
+    const disable = SOLD_OUT_SITE || !st.open;
+    document.querySelectorAll("#sec-" + sec + " button[id^='btn-" + sec + "']").forEach(btn=>{
+      btn.disabled = disable;
+      btn.textContent = disable ? "Closed" : "Add";
+    });
+  });
+}
+
+function addToCart(name, price){
+  cart.push({name, price});
+  updateCart();
+}
+
+function updateCart(){
+  const total = cart.reduce((sum, item)=>sum + item.price, 0);
+  const bar = document.getElementById("cartbar");
+  if(cart.length === 0){
+    bar.style.display = "none";
+    return;
+  }
+  bar.style.display = "block";
+  document.getElementById("carttext").innerText =
+    cart.length + " items | Total ₹" + total;
+}
+
+function clearCart(){
+  cart =
