@@ -134,6 +134,7 @@
   }
   .tab:hover{transform: translateY(-1px); background: rgba(255,255,255,.09);}
   .tab.active{background: rgba(32,201,151,.14); border-color: rgba(32,201,151,.28); color:#caffef;}
+
   .tabBadge{
     font-size:11px;
     padding:5px 8px;
@@ -141,11 +142,17 @@
     border:1px solid rgba(255,255,255,.12);
     background: rgba(0,0,0,.20);
     opacity:.95;
+    white-space:nowrap;
   }
   .tabBadge.fest{
     border-color: rgba(255,176,32,.28);
     background: rgba(255,176,32,.12);
     color:#ffecc7;
+  }
+  .tabBadge.tomo{
+    border-color: rgba(32,201,151,.30);
+    background: rgba(32,201,151,.12);
+    color:#caffef;
   }
 
   .sectionTitle{
@@ -447,7 +454,7 @@
           <p class="sub" id="menuNote">Search any dish, check availability, add to cart, then pay & checkout on WhatsApp.</p>
 
           <div class="searchBox" style="margin-top:10px;">
-            🔎 <input id="searchInput" placeholder="Search dishes (e.g., gujiya, nimki, poha, upma)..." autocomplete="off" />
+            🔎 <input id="searchInput" placeholder="Search dishes (e.g., idly, gujiya, nimki)..." autocomplete="off" />
           </div>
           <div class="searchHint" id="searchHint">Tip: Search shows items from all meals with their availability.</div>
         </div>
@@ -456,7 +463,7 @@
 
         <div class="sectionTitle" id="sectionTitle">Items</div>
 
-        <!-- Special notice (shown only when needed) -->
+        <!-- Special notice -->
         <div class="notice" id="specialNotice" style="display:none;">
           <div class="t">🌸 Holi Special Menu – Homemade with Love ✨</div>
           <div class="s" id="specialNoticeText"></div>
@@ -552,7 +559,7 @@
           <div>
             <label for="custTime">Preferred Meal</label>
             <select id="custTime">
-              <option value="Breakfast">Breakfast</option>
+              <option value="Breakfast (Tomorrow Morning)">Breakfast (Tomorrow Morning)</option>
               <option value="Lunch">Lunch</option>
               <option value="Snacks">Snacks</option>
               <option value="Dinner">Dinner</option>
@@ -604,18 +611,18 @@
   // UPI ID for payments
   const UPI_ID = "email.vikashpathak-1@okicici";
 
-  // Optional: Google Apps Script endpoint (order logging)
+  // Google Apps Script endpoint (order logging)
   const ORDER_API = "https://script.google.com/macros/s/AKfycbwal4w2qwbsN4H6qIhmmAB824dpTswVGzxZ3tJe5wkdUyxRTiW2lH25ldNyXc3svC-c/exec";
 
   // =========================
   // HOLI SPECIAL SETTINGS
   // =========================
-  // Deadline: order before 27 Feb (set year to current year automatically)
+  // Deadline: order before 27 Feb (auto uses current year)
   const HOLI_DEADLINE_DAY = 27;
-  const HOLI_DEADLINE_MONTH = 1; // Feb = 1 (0-indexed month)
+  const HOLI_DEADLINE_MONTH = 1; // Feb (0-indexed)
   // Delivery: 2nd March at 2 PM
   const HOLI_DELIVERY_DAY = 2;
-  const HOLI_DELIVERY_MONTH = 2; // March = 2 (0-indexed)
+  const HOLI_DELIVERY_MONTH = 2; // March (0-indexed)
   const HOLI_DELIVERY_HOUR = 14;
   const HOLI_DELIVERY_MIN = 0;
 
@@ -631,11 +638,14 @@
     special: false
   };
 
+  // =========================
   // MENU
+  // =========================
+  // Breakfast is for NEXT DAY MORNING (orders taken today)
   const MENU = {
     breakfast: [
-      {name:"Ghee Upma", price:90, desc:"Fresh homemade breakfast", available:true},
-      {name:"Veg Poha", price:90, desc:"Light & delicious morning meal", available:true}
+      {name:"Idly (4 pieces) with Sambar & Chutney", price:90, desc:"Next day morning breakfast", available:true},
+      {name:"Extra Idly", price:15, desc:"Add-on", available:true}
     ],
     lunch: [
       {name:"Chapati/Phulka (4 pieces) with Dal Tadka & Aloo Jeera", price:160, desc:"", available:false}
@@ -648,30 +658,14 @@
       {name:"Extra Puri", price:15, desc:"Add-on", available:false}
     ],
     special: [
-      {
-        name:"Gujiya (Pedkiya) – Per Piece",
-        price:30,
-        desc:"No sugar coating • Thin crust • Homemade • Rich filling of Mawa (Khoa), Suji & Dry Fruits",
-        available:true
-      },
-      {
-        name:"Gujiya 500g Pack (Approx. 14 pieces)",
-        price:350,
-        desc:"No sugar coating • Thin crust • Homemade • Rich filling of Mawa (Khoa), Suji & Dry Fruits",
-        available:true
-      },
-      {
-        name:"Nimki 500g",
-        price:250,
-        desc:"Crispy & fresh • Made in Rice Bran Oil • Shelf life: up to 1 month • Perfect tea-time snack",
-        available:true
-      }
+      {name:"Gujiya (Pedkiya) – Per Piece", price:30, desc:"No sugar coating • Thin crust • Homemade • Rich filling of Mawa (Khoa), Suji & Dry Fruits", available:true},
+      {name:"Gujiya 500g Pack (Approx. 14 pieces)", price:350, desc:"No sugar coating • Thin crust • Homemade • Rich filling of Mawa (Khoa), Suji & Dry Fruits", available:true},
+      {name:"Nimki 500g", price:250, desc:"Crispy & fresh • Made in Rice Bran Oil • Shelf life: up to 1 month • Perfect tea-time snack", available:true}
     ]
   };
 
-  // Suggestions
   const SUGGESTIONS = {
-    breakfast: ["Poha", "Idli-Sambar", "Upma", "Paratha + Curd"],
+    breakfast: ["Idly-Sambar", "Poha", "Upma", "Paratha + Curd"],
     lunch: ["Jeera Rice + Chole", "Rajma Chawal", "Kadhi Chawal", "Paneer Sabzi + Paratha"],
     snacks: ["Samosa + Chutney", "Onion Kachori", "Dahi Puri", "Pakoda + Chai"],
     dinner: ["Litti Chokha", "Kadhai Paneer + Paratha", "Chana Ghugni + Paratha", "Dal Fry + Jeera Rice"],
@@ -705,18 +699,28 @@
   }
   function fmtPrice(p){ return (!p || p<=0) ? "" : `₹${p}`; }
 
-  // Compute Holi deadline/delivery using current year
+  // Date helpers
   const NOW = new Date();
-  const Y = NOW.getFullYear();
-  const HOLI_DEADLINE = new Date(Y, HOLI_DEADLINE_MONTH, HOLI_DEADLINE_DAY, 23, 59, 59);
-  const HOLI_DELIVERY = new Date(Y, HOLI_DELIVERY_MONTH, HOLI_DELIVERY_DAY, HOLI_DELIVERY_HOUR, HOLI_DELIVERY_MIN, 0);
-
-  function fmtDateTime(dt){
-    return dt.toLocaleString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'numeric', minute:'2-digit' });
+  function addDays(dt, days){
+    const x = new Date(dt);
+    x.setDate(x.getDate() + days);
+    return x;
   }
   function fmtDate(dt){
     return dt.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
   }
+  function fmtDateTime(dt){
+    return dt.toLocaleString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'numeric', minute:'2-digit' });
+  }
+
+  // ✅ Breakfast is always NEXT DAY MORNING
+  const BREAKFAST_FOR_DATE = addDays(NOW, 1);
+  const BREAKFAST_DELIVERY_LABEL = `Tomorrow Morning (${fmtDate(BREAKFAST_FOR_DATE)})`;
+
+  // Holi deadline/delivery using current year
+  const Y = NOW.getFullYear();
+  const HOLI_DEADLINE = new Date(Y, HOLI_DEADLINE_MONTH, HOLI_DEADLINE_DAY, 23, 59, 59);
+  const HOLI_DELIVERY = new Date(Y, HOLI_DELIVERY_MONTH, HOLI_DELIVERY_DAY, HOLI_DELIVERY_HOUR, HOLI_DELIVERY_MIN, 0);
 
   // Deadline chip + auto close after deadline
   const deadlineChip = document.getElementById('deadlineChip');
@@ -724,7 +728,6 @@
   if(isPastDeadline){
     SOLD_OUT_SECTIONS.special = true;
   } else {
-    // show warning chip when Special is active OR when we are before deadline
     deadlineChip.style.display = 'inline-flex';
     deadlineChip.textContent = `Holi orders close ${HOLI_DEADLINE_DAY} Feb`;
   }
@@ -756,29 +759,27 @@
   const cart = new Map(); // id => {item, qty, sectionKey}
   function itemId(sectionKey, idx){ return `${sectionKey}:${idx}`; }
   function getQty(id){ return cart.has(id) ? cart.get(id).qty : 0; }
-
   function setQty(id, sectionKey, item, qty){
     if(qty <= 0) cart.delete(id);
     else cart.set(id, {item, qty, sectionKey});
     updateCartUI();
   }
-
   function totals(){
     let count=0, total=0;
     cart.forEach(v=>{ count += v.qty; total += (v.item.price||0)*v.qty; });
     return {count, total};
   }
-
-  function cartHasSpecial(){
+  function cartHasSection(secKey){
     for(const v of cart.values()){
-      if(v.sectionKey === 'special') return true;
+      if(v.sectionKey === secKey) return true;
     }
     return false;
   }
+  function cartHasSpecial(){ return cartHasSection('special'); }
+  function cartHasBreakfast(){ return cartHasSection('breakfast'); }
 
   function updateSpecialNotices(){
     const show = (activeKey === 'special' && !searchMode) || cartHasSpecial();
-
     if(!show){
       specialNotice.style.display = 'none';
       specialDrawerNotice.style.display = 'none';
@@ -801,7 +802,6 @@
     specialNoticeText.innerHTML = base;
     specialNotice.style.display = (activeKey === 'special' && !searchMode) ? 'block' : 'none';
 
-    // Drawer notice only if cart includes special items
     if(cartHasSpecial()){
       specialDrawerNoticeText.innerHTML = base;
       specialDrawerNotice.style.display = 'block';
@@ -826,13 +826,16 @@
       const active = s.key === activeKey ? "active" : "";
       const sold = SOLD_OUT_SITE || !!SOLD_OUT_SECTIONS[s.key];
 
-      // ✨ festival badge on Special tab
       const fest = (s.key === 'special')
         ? `<span class="tabBadge fest">✨ Festival</span>`
         : ``;
 
+      const tomo = (s.key === 'breakfast')
+        ? `<span class="tabBadge tomo">⏰ Tomorrow</span>`
+        : ``;
+
       return `<button class="tab ${active}" data-key="${s.key}">
-        <span>${s.label}${sold ? " • Not Available" : ""}</span>${fest}
+        <span>${s.label}${sold ? " • Not Available" : ""}</span>${tomo}${fest}
       </button>`;
     }).join('');
 
@@ -863,7 +866,11 @@
     sectionInfoEl.textContent = searchMode
       ? "Showing matching dishes from all sections"
       : (soldSec ? "Not available today" : "Available today");
-    sectionInfoEl.className = "sectionInfo";
+
+    // ✅ Override ONLY for Breakfast (tomorrow morning)
+    if(!searchMode && activeKey === 'breakfast'){
+      sectionInfoEl.textContent = `Taking orders for ${BREAKFAST_DELIVERY_LABEL}`;
+    }
 
     let list = items;
 
@@ -879,19 +886,14 @@
         });
       });
       list = all;
-      if(!q){
-        searchHint.textContent = "Type to search dishes. (Empty = showing all dishes)";
-      } else {
-        searchHint.textContent = `Results for "${q}"`;
-      }
-
+      searchHint.textContent = !q ? "Type to search dishes. (Empty = showing all dishes)" : `Results for "${q}"`;
       specialNotice.style.display = 'none';
 
       if(list.length === 0){
         gridEl.innerHTML = `
           <div class="emptyState">
             <div class="emptyTitle">No results</div>
-            <div class="emptySub">Try another keyword (example: gujiya, nimki, poha, upma).</div>
+            <div class="emptySub">Try another keyword (example: idly, gujiya, nimki).</div>
           </div>`;
         updateSpecialNotices();
         return;
@@ -933,7 +935,7 @@
       return;
     }
 
-    // Normal section view
+    // Special notice
     if(activeKey === 'special' && !soldSec){
       updateSpecialNotices();
       specialNotice.style.display = 'block';
@@ -1073,13 +1075,12 @@
     const lines = [];
     cart.forEach(v => lines.push(`${v.item.name} x${v.qty} = ₹${(v.item.price||0)*v.qty}`));
 
-    const addSpecial = cartHasSpecial()
-      ? [
-          "",
-          "HOLI SPECIAL",
-          `Order Deadline: ${fmtDate(HOLI_DEADLINE)}`,
-          `Delivery: ${fmtDateTime(HOLI_DELIVERY)}`
-        ].join("\n")
+    const breakfastInfo = cartHasBreakfast()
+      ? [``, `BREAKFAST DELIVERY: ${BREAKFAST_DELIVERY_LABEL}`].join("\n")
+      : "";
+
+    const holiInfo = cartHasSpecial()
+      ? [``, `HOLI SPECIAL`, `Order Deadline: ${fmtDate(HOLI_DEADLINE)}`, `Delivery: ${fmtDateTime(HOLI_DELIVERY)}`].join("\n")
       : "";
 
     return [
@@ -1090,7 +1091,8 @@
       ...lines,
       "--------------------------------",
       `TOTAL: ₹${total}`,
-      addSpecial,
+      breakfastInfo,
+      holiInfo,
       "",
       `UPI: ${UPI_ID}`
     ].join("\n");
@@ -1123,7 +1125,7 @@
     window.location.href = url;
   });
 
-  // WhatsApp text (adds deadline + delivery automatically if special items are included)
+  // WhatsApp text (auto adds Breakfast Tomorrow + Holi Deadline/Delivery)
   function buildWhatsAppText(orderId){
     const name = document.getElementById('custName').value.trim();
     const phone = document.getElementById('custPhone').value.trim();
@@ -1136,12 +1138,12 @@
     cart.forEach(v => lines.push(`• ${v.item.name} × ${v.qty}${v.item.price ? ` (₹${v.item.price})` : ''}`));
     const {total} = totals();
 
+    const breakfastBlock = cartHasBreakfast()
+      ? (`\n🍽️ BREAKFAST DELIVERY\nDelivery: ${BREAKFAST_DELIVERY_LABEL}\n`)
+      : "";
+
     const specialBlock = cartHasSpecial()
-      ? (
-        `\n🌸 HOLI SPECIAL DETAILS\n` +
-        `Order deadline: ${fmtDate(HOLI_DEADLINE)}\n` +
-        `Delivery: ${fmtDateTime(HOLI_DELIVERY)}\n`
-      )
+      ? (`\n🌸 HOLI SPECIAL DETAILS\nOrder deadline: ${fmtDate(HOLI_DEADLINE)}\nDelivery: ${fmtDateTime(HOLI_DELIVERY)}\n`)
       : "";
 
     let msg = `Hi TasteHub 👋\n\nOrder Request (Kannuru Nearby)\n`;
@@ -1150,7 +1152,9 @@
     if(phone) msg += `Phone: ${phone}\n`;
     if(flat) msg += `Apartment/Flat: ${flat}\n`;
     msg += `Preferred meal: ${time}\n`;
+    msg += breakfastBlock;
     msg += specialBlock;
+
     msg += `\nItems:\n${lines.join("\n")}\n`;
     msg += `\nTotal: ₹${total}\n`;
     msg += `Paid via UPI: ${UPI_ID}\n`;
@@ -1215,7 +1219,6 @@
 
     const orderId = genOrderId();
     const {total, count} = totals();
-
     const payload = {
       orderId,
       createdAt: new Date().toISOString(),
@@ -1240,10 +1243,8 @@
       },
       notes: document.getElementById('custNotes').value.trim(),
       source: "Website",
-      holiSpecial: cartHasSpecial() ? {
-        deadline: HOLI_DEADLINE.toISOString(),
-        delivery: HOLI_DELIVERY.toISOString()
-      } : null
+      breakfastDelivery: cartHasBreakfast() ? { label: BREAKFAST_DELIVERY_LABEL } : null,
+      holiSpecial: cartHasSpecial() ? { deadline: HOLI_DEADLINE.toISOString(), delivery: HOLI_DELIVERY.toISOString() } : null
     };
 
     const logged = await logOrder(payload);
