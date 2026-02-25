@@ -573,7 +573,7 @@
 
   // Sections sold out (true/false)
   const SOLD_OUT_SECTIONS = {
-    breakfast: true,   // breakfast closed today
+    breakfast: false,   // 
     lunch: false,
     snacks: false,
     dinner: false
@@ -582,18 +582,18 @@
   // MENU: add all your items here (availability per item)
   const MENU = {
     breakfast: [
-      {name:"Palak Chilla (3 pieces) with Chutney", price:90, desc:"Tomorrow item / update at night", available:false},
-      {name:"Extra Chilla", price:30, desc:"Add-on", available:false}
+      {name:"Ghee upma ", price:90, desc:"          ", available:true},
+      {name:"veg Poha", price:30, desc:"      ", available:true}
     ],
     lunch: [
-      {name:"Chapati/Phulka (4 pieces) with Dal Tadka & Aloo Jeera", price:160, desc:"", available:true}
+      {name:"Chapati/Phulka (4 pieces) with Dal Tadka & Aloo Jeera", price:160, desc:"", available:false}
     ],
     snacks: [
-      {name:"Aloo Palak Chilla with Chutney", price:70, desc:"", available:true}
+      {name:"Aloo Palak Chilla with Chutney", price:70, desc:"", available:false}
     ],
     dinner: [
-      {name:"Aloo Masala Puri (4 pieces) with Chole", price:140, desc:"", available:true},
-      {name:"Extra Puri", price:15, desc:"Add-on", available:true}
+      {name:"Aloo Masala Puri (4 pieces) with Chole", price:140, desc:"", available:false},
+      {name:"Extra Puri", price:15, desc:"Add-on", available:false}
     ]
   };
 
