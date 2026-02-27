@@ -709,7 +709,7 @@
     const closed = !isSectionOpen(s.key);
 
     // ✅ Do NOT show "Not Available" text for Breakfast
-    const suffix = (closed && s.key !== "breakfast") ? " • Not Available" : "";
+    const suffix = (closed && s.key !== "breakfast") ? " • Available" : "";
 
     return `<button class="tab ${active}" data-key="${s.key}">
       <span>${s.label}${suffix}</span>
