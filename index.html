@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>TasteHub | Kannuru Nearby – Menu & Order</title>
-<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. Search menu, add to cart, pay via UPI, checkout on WhatsApp." />
+<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. Browse menu, add to cart, pay via UPI, checkout on WhatsApp." />
 
 <style>
   :root{
@@ -16,7 +16,6 @@
     --muted:rgba(246,247,251,.72);
     --brand:#20c997;
     --danger:#ff4d4f;
-    --warn:#ffb020;
     --shadow: 0 18px 60px rgba(0,0,0,.55);
     --r:18px;
     --r2:24px;
@@ -71,40 +70,6 @@
   }
   .chip.green{background: rgba(32,201,151,.12); border-color: rgba(32,201,151,.25); color:#caffef;}
   .chip.red{background: rgba(255,77,79,.14); border-color: rgba(255,77,79,.30); color:#ffe1e1;}
-
-  .promoBar{
-    background: linear-gradient(135deg, rgba(32,201,151,.18), rgba(0,0,0,.0));
-    border-bottom:1px solid rgba(255,255,255,.07);
-  }
-  .promoInner{
-    max-width:var(--max);
-    margin:0 auto;
-    padding:12px 14px;
-    display:flex;
-    gap:12px;
-    align-items:center;
-    justify-content:space-between;
-    flex-wrap:wrap;
-  }
-  .promoLeft{display:flex; gap:10px; align-items:center; min-width:260px;}
-  .promoIcon{
-    width:40px; height:40px; border-radius:14px;
-    display:grid; place-items:center;
-    background: rgba(0,0,0,.20);
-    border:1px solid rgba(255,255,255,.12);
-  }
-  .promoTitle{font-weight:1000; line-height:1.1;}
-  .promoSub{font-size:12.5px; color:rgba(246,247,251,.75); margin-top:2px; line-height:1.3;}
-  .promoBtn{
-    padding:10px 14px;
-    border-radius:14px;
-    background: linear-gradient(135deg, rgba(32,201,151,.95), rgba(32,201,151,.70));
-    color:#052015;
-    font-weight:1000;
-    text-decoration:none;
-    white-space:nowrap;
-    border:none;
-  }
 
   .grid{
     margin-top:14px;
@@ -182,16 +147,6 @@
     font-size:12px;
     color: rgba(246,247,251,.72);
   }
-  .notice{
-    margin:0 14px 12px;
-    border-radius:18px;
-    border:1px solid rgba(255,176,32,.28);
-    background: rgba(255,176,32,.10);
-    padding:12px;
-    display:none;
-  }
-  .notice .t{font-weight:1000; margin-bottom:4px;}
-  .notice .s{font-size:12px; color:rgba(246,247,251,.78); line-height:1.35;}
 
   .menuGrid{
     display:grid;
@@ -265,16 +220,6 @@
     color:#052015;
   }
   .addBtn:disabled{opacity:.55; cursor:not-allowed;}
-
-  .emptyState{
-    padding:16px;
-    border-radius:18px;
-    border:1px dashed rgba(255,255,255,.18);
-    background: rgba(0,0,0,.14);
-    color: rgba(246,247,251,.90);
-  }
-  .emptyTitle{ font-weight:1000; margin-bottom:6px; }
-  .emptySub{ font-size:12px; color: rgba(246,247,251,.65); line-height:1.35; }
 
   .links{display:grid; gap:10px; margin-top:10px;}
   .linkBtn{
@@ -454,22 +399,6 @@
     </div>
   </div>
 
-  <!-- ✅ Mantae Promo -->
-  <div class="promoBar">
-    <div class="promoInner">
-      <div class="promoLeft">
-        <div class="promoIcon">📲</div>
-        <div>
-          <div class="promoTitle">We are now live on <b>Mantae</b> App</div>
-          <div class="promoSub">Download & order on Mantae to get <b style="color:var(--brand)">Flat 10% OFF</b> 🎉</div>
-        </div>
-      </div>
-      <a class="promoBtn" href="https://play.google.com/store/apps/details?id=com.mantae.user" target="_blank" rel="noopener">
-        Download App
-      </a>
-    </div>
-  </div>
-
   <div class="wrap">
     <div class="grid">
       <!-- LEFT: MENU -->
@@ -480,12 +409,11 @@
             <div class="chip green">Kannuru Nearby Only</div>
           </div>
           <p class="sub" id="menuNote">
-            Search any dish, check availability, add to cart, then pay & checkout on WhatsApp.<br>
-            <span style="color:#caffef;font-weight:800;">Want 10% OFF? Order on Mantae App 📲</span>
+            Check availability, add to cart, then pay & checkout on WhatsApp.
           </p>
 
           <div class="searchBox" style="margin-top:10px;">
-            🔎 <input id="searchInput" placeholder="Search dishes (e.g., idly, poha, upma)..." autocomplete="off" />
+            🔎 <input id="searchInput" placeholder="Search dishes (e.g., idly, paratha, samosa)..." autocomplete="off" />
           </div>
           <div class="searchHint" id="searchHint">Tip: Search shows items from all meals with their availability.</div>
         </div>
@@ -493,13 +421,6 @@
         <div class="tabs" id="tabs"></div>
 
         <div class="sectionTitle" id="sectionTitle">Items</div>
-
-        <!-- Breakfast rule notice (shown only when Breakfast is closed) -->
-        <div class="notice" id="breakfastNotice">
-          <div class="t">Breakfast Ordering</div>
-          <div class="s">Breakfast opens daily after midnight and closes after morning (no orders later). Please check back.</div>
-        </div>
-
         <div class="sectionInfo" id="sectionInfo"></div>
         <div class="menuGrid" id="menuGrid"></div>
       </div>
@@ -513,11 +434,6 @@
           </div>
 
           <div class="links">
-            <a class="linkBtn" href="https://play.google.com/store/apps/details?id=com.mantae.user" target="_blank" rel="noopener">
-              <div class="lL"><div class="ic">📲</div><div class="lt"><div class="t">Order via Mantae App</div><div class="s">Flat 10% OFF on orders</div></div></div>
-              <div class="arr">›</div>
-            </a>
-
             <a class="linkBtn" href="https://wa.me/919632035612" target="_blank" rel="noopener">
               <div class="lL"><div class="ic">💬</div><div class="lt"><div class="t">WhatsApp Order Help</div><div class="s">Ask availability / plans</div></div></div>
               <div class="arr">›</div>
@@ -542,11 +458,6 @@
           <div class="sub" style="margin-top:12px;">
             <b>About TasteHub:</b><br>
             I’m <b>Neha Pathak</b>, Chef & Owner of TasteHub. Started in <b>2023</b> from my residence (Kolte Patil Raaga) and built a WhatsApp community for daily homemade veg meals.
-          </div>
-
-          <div class="sub" style="margin-top:10px;">
-            ⭐⭐⭐⭐☆ <b>4.6</b> (Google feedback)<br>
-            <span style="color:rgba(246,247,251,.7)">Fresh homemade food, clean taste, and on-time updates.</span>
           </div>
         </div>
       </div>
@@ -610,8 +521,7 @@
           </div>
           <div class="payRow">
             <div class="qr" title="Upload your QR as upi-qr.png in same folder">
-              <img id="qrImg" src="upi-qr.png" alt="UPI QR (upload upi-qr.png)"
-                onerror="this.style.display='none'; this.parentElement.innerHTML='Upload <b>upi-qr.png</b><br><span style=&quot;font-size:12px;color:rgba(246,247,251,.65)&quot;>to show QR here</span>';">
+              <img id="qrImg" src="upi-qr.png" alt="UPI QR (upload upi-qr.png)" onerror="this.style.display='none'; this.parentElement.innerHTML='Upload <b>upi-qr.png</b><br><span style=&quot;font-size:12px;color:rgba(246,247,251,.65)&quot;>to show QR here</span>';">
             </div>
             <div style="flex:1; min-width:200px;">
               <div class="mutedSmall">Optional: Enter UTR/Txn ID after payment</div>
@@ -645,45 +555,76 @@
   // Google Apps Script endpoint (order logging)
   const ORDER_API = "https://script.google.com/macros/s/AKfycbwal4w2qwbsN4H6qIhmmAB824dpTswVGzxZ3tJe5wkdUyxRTiW2lH25ldNyXc3svC-c/exec";
 
-  // Whole day sold out
+  // Whole day sold out (manual switch)
   const SOLD_OUT_SITE = false;
 
-  // Sections sold out (manual)
+  // =========================
+  // AUTO BREAKFAST RULE (NO TIME SHOWN)
+  // Breakfast is automatically AVAILABLE only between 12 AM and 10 AM.
+  // =========================
+  function isBreakfastWindowOpen(now = new Date()){
+    const h = now.getHours(); // 0-23
+    return (h >= 0 && h < 10);
+  }
+
+  // =========================
+  // MENU (Your full list)
+  // Use available:true/false for item-level ON/OFF
+  // =========================
+  const MENU = {
+    breakfast: [
+      {name:"Aloo paneer sandwich (4 slices)", price:120, desc:"", available:true},
+      {name:"Aloo cheese sandwich (4 slices)", price:120, desc:"", available:true},
+      {name:"Methi paratha (4 pieces) with curd", price:100, desc:"", available:true},
+      {name:"Aloo paratha (2 pieces) with curd", price:90, desc:"", available:true},
+      {name:"Aloo paratha (2 pieces) with curd", price:80, desc:"", available:true},
+      {name:"Plain paratha/chapati (4 pieces) with rajma", price:130, desc:"", available:true},
+      {name:"Plain paratha/chapati (4 pieces) with rajma", price:140, desc:"", available:true},
+      {name:"Pav bhaji (6 slices)", price:120, desc:"", available:true},
+      {name:"Idly (4 pieces) with sambhar & chutney", price:90, desc:"", available:true},
+      {name:"Plain paratha/chapati (4 pieces) with paneer bhurji (200g)", price:130, desc:"", available:true},
+      {name:"Aloo paratha (2 pieces) with curd", price:80, desc:"", available:true},
+      {name:"Rajma with paratha/chapati (4 pieces)", price:140, desc:"", available:true},
+    ],
+    lunch: [
+      {name:"Plain paratha/chapati (4 pieces) with mix veg curry", price:130, desc:"", available:true},
+      {name:"Plain paratha/chapati (4 pieces) with aloo simla mirch curry", price:130, desc:"", available:true},
+      {name:"Jeera rice with palak daal fry, papad", price:150, desc:"", available:true},
+      {name:"Veg fried rice with raita", price:140, desc:"", available:true},
+      {name:"Plain rice daal aloo jeera", price:150, desc:"", available:true},
+      {name:"Plain rice with boondi kadhi, salads", price:150, desc:"", available:true},
+      {name:"Plain paratha/chapati (4 pieces) with aloo soyabean curry", price:130, desc:"", available:true},
+      {name:"Plain paratha/chapati (4 pieces) with mix veg curry", price:140, desc:"", available:true},
+    ],
+    snacks: [
+      {name:"Aloo bread roll (2 pieces) with chutney", price:70, desc:"", available:true},
+      {name:"Aloo paneer bread roll (2 pieces) with chutney", price:90, desc:"", available:true},
+      {name:"Vada pav", price:40, desc:"", available:true},
+      {name:"Banarasi tamatar chat", price:80, desc:"", available:true},
+      {name:"Paani puri mint flavour (10 pieces)", price:70, desc:"", available:true},
+      {name:"Veg hakka noodles", price:100, desc:"", available:true},
+      {name:"Samosa (2 pcs per plate)", price:70, desc:"", available:true},
+      {name:"Aloo cheese bread pakoda", price:70, desc:"", available:true},
+      {name:"Bread pakoda", price:70, desc:"", available:true},
+      {name:"Dahi papadi chat", price:80, desc:"", available:true},
+      {name:"Onion kachori", price:70, desc:"", available:true},
+    ],
+    dinner: [
+      {name:"Plain paratha/chapati (4 pieces) with aloo soyabean curry", price:130, desc:"", available:true},
+      {name:"Muli paratha (2 pieces) with curd", price:100, desc:"", available:true},
+      {name:"Plain paratha/chapati (4 pieces) with aloo gobhi curry", price:130, desc:"", available:true},
+      {name:"Puri (4 pieces) with aloo curry", price:130, desc:"", available:true},
+      {name:"Mix veg curry with chapati", price:130, desc:"", available:true},
+      {name:"Plain paratha/chapati (4 pieces) with aloo gobhi curry", price:130, desc:"", available:true},
+    ]
+  };
+
+  // Section-level switches (optional)
   const SOLD_OUT_SECTIONS = {
     breakfast: false,
     lunch: false,
     snacks: false,
     dinner: false
-  };
-
-  // =========================
-  // MENU (NO HOLI SPECIAL)
-  // =========================
-  // ✅ Update Breakfast items daily here (they will auto-open after 12 AM and auto-close after 10 AM)
-  const MENU = {
-    breakfast: [
-      {name:"Pav bhaji (6Slices) ", price:120, desc:"Fresh homemade breakfast", available:true},
-      {name:"Paneer paratha (2 pieces) With curd", price:130, desc:"Fresh homemade breakfast", available:true}
-      {name:"Extra paratha", price:60, desc:"Fresh homemade breakfast", available:true}
-      // Example (if you want to show but not available): {name:"Extra Idly", price:15, desc:"Add-on", available:false}
-    ],
-    lunch: [
-      {name:"Chapati/Phulka (4 pieces) with Dal Tadka & Aloo Jeera", price:160, desc:"", available:false}
-    ],
-    snacks: [
-      {name:"Aloo Palak Chilla with Chutney", price:70, desc:"", available:false}
-    ],
-    dinner: [
-      {name:"Plain paratha/chapati (4pieces) with kadhai paneer (200gm)", price:140, desc:"", available:true},
-      {name:"Extra Paratha/Chapati", price:15, desc:"Add-on", available:true}
-    ]
-  };
-
-  const SUGGESTIONS = {
-    breakfast: ["Idly-Sambar", "Poha", "Upma", "Paratha + Curd"],
-    lunch: ["Jeera Rice + Chole", "Rajma Chawal", "Kadhi Chawal", "Paneer Sabzi + Paratha"],
-    snacks: ["Samosa + Chutney", "Onion Kachori", "Dahi Puri", "Pakoda + Chai"],
-    dinner: ["Litti Chokha", "Kadhai Paneer + Paratha", "Chana Ghugni + Paratha", "Dal Fry + Jeera Rice"]
   };
 </script>
 
@@ -713,20 +654,11 @@
   }
   function fmtPrice(p){ return (!p || p<=0) ? "" : `₹${p}`; }
 
-  // ✅ Breakfast auto availability window:
-  // Active after 12:00 AM and closed after 10:00 AM (no time shown to user)
-  function isBreakfastWindowOpen(now){
-    const h = now.getHours();
-    return (h >= 0 && h < 10);
-  }
-
-  const NOW = new Date();
-
   const sections = [
     {key:'breakfast', label:'Breakfast'},
     {key:'lunch', label:'Lunch'},
     {key:'snacks', label:'Snacks'},
-    {key:'dinner', label:'Dinner'}
+    {key:'dinner', label:'Dinner'},
   ];
 
   const tabsEl = document.getElementById('tabs');
@@ -735,7 +667,6 @@
   const sectionInfoEl = document.getElementById('sectionInfo');
   const searchInput = document.getElementById('searchInput');
   const searchHint = document.getElementById('searchHint');
-  const breakfastNotice = document.getElementById('breakfastNotice');
 
   let activeKey = 'lunch';
   let searchMode = false;
@@ -744,34 +675,41 @@
   const cart = new Map(); // id => {item, qty, sectionKey}
   function itemId(sectionKey, idx){ return `${sectionKey}:${idx}`; }
   function getQty(id){ return cart.has(id) ? cart.get(id).qty : 0; }
-
   function setQty(id, sectionKey, item, qty){
     if(qty <= 0) cart.delete(id);
     else cart.set(id, {item, qty, sectionKey});
     updateCartUI();
   }
-
   function totals(){
     let count=0, total=0;
     cart.forEach(v=>{ count += v.qty; total += (v.item.price||0)*v.qty; });
     return {count, total};
   }
 
-  function updateCartUI(){
-    const {count, total} = totals();
-    const bar = document.getElementById('cartBar');
-    const summary = document.getElementById('cartSummary');
-    if(count<=0){ bar.style.display='none'; return; }
-    bar.style.display='block';
-    summary.textContent = `${count} item${count>1?'s':''} • Total ₹${total}`;
+  // ✅ Section availability (Breakfast is auto by time, no time shown)
+  function isSectionOpen(sectionKey, now = new Date()){
+    if(SOLD_OUT_SITE) return false;
+    if(!!SOLD_OUT_SECTIONS[sectionKey]) return false;
+    if(sectionKey === 'breakfast'){
+      return isBreakfastWindowOpen(now);
+    }
+    return true;
+  }
+
+  function isAvailable(sectionKey, item){
+    if(!isSectionOpen(sectionKey)) return false;
+    if(item && item.available === false) return false;
+    return true;
   }
 
   // Tabs
   function renderTabs(){
     tabsEl.innerHTML = sections.map(s => {
       const active = s.key === activeKey ? "active" : "";
-      const sold = SOLD_OUT_SITE || !!SOLD_OUT_SECTIONS[s.key];
-      return `<button class="tab ${active}" data-key="${s.key}">${s.label}${sold ? " • Not Available" : ""}</button>`;
+      const sold = !isSectionOpen(s.key);
+      return `<button class="tab ${active}" data-key="${s.key}">
+        <span>${s.label}${sold ? " • Not Available" : ""}</span>
+      </button>`;
     }).join('');
 
     tabsEl.querySelectorAll('.tab').forEach(b => {
@@ -786,41 +724,14 @@
     });
   }
 
-  function isAvailable(sectionKey, item){
-    if(SOLD_OUT_SITE) return false;
-    if(!!SOLD_OUT_SECTIONS[sectionKey]) return false;
-    if(item && item.available === false) return false;
-
-    // ✅ Breakfast rule enforcement
-    if(sectionKey === 'breakfast'){
-      if(!isBreakfastWindowOpen(new Date())) return false;
-    }
-    return true;
-  }
-
   function renderMenu(){
-    const soldSec = SOLD_OUT_SITE || !!SOLD_OUT_SECTIONS[activeKey];
     const items = MENU[activeKey] || [];
-
     sectionTitleEl.textContent = searchMode ? "SEARCH RESULTS" : activeKey.toUpperCase();
 
-    // Default
-    sectionInfoEl.textContent = searchMode
-      ? "Showing matching dishes from all sections"
-      : (soldSec ? "Not available today" : "Available today");
-
-    // ✅ Breakfast info + notice (NO TIME SHOWN)
-    if(!searchMode && activeKey === 'breakfast'){
-      const open = isBreakfastWindowOpen(new Date());
-      if(open){
-        breakfastNotice.style.display = 'none';
-        sectionInfoEl.textContent = "Breakfast is available now";
-      } else {
-        breakfastNotice.style.display = 'block';
-        sectionInfoEl.textContent = "Breakfast is not available right now";
-      }
+    if(searchMode){
+      sectionInfoEl.textContent = "Showing matching dishes from all sections";
     } else {
-      breakfastNotice.style.display = 'none';
+      sectionInfoEl.textContent = isSectionOpen(activeKey) ? "Available" : "Not Available";
     }
 
     let list = items;
@@ -837,14 +748,15 @@
         });
       });
       list = all;
-
       searchHint.textContent = !q ? "Type to search dishes. (Empty = showing all dishes)" : `Results for "${q}"`;
 
       if(list.length === 0){
         gridEl.innerHTML = `
-          <div class="emptyState">
-            <div class="emptyTitle">No results</div>
-            <div class="emptySub">Try another keyword (example: idly, poha, upma).</div>
+          <div class="item" style="justify-content:center; text-align:center;">
+            <div class="iLeft">
+              <div class="iname">No results</div>
+              <div class="idesc">Try another keyword (example: idly, paratha, samosa).</div>
+            </div>
           </div>`;
         return;
       }
@@ -884,14 +796,13 @@
       return;
     }
 
-    // Normal section view
     if(items.length === 0){
-      const sugg = (SUGGESTIONS[activeKey] || []).slice(0,4);
       gridEl.innerHTML = `
-        <div class="emptyState">
-          <div class="emptyTitle">No items added</div>
-          <div class="emptySub">Add items in MENU. Suggestions:</div>
-          <div class="emptySub" style="margin-top:8px">• ${sugg.join("<br/>• ")}</div>
+        <div class="item" style="justify-content:center; text-align:center;">
+          <div class="iLeft">
+            <div class="iname">No items added</div>
+            <div class="idesc">Add items in MENU list.</div>
+          </div>
         </div>`;
       return;
     }
@@ -964,6 +875,15 @@
     document.getElementById('drawerOverlay').style.display='none';
   }
 
+  function updateCartUI(){
+    const {count, total} = totals();
+    const bar = document.getElementById('cartBar');
+    const summary = document.getElementById('cartSummary');
+    if(count<=0){ bar.style.display='none'; return; }
+    bar.style.display='block';
+    summary.textContent = `${count} item${count>1?'s':''} • Total ₹${total}`;
+  }
+
   function renderCartDrawer(){
     const list = document.getElementById('cartList');
     const {total} = totals();
@@ -1014,6 +934,7 @@
     const {total} = totals();
     const lines = [];
     cart.forEach(v => lines.push(`${v.item.name} x${v.qty} = ₹${(v.item.price||0)*v.qty}`));
+
     return [
       "TASTE HUB - INVOICE",
       "J 1301, Kolte Patil Raaga, Kannuru, Bengaluru 560077",
@@ -1072,8 +993,9 @@
     if(name) msg += `Name: ${name}\n`;
     if(phone) msg += `Phone: ${phone}\n`;
     if(flat) msg += `Apartment/Flat: ${flat}\n`;
-    msg += `Preferred meal: ${time}\n\n`;
-    msg += `Items:\n${lines.join("\n")}\n`;
+    msg += `Preferred meal: ${time}\n`;
+
+    msg += `\nItems:\n${lines.join("\n")}\n`;
     msg += `\nTotal: ₹${total}\n`;
     msg += `Paid via UPI: ${UPI_ID}\n`;
     if(txnId) msg += `Txn/UTR: ${txnId}\n`;
@@ -1129,17 +1051,8 @@
     if(!name || !flat){ alert("Please enter Name and Apartment/Flat."); return; }
     if(cart.size===0){ alert("Your cart is empty."); return; }
 
-    // ✅ Prevent breakfast order outside window
-    for(const v of cart.values()){
-      if(v.sectionKey === 'breakfast' && !isBreakfastWindowOpen(new Date())){
-        alert("Breakfast is not available right now. Please check back.");
-        return;
-      }
-    }
-
     const orderId = genOrderId();
     const {total, count} = totals();
-
     const payload = {
       orderId,
       createdAt: new Date().toISOString(),
@@ -1177,6 +1090,12 @@
 
     checkoutOnWhatsApp(orderId);
   });
+
+  // ✅ Auto refresh every 1 minute so breakfast ON/OFF happens automatically (no time shown)
+  setInterval(() => {
+    renderTabs();
+    renderMenu();
+  }, 60 * 1000);
 
   // Init
   renderTabs();
