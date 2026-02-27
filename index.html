@@ -704,25 +704,29 @@
 
   // Tabs
   function renderTabs(){
-    tabsEl.innerHTML = sections.map(s => {
-      const active = s.key === activeKey ? "active" : "";
-      const sold = !isSectionOpen(s.key);
-      return `<button class="tab ${active}" data-key="${s.key}">
-        <span>${s.label}${sold ? " • Not Available" : ""}</span>
-      </button>`;
-    }).join('');
+  tabsEl.innerHTML = sections.map(s => {
+    const active = s.key === activeKey ? "active" : "";
+    const closed = !isSectionOpen(s.key);
 
-    tabsEl.querySelectorAll('.tab').forEach(b => {
-      b.addEventListener('click', () => {
-        activeKey = b.dataset.key;
-        searchInput.value = "";
-        searchMode = false;
-        searchHint.textContent = "Tip: Search shows items from all meals with their availability.";
-        renderTabs();
-        renderMenu();
-      });
+    // ✅ Do NOT show "Not Available" text for Breakfast
+    const suffix = (closed && s.key !== "breakfast") ? " • Not Available" : "";
+
+    return `<button class="tab ${active}" data-key="${s.key}">
+      <span>${s.label}${suffix}</span>
+    </button>`;
+  }).join('');
+
+  tabsEl.querySelectorAll('.tab').forEach(b => {
+    b.addEventListener('click', () => {
+      activeKey = b.dataset.key;
+      searchInput.value = "";
+      searchMode = false;
+      searchHint.textContent = "Tip: Search shows items from all meals with their availability.";
+      renderTabs();
+      renderMenu();
     });
-  }
+  });
+}
 
   function renderMenu(){
     const items = MENU[activeKey] || [];
