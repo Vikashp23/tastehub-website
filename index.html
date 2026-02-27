@@ -672,10 +672,8 @@
   // =========================
   // HOLI SPECIAL SETTINGS
   // =========================
-  // Deadline: order before 27 Feb (auto uses current year)
   const HOLI_DEADLINE_DAY = 27;
   const HOLI_DEADLINE_MONTH = 1; // Feb (0-indexed)
-  // Delivery: 2nd March at 2 PM
   const HOLI_DELIVERY_DAY = 2;
   const HOLI_DELIVERY_MONTH = 2; // March (0-indexed)
   const HOLI_DELIVERY_HOUR = 14;
@@ -696,11 +694,10 @@
   // =========================
   // MENU
   // =========================
-  // ✅ Breakfast is NORMAL (TODAY) like other sections
   const MENU = {
     breakfast: [
-      {name:"Ghee Upma", price:90, desc:"Fresh homemade breakfast", available:false},
-      {name:"Veg Poha", price:90, desc:"Fresh homemade breakfast", available:false}
+      {name:"Ghee Upma", price:90, desc:"Fresh homemade breakfast", available:true},
+      {name:"Veg Poha", price:90, desc:"Fresh homemade breakfast", available:true}
     ],
     lunch: [
       {name:"Chapati/Phulka (4 pieces) with Dal Tadka & Aloo Jeera", price:160, desc:"", available:false}
@@ -753,6 +750,12 @@
     toastEl._t = setTimeout(()=>toastEl.style.display='none', 2200);
   }
   function fmtPrice(p){ return (!p || p<=0) ? "" : `₹${p}`; }
+
+  // ✅ Breakfast auto-open window: 12:00 AM to 9:59 AM
+  function isBreakfastOpen(dt = new Date()){
+    const h = dt.getHours();
+    return (h >= 0 && h < 10);
+  }
 
   // Date helpers
   const NOW = new Date();
@@ -822,6 +825,7 @@
     return false;
   }
   function cartHasSpecial(){ return cartHasSection('special'); }
+  function cartHasBreakfast(){ return cartHasSection('breakfast'); }
 
   function updateSpecialNotices(){
     const show = (activeKey === 'special' && !searchMode) || cartHasSpecial();
@@ -896,6 +900,10 @@
     if(SOLD_OUT_SITE) return false;
     if(!!SOLD_OUT_SECTIONS[sectionKey]) return false;
     if(item && item.available === false) return false;
+
+    // ✅ Breakfast auto open/close (12 AM to 10 AM)
+    if(sectionKey === "breakfast" && !isBreakfastOpen(new Date())) return false;
+
     return true;
   }
 
@@ -907,6 +915,13 @@
     sectionInfoEl.textContent = searchMode
       ? "Showing matching dishes from all sections"
       : (soldSec ? "Not available today" : "Available today");
+
+    // ✅ Breakfast info override (no time shown)
+    if(!searchMode && activeKey === "breakfast"){
+      sectionInfoEl.textContent = isBreakfastOpen(new Date())
+        ? "Available today"
+        : "Not available today";
+    }
 
     let list = items;
 
@@ -1237,6 +1252,12 @@
     if(!name || !flat){ alert("Please enter Name and Apartment/Flat."); return; }
     if(cart.size===0){ alert("Your cart is empty."); return; }
 
+    // ✅ Block breakfast checkout after 10 AM
+    if(cartHasBreakfast() && !isBreakfastOpen(new Date())){
+      alert("Breakfast ordering is closed for today.");
+      return;
+    }
+
     // Deadline enforcement for Holi special
     if(cartHasSpecial() && isPastDeadline){
       alert(`Holi Special orders are closed.\nDeadline was: ${fmtDate(HOLI_DEADLINE)}.\nPlease DM on WhatsApp for availability.`);
@@ -1289,6 +1310,12 @@
   renderMenu();
   updateCartUI();
   updateSpecialNotices();
+
+  // ✅ Auto refresh every 60s to auto-open at 12 AM & auto-close at 10 AM
+  setInterval(() => {
+    renderMenu();
+    updateCartUI();
+  }, 60 * 1000);
 </script>
 </body>
 </html>
