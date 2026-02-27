@@ -71,7 +71,6 @@
   }
   .chip.green{background: rgba(32,201,151,.12); border-color: rgba(32,201,151,.25); color:#caffef;}
   .chip.red{background: rgba(255,77,79,.14); border-color: rgba(255,77,79,.30); color:#ffe1e1;}
-  .chip.warn{background: rgba(255,176,32,.14); border-color: rgba(255,176,32,.30); color:#ffecc7;}
 
   .promoBar{
     background: linear-gradient(135deg, rgba(32,201,151,.18), rgba(0,0,0,.0));
@@ -169,21 +168,6 @@
   .tab:hover{transform: translateY(-1px); background: rgba(255,255,255,.09);}
   .tab.active{background: rgba(32,201,151,.14); border-color: rgba(32,201,151,.28); color:#caffef;}
 
-  .tabBadge{
-    font-size:11px;
-    padding:5px 8px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(0,0,0,.20);
-    opacity:.95;
-    white-space:nowrap;
-  }
-  .tabBadge.fest{
-    border-color: rgba(255,176,32,.28);
-    background: rgba(255,176,32,.12);
-    color:#ffecc7;
-  }
-
   .sectionTitle{
     margin:10px 0 0;
     padding:0 14px 6px;
@@ -198,13 +182,13 @@
     font-size:12px;
     color: rgba(246,247,251,.72);
   }
-
   .notice{
     margin:0 14px 12px;
     border-radius:18px;
     border:1px solid rgba(255,176,32,.28);
     background: rgba(255,176,32,.10);
     padding:12px;
+    display:none;
   }
   .notice .t{font-weight:1000; margin-bottom:4px;}
   .notice .s{font-size:12px; color:rgba(246,247,251,.78); line-height:1.35;}
@@ -465,7 +449,6 @@
       <div class="chipRow">
         <span class="chip green" id="dateChip">Today</span>
         <span class="chip">100% Veg</span>
-        <span class="chip warn" id="deadlineChip" style="display:none;">Holi orders close 27 Feb</span>
         <span class="chip red" id="siteSoldChip" style="display:none;">SOLD OUT</span>
       </div>
     </div>
@@ -502,7 +485,7 @@
           </p>
 
           <div class="searchBox" style="margin-top:10px;">
-            🔎 <input id="searchInput" placeholder="Search dishes (e.g., idly, gujiya, nimki)..." autocomplete="off" />
+            🔎 <input id="searchInput" placeholder="Search dishes (e.g., idly, poha, upma)..." autocomplete="off" />
           </div>
           <div class="searchHint" id="searchHint">Tip: Search shows items from all meals with their availability.</div>
         </div>
@@ -511,7 +494,11 @@
 
         <div class="sectionTitle" id="sectionTitle">Items</div>
 
-      
+        <!-- Breakfast rule notice (shown only when Breakfast is closed) -->
+        <div class="notice" id="breakfastNotice">
+          <div class="t">Breakfast Ordering</div>
+          <div class="s">Breakfast opens daily after midnight and closes after morning (no orders later). Please check back.</div>
+        </div>
 
         <div class="sectionInfo" id="sectionInfo"></div>
         <div class="menuGrid" id="menuGrid"></div>
@@ -526,7 +513,6 @@
           </div>
 
           <div class="links">
-            <!-- ✅ Mantae link -->
             <a class="linkBtn" href="https://play.google.com/store/apps/details?id=com.mantae.user" target="_blank" rel="noopener">
               <div class="lL"><div class="ic">📲</div><div class="lt"><div class="t">Order via Mantae App</div><div class="s">Flat 10% OFF on orders</div></div></div>
               <div class="arr">›</div>
@@ -537,7 +523,6 @@
               <div class="arr">›</div>
             </a>
 
-            <!-- ✅ Updated group link -->
             <a class="linkBtn" href="https://chat.whatsapp.com/JBd3TRn4JezJNemrVJ1XWm?mode=gi_t" target="_blank" rel="noopener">
               <div class="lL"><div class="ic">👥</div><div class="lt"><div class="t">Join WhatsApp Group</div><div class="s">Daily menu updates</div></div></div>
               <div class="arr">›</div>
@@ -595,11 +580,6 @@
       </div>
 
       <div class="drawerFoot">
-        <div class="notice" id="specialDrawerNotice" style="display:none; margin:0;">
-          <div class="t">✨ Holi Special Reminder</div>
-          <div class="s" id="specialDrawerNoticeText"></div>
-        </div>
-
         <div class="formGrid">
           <div><label for="custName">Name *</label><input id="custName" placeholder="Customer name" /></div>
           <div><label for="custPhone">Phone (optional)</label><input id="custPhone" placeholder="10-digit number" inputmode="numeric" /></div>
@@ -614,7 +594,6 @@
               <option value="Lunch">Lunch</option>
               <option value="Snacks">Snacks</option>
               <option value="Dinner">Dinner</option>
-            
             </select>
           </div>
         </div>
@@ -631,7 +610,8 @@
           </div>
           <div class="payRow">
             <div class="qr" title="Upload your QR as upi-qr.png in same folder">
-              <img id="qrImg" src="upi-qr.png" alt="UPI QR (upload upi-qr.png)" onerror="this.style.display='none'; this.parentElement.innerHTML='Upload <b>upi-qr.png</b><br><span style=&quot;font-size:12px;color:rgba(246,247,251,.65)&quot;>to show QR here</span>';">
+              <img id="qrImg" src="upi-qr.png" alt="UPI QR (upload upi-qr.png)"
+                onerror="this.style.display='none'; this.parentElement.innerHTML='Upload <b>upi-qr.png</b><br><span style=&quot;font-size:12px;color:rgba(246,247,251,.65)&quot;>to show QR here</span>';">
             </div>
             <div style="flex:1; min-width:200px;">
               <div class="mutedSmall">Optional: Enter UTR/Txn ID after payment</div>
@@ -665,35 +645,26 @@
   // Google Apps Script endpoint (order logging)
   const ORDER_API = "https://script.google.com/macros/s/AKfycbwal4w2qwbsN4H6qIhmmAB824dpTswVGzxZ3tJe5wkdUyxRTiW2lH25ldNyXc3svC-c/exec";
 
-  // =========================
-  // HOLI SPECIAL SETTINGS
-  // =========================
-  const HOLI_DEADLINE_DAY = 27;
-  const HOLI_DEADLINE_MONTH = 1; // Feb (0-indexed)
-  const HOLI_DELIVERY_DAY = 2;
-  const HOLI_DELIVERY_MONTH = 2; // March (0-indexed)
-  const HOLI_DELIVERY_HOUR = 14;
-  const HOLI_DELIVERY_MIN = 0;
-
   // Whole day sold out
   const SOLD_OUT_SITE = false;
 
-  // Sections sold out
+  // Sections sold out (manual)
   const SOLD_OUT_SECTIONS = {
     breakfast: false,
     lunch: false,
     snacks: false,
-    dinner: false,
-    special: false
+    dinner: false
   };
 
   // =========================
-  // MENU
+  // MENU (NO HOLI SPECIAL)
   // =========================
+  // ✅ Update Breakfast items daily here (they will auto-open after 12 AM and auto-close after 10 AM)
   const MENU = {
     breakfast: [
-      {name:"Ghee Upma", price:90, desc:"Fresh homemade breakfast", available:false},
-      {name:"Veg Poha", price:90, desc:"Fresh homemade breakfast", available:false}
+      {name:"Ghee Upma", price:90, desc:"Fresh homemade breakfast", available:true},
+      {name:"Veg Poha", price:90, desc:"Fresh homemade breakfast", available:true}
+      // Example (if you want to show but not available): {name:"Extra Idly", price:15, desc:"Add-on", available:false}
     ],
     lunch: [
       {name:"Chapati/Phulka (4 pieces) with Dal Tadka & Aloo Jeera", price:160, desc:"", available:false}
@@ -704,11 +675,6 @@
     dinner: [
       {name:"Aloo Masala Puri (4 pieces) with Chole", price:140, desc:"", available:false},
       {name:"Extra Puri", price:15, desc:"Add-on", available:false}
-    ],
-    special: [
-      {name:"Gujiya (Pedkiya) – Per Piece", price:30, desc:"No sugar coating • Thin crust • Homemade • Rich filling of Mawa (Khoa), Suji & Dry Fruits", available:true},
-      {name:"Gujiya 500g Pack (Approx. 14 pieces)", price:350, desc:"No sugar coating • Thin crust • Homemade • Rich filling of Mawa (Khoa), Suji & Dry Fruits", available:true},
-      {name:"Nimki 500g", price:250, desc:"Crispy & fresh • Made in Rice Bran Oil • Shelf life: up to 1 month • Perfect tea-time snack", available:true}
     ]
   };
 
@@ -716,8 +682,7 @@
     breakfast: ["Idly-Sambar", "Poha", "Upma", "Paratha + Curd"],
     lunch: ["Jeera Rice + Chole", "Rajma Chawal", "Kadhi Chawal", "Paneer Sabzi + Paratha"],
     snacks: ["Samosa + Chutney", "Onion Kachori", "Dahi Puri", "Pakoda + Chai"],
-    dinner: ["Litti Chokha", "Kadhai Paneer + Paratha", "Chana Ghugni + Paratha", "Dal Fry + Jeera Rice"],
-    special: ["Festive Sweets", "Limited Edition Snacks"]
+    dinner: ["Litti Chokha", "Kadhai Paneer + Paratha", "Chana Ghugni + Paratha", "Dal Fry + Jeera Rice"]
   };
 </script>
 
@@ -747,42 +712,20 @@
   }
   function fmtPrice(p){ return (!p || p<=0) ? "" : `₹${p}`; }
 
-  // ✅ Breakfast auto-open window: 12:00 AM to 9:59 AM
-  function isBreakfastOpen(dt = new Date()){
-    const h = dt.getHours();
+  // ✅ Breakfast auto availability window:
+  // Active after 12:00 AM and closed after 10:00 AM (no time shown to user)
+  function isBreakfastWindowOpen(now){
+    const h = now.getHours();
     return (h >= 0 && h < 10);
   }
 
-  // Date helpers
   const NOW = new Date();
-  function fmtDate(dt){
-    return dt.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
-  }
-  function fmtDateTime(dt){
-    return dt.toLocaleString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'numeric', minute:'2-digit' });
-  }
-
-  // Holi deadline/delivery using current year
-  const Y = NOW.getFullYear();
-  const HOLI_DEADLINE = new Date(Y, HOLI_DEADLINE_MONTH, HOLI_DEADLINE_DAY, 23, 59, 59);
-  const HOLI_DELIVERY = new Date(Y, HOLI_DELIVERY_MONTH, HOLI_DELIVERY_DAY, HOLI_DELIVERY_HOUR, HOLI_DELIVERY_MIN, 0);
-
-  // Deadline chip + auto close after deadline
-  const deadlineChip = document.getElementById('deadlineChip');
-  const isPastDeadline = NOW.getTime() > HOLI_DEADLINE.getTime();
-  if(isPastDeadline){
-    SOLD_OUT_SECTIONS.special = true;
-  } else {
-    deadlineChip.style.display = 'inline-flex';
-    deadlineChip.textContent = `Holi orders close ${HOLI_DEADLINE_DAY} Feb`;
-  }
 
   const sections = [
     {key:'breakfast', label:'Breakfast'},
     {key:'lunch', label:'Lunch'},
     {key:'snacks', label:'Snacks'},
-    {key:'dinner', label:'Dinner'},
-    {key:'special', label:'Holi Special'}
+    {key:'dinner', label:'Dinner'}
   ];
 
   const tabsEl = document.getElementById('tabs');
@@ -791,11 +734,7 @@
   const sectionInfoEl = document.getElementById('sectionInfo');
   const searchInput = document.getElementById('searchInput');
   const searchHint = document.getElementById('searchHint');
-
-  const specialNotice = document.getElementById('specialNotice');
-  const specialNoticeText = document.getElementById('specialNoticeText');
-  const specialDrawerNotice = document.getElementById('specialDrawerNotice');
-  const specialDrawerNoticeText = document.getElementById('specialDrawerNoticeText');
+  const breakfastNotice = document.getElementById('breakfastNotice');
 
   let activeKey = 'lunch';
   let searchMode = false;
@@ -804,65 +743,26 @@
   const cart = new Map(); // id => {item, qty, sectionKey}
   function itemId(sectionKey, idx){ return `${sectionKey}:${idx}`; }
   function getQty(id){ return cart.has(id) ? cart.get(id).qty : 0; }
+
   function setQty(id, sectionKey, item, qty){
     if(qty <= 0) cart.delete(id);
     else cart.set(id, {item, qty, sectionKey});
     updateCartUI();
   }
+
   function totals(){
     let count=0, total=0;
     cart.forEach(v=>{ count += v.qty; total += (v.item.price||0)*v.qty; });
     return {count, total};
-  }
-  function cartHasSection(secKey){
-    for(const v of cart.values()){
-      if(v.sectionKey === secKey) return true;
-    }
-    return false;
-  }
-  function cartHasSpecial(){ return cartHasSection('special'); }
-  function cartHasBreakfast(){ return cartHasSection('breakfast'); }
-
-  function updateSpecialNotices(){
-    const show = (activeKey === 'special' && !searchMode) || cartHasSpecial();
-    if(!show){
-      specialNotice.style.display = 'none';
-      specialDrawerNotice.style.display = 'none';
-      return;
-    }
-
-    const deadlineLine = isPastDeadline
-      ? `⚠️ Orders are closed (deadline was ${fmtDate(HOLI_DEADLINE)}).`
-      : `🗓 Please place your order before <b>${fmtDate(HOLI_DEADLINE)}</b>.`;
-
-    const deliveryLine = `🚚 Delivery: <b>${fmtDateTime(HOLI_DELIVERY)}</b>`;
-
-    const base = [
-      deadlineLine,
-      deliveryLine,
-      "Limited festive batches only 🎉",
-      "Please DM to confirm your order ❤️"
-    ].join("<br>");
-
-    specialNoticeText.innerHTML = base;
-    specialNotice.style.display = (activeKey === 'special' && !searchMode) ? 'block' : 'none';
-
-    if(cartHasSpecial()){
-      specialDrawerNoticeText.innerHTML = base;
-      specialDrawerNotice.style.display = 'block';
-    } else {
-      specialDrawerNotice.style.display = 'none';
-    }
   }
 
   function updateCartUI(){
     const {count, total} = totals();
     const bar = document.getElementById('cartBar');
     const summary = document.getElementById('cartSummary');
-    if(count<=0){ bar.style.display='none'; updateSpecialNotices(); return; }
+    if(count<=0){ bar.style.display='none'; return; }
     bar.style.display='block';
     summary.textContent = `${count} item${count>1?'s':''} • Total ₹${total}`;
-    updateSpecialNotices();
   }
 
   // Tabs
@@ -870,14 +770,7 @@
     tabsEl.innerHTML = sections.map(s => {
       const active = s.key === activeKey ? "active" : "";
       const sold = SOLD_OUT_SITE || !!SOLD_OUT_SECTIONS[s.key];
-
-      const fest = (s.key === 'special')
-        ? `<span class="tabBadge fest">✨ Festival</span>`
-        : ``;
-
-      return `<button class="tab ${active}" data-key="${s.key}">
-        <span>${s.label}${sold ? " • Not Available" : ""}</span>${fest}
-      </button>`;
+      return `<button class="tab ${active}" data-key="${s.key}">${s.label}${sold ? " • Not Available" : ""}</button>`;
     }).join('');
 
     tabsEl.querySelectorAll('.tab').forEach(b => {
@@ -897,9 +790,10 @@
     if(!!SOLD_OUT_SECTIONS[sectionKey]) return false;
     if(item && item.available === false) return false;
 
-    // ✅ Breakfast auto open/close (12 AM to 10 AM)
-    if(sectionKey === "breakfast" && !isBreakfastOpen(new Date())) return false;
-
+    // ✅ Breakfast rule enforcement
+    if(sectionKey === 'breakfast'){
+      if(!isBreakfastWindowOpen(new Date())) return false;
+    }
     return true;
   }
 
@@ -908,15 +802,24 @@
     const items = MENU[activeKey] || [];
 
     sectionTitleEl.textContent = searchMode ? "SEARCH RESULTS" : activeKey.toUpperCase();
+
+    // Default
     sectionInfoEl.textContent = searchMode
       ? "Showing matching dishes from all sections"
       : (soldSec ? "Not available today" : "Available today");
 
-    // ✅ Breakfast info override (no time shown)
-    if(!searchMode && activeKey === "breakfast"){
-      sectionInfoEl.textContent = isBreakfastOpen(new Date())
-        ? "Available today"
-        : "Not available today";
+    // ✅ Breakfast info + notice (NO TIME SHOWN)
+    if(!searchMode && activeKey === 'breakfast'){
+      const open = isBreakfastWindowOpen(new Date());
+      if(open){
+        breakfastNotice.style.display = 'none';
+        sectionInfoEl.textContent = "Breakfast is available now";
+      } else {
+        breakfastNotice.style.display = 'block';
+        sectionInfoEl.textContent = "Breakfast is not available right now";
+      }
+    } else {
+      breakfastNotice.style.display = 'none';
     }
 
     let list = items;
@@ -933,16 +836,15 @@
         });
       });
       list = all;
+
       searchHint.textContent = !q ? "Type to search dishes. (Empty = showing all dishes)" : `Results for "${q}"`;
-      specialNotice.style.display = 'none';
 
       if(list.length === 0){
         gridEl.innerHTML = `
           <div class="emptyState">
             <div class="emptyTitle">No results</div>
-            <div class="emptySub">Try another keyword (example: idly, gujiya, nimki).</div>
+            <div class="emptySub">Try another keyword (example: idly, poha, upma).</div>
           </div>`;
-        updateSpecialNotices();
         return;
       }
 
@@ -978,19 +880,10 @@
       }).join('');
 
       bindItemButtons();
-      updateSpecialNotices();
       return;
     }
 
-    // Special notice
-    if(activeKey === 'special' && !soldSec){
-      updateSpecialNotices();
-      specialNotice.style.display = 'block';
-    } else {
-      specialNotice.style.display = 'none';
-      updateSpecialNotices();
-    }
-
+    // Normal section view
     if(items.length === 0){
       const sugg = (SUGGESTIONS[activeKey] || []).slice(0,4);
       gridEl.innerHTML = `
@@ -1065,7 +958,6 @@
   function openDrawer(){
     document.getElementById('drawerOverlay').style.display='flex';
     renderCartDrawer();
-    updateSpecialNotices();
   }
   function closeDrawer(){
     document.getElementById('drawerOverlay').style.display='none';
@@ -1121,11 +1013,6 @@
     const {total} = totals();
     const lines = [];
     cart.forEach(v => lines.push(`${v.item.name} x${v.qty} = ₹${(v.item.price||0)*v.qty}`));
-
-    const holiInfo = cartHasSpecial()
-      ? [``, `HOLI SPECIAL`, `Order Deadline: ${fmtDate(HOLI_DEADLINE)}`, `Delivery: ${fmtDateTime(HOLI_DELIVERY)}`].join("\n")
-      : "";
-
     return [
       "TASTE HUB - INVOICE",
       "J 1301, Kolte Patil Raaga, Kannuru, Bengaluru 560077",
@@ -1134,7 +1021,6 @@
       ...lines,
       "--------------------------------",
       `TOTAL: ₹${total}`,
-      holiInfo,
       "",
       `UPI: ${UPI_ID}`
     ].join("\n");
@@ -1167,7 +1053,7 @@
     window.location.href = url;
   });
 
-  // WhatsApp text (auto adds Holi Deadline/Delivery)
+  // WhatsApp text
   function buildWhatsAppText(orderId){
     const name = document.getElementById('custName').value.trim();
     const phone = document.getElementById('custPhone').value.trim();
@@ -1180,19 +1066,13 @@
     cart.forEach(v => lines.push(`• ${v.item.name} × ${v.qty}${v.item.price ? ` (₹${v.item.price})` : ''}`));
     const {total} = totals();
 
-    const specialBlock = cartHasSpecial()
-      ? (`\n🌸 HOLI SPECIAL DETAILS\nOrder deadline: ${fmtDate(HOLI_DEADLINE)}\nDelivery: ${fmtDateTime(HOLI_DELIVERY)}\n`)
-      : "";
-
     let msg = `Hi TasteHub 👋\n\nOrder Request (Kannuru Nearby)\n`;
     msg += `Order ID: ${orderId}\n`;
     if(name) msg += `Name: ${name}\n`;
     if(phone) msg += `Phone: ${phone}\n`;
     if(flat) msg += `Apartment/Flat: ${flat}\n`;
-    msg += `Preferred meal: ${time}\n`;
-    msg += specialBlock;
-
-    msg += `\nItems:\n${lines.join("\n")}\n`;
+    msg += `Preferred meal: ${time}\n\n`;
+    msg += `Items:\n${lines.join("\n")}\n`;
     msg += `\nTotal: ₹${total}\n`;
     msg += `Paid via UPI: ${UPI_ID}\n`;
     if(txnId) msg += `Txn/UTR: ${txnId}\n`;
@@ -1248,20 +1128,17 @@
     if(!name || !flat){ alert("Please enter Name and Apartment/Flat."); return; }
     if(cart.size===0){ alert("Your cart is empty."); return; }
 
-    // ✅ Block breakfast checkout after 10 AM
-    if(cartHasBreakfast() && !isBreakfastOpen(new Date())){
-      alert("Breakfast ordering is closed for today.");
-      return;
-    }
-
-    // Deadline enforcement for Holi special
-    if(cartHasSpecial() && isPastDeadline){
-      alert(`Holi Special orders are closed.\nDeadline was: ${fmtDate(HOLI_DEADLINE)}.\nPlease DM on WhatsApp for availability.`);
-      return;
+    // ✅ Prevent breakfast order outside window
+    for(const v of cart.values()){
+      if(v.sectionKey === 'breakfast' && !isBreakfastWindowOpen(new Date())){
+        alert("Breakfast is not available right now. Please check back.");
+        return;
+      }
     }
 
     const orderId = genOrderId();
     const {total, count} = totals();
+
     const payload = {
       orderId,
       createdAt: new Date().toISOString(),
@@ -1285,8 +1162,7 @@
         txnId: document.getElementById('txnId').value.trim()
       },
       notes: document.getElementById('custNotes').value.trim(),
-      source: "Website",
-      holiSpecial: cartHasSpecial() ? { deadline: HOLI_DEADLINE.toISOString(), delivery: HOLI_DELIVERY.toISOString() } : null
+      source: "Website"
     };
 
     const logged = await logOrder(payload);
@@ -1305,13 +1181,6 @@
   renderTabs();
   renderMenu();
   updateCartUI();
-  updateSpecialNotices();
-
-  // ✅ Auto refresh every 60s to auto-open at 12 AM & auto-close at 10 AM
-  setInterval(() => {
-    renderMenu();
-    updateCartUI();
-  }, 60 * 1000);
 </script>
 </body>
 </html>
