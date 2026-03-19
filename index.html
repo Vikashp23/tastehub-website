@@ -4,14 +4,13 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>TasteHub | Homemade Veg Meals</title>
-<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. Browse menu, view ads, add to cart, choose payment method, and order on WhatsApp." />
+<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. Browse menu, add to cart, choose payment method, and order on WhatsApp." />
 
 <style>
   :root{
-    --bg:#f5efe3;
-    --bg2:#fffaf0;
-    --panel:rgba(255,255,255,.92);
-    --panelSoft:rgba(255,255,255,.78);
+    --bg:#f7f1e6;
+    --panel:rgba(255,251,244,.90);
+    --panelSoft:rgba(255,251,244,.82);
     --card:#fffdf8;
     --stroke:rgba(90,65,30,.12);
     --text:#2f2418;
@@ -19,7 +18,7 @@
     --brand:#1f9f68;
     --brand2:#f0a11c;
     --danger:#c94848;
-    --shadow:0 16px 40px rgba(63,42,18,.12);
+    --shadow:0 16px 40px rgba(63,42,18,.14);
     --r:18px;
     --r2:24px;
     --max:1180px;
@@ -33,8 +32,8 @@
     font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     color:var(--text);
     background:
-      linear-gradient(rgba(255,248,235,.78), rgba(255,248,235,.88)),
-      url("COVER.png") center top / cover fixed no-repeat;
+      linear-gradient(rgba(255,247,235,.84), rgba(255,247,235,.88)),
+      url("COVER.png") center center / cover fixed no-repeat;
     min-height:100vh;
   }
 
@@ -51,7 +50,7 @@
     position:sticky;
     top:0;
     z-index:60;
-    background:rgba(255,250,240,.82);
+    background:rgba(255,250,240,.84);
     backdrop-filter:blur(10px);
     border-bottom:1px solid rgba(90,65,30,.10);
   }
@@ -136,7 +135,7 @@
     font-weight:800;
     padding:8px 12px;
     border-radius:999px;
-    background:rgba(255,255,255,.8);
+    background:rgba(255,255,255,.82);
     border:1px solid rgba(90,65,30,.10);
     color:#3d2f1f;
     white-space:nowrap;
@@ -153,21 +152,6 @@
     background:rgba(240,161,28,.12);
     border-color:rgba(240,161,28,.18);
     color:#b56f00;
-  }
-
-  .heroBanner{
-    margin-top:16px;
-    border-radius:28px;
-    overflow:hidden;
-    box-shadow:var(--shadow);
-    border:1px solid rgba(90,65,30,.12);
-    background:rgba(255,255,255,.45);
-  }
-
-  .heroBanner img{
-    width:100%;
-    height:auto;
-    object-fit:cover;
   }
 
   .adSection{
@@ -254,7 +238,7 @@
     padding:12px 14px;
     border-radius:16px;
     border:1px solid rgba(90,65,30,.10);
-    background:rgba(255,255,255,.8);
+    background:rgba(255,255,255,.84);
   }
 
   .searchBox input{
@@ -279,7 +263,7 @@
     padding:12px 14px;
     border-top:1px solid rgba(90,65,30,.08);
     border-bottom:1px solid rgba(90,65,30,.08);
-    background:rgba(255,255,255,.45);
+    background:rgba(255,255,255,.48);
     scrollbar-width:none;
   }
   .tabs::-webkit-scrollbar{display:none}
@@ -331,7 +315,7 @@
   }
 
   .item{
-    background:rgba(255,255,255,.88);
+    background:rgba(255,255,255,.90);
     border:1px solid rgba(90,65,30,.10);
     border-radius:18px;
     padding:12px;
@@ -470,7 +454,7 @@
     padding:12px;
     border-radius:16px;
     border:1px solid rgba(90,65,30,.10);
-    background:rgba(255,255,255,.88);
+    background:rgba(255,255,255,.90);
   }
 
   .lL{
@@ -508,7 +492,7 @@
 
   .infoCard{
     border:1px solid rgba(90,65,30,.10);
-    background:rgba(255,255,255,.82);
+    background:rgba(255,255,255,.84);
     border-radius:16px;
     padding:14px;
     margin-top:14px;
@@ -796,11 +780,6 @@
   </div>
 
   <div class="wrap">
-
-    <div class="heroBanner">
-      <img src="COVER.png" alt="TasteHub Cover"
-           onerror="this.style.display='none'; this.parentElement.style.minHeight='240px'; this.parentElement.style.background='linear-gradient(135deg,#fff3dc,#f4fff3)';">
-    </div>
 
     <div class="adSection">
       <div class="sectionHead">
