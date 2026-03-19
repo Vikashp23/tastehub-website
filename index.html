@@ -41,9 +41,9 @@
   img{max-width:100%;display:block}
 
   .wrap{
-    max-width:var(--max);
-    margin:0 auto;
-    padding:14px 14px 120px;
+  max-width:var(--max);
+  margin:0 auto;
+  padding:14px 14px 140px;
   }
 
   .appbar{
@@ -512,10 +512,11 @@
     right:0;
     bottom:0;
     z-index:999;
-    background:rgba(255,250,240,.96);
+    background:rgba(255,250,240,.98);
     backdrop-filter:blur(12px);
     border-top:1px solid rgba(90,65,30,.10);
     display:none;
+    box-shadow:0 -8px 24px rgba(0,0,0,.08);
   }
 
   .cartInner{
@@ -1265,9 +1266,23 @@
   });
 
   function updateCartUI(){
-    const {count, total} = totals();
-    const bar = document.getElementById('cartBar');
-    const summary = document.getElementById('cartSummary');
+  const {count, total} = totals();
+  const bar = document.getElementById('cartBar');
+  const summary = document.getElementById('cartSummary');
+
+  if(!bar || !summary) return;
+
+  if(count <= 0){
+    bar.style.display = 'none';
+    summary.textContent = '0 items';
+    return;
+  }
+
+  bar.style.display = 'block';
+  bar.style.visibility = 'visible';
+  bar.style.opacity = '1';
+  summary.textContent = `${count} item${count > 1 ? 's' : ''} • Total ₹${total}`;
+}
 
     if(count <= 0){
       bar.style.display = 'none';
