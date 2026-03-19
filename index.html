@@ -11,15 +11,11 @@
     --bg:#f7f1e6;
     --panel:rgba(255,251,244,.90);
     --panelSoft:rgba(255,251,244,.82);
-    --card:#fffdf8;
-    --stroke:rgba(90,65,30,.12);
     --text:#2f2418;
     --muted:#6d5d49;
     --brand:#1f9f68;
     --brand2:#f0a11c;
-    --danger:#c94848;
     --shadow:0 16px 40px rgba(63,42,18,.14);
-    --r:18px;
     --r2:24px;
     --max:1180px;
   }
@@ -41,9 +37,9 @@
   img{max-width:100%;display:block}
 
   .wrap{
-  max-width:var(--max);
-  margin:0 auto;
-  padding:14px 14px 140px;
+    max-width:var(--max);
+    margin:0 auto;
+    padding:14px 14px 140px;
   }
 
   .appbar{
@@ -173,12 +169,6 @@
     color:#2c2318;
   }
 
-  .sectionSub{
-    margin:0;
-    color:var(--muted);
-    font-size:13px;
-  }
-
   .adCoverCard{
     background:var(--panel);
     border:1px solid rgba(90,65,30,.10);
@@ -189,8 +179,7 @@
 
   .adCoverCard img{
     width:100%;
-    max-height:auto;
-    object-fit:contain;
+    height:auto;
     display:block;
   }
 
@@ -511,7 +500,7 @@
     left:0;
     right:0;
     bottom:0;
-    z-index:999;
+    z-index:9999;
     background:rgba(255,250,240,.98);
     backdrop-filter:blur(12px);
     border-top:1px solid rgba(90,65,30,.10);
@@ -680,6 +669,8 @@
     gap:8px;
   }
 
+  #upiPaymentBox{display:none}
+
   .payRow{
     display:flex;
     align-items:center;
@@ -776,16 +767,16 @@
   <div class="wrap">
 
     <div class="adSection">
-  <div class="sectionHead">
-    <div>
-      <h2>Special Highlight</h2>
-    </div>
-  </div>
+      <div class="sectionHead">
+        <div>
+          <h2>Special Highlight</h2>
+        </div>
+      </div>
 
-  <div class="adCoverCard">
-    <img src="ad 2.png" alt="TasteHub Promotion Banner">
-  </div>
-</div>
+      <div class="adCoverCard">
+        <img src="ad 2.png" alt="TasteHub Promotion Banner">
+      </div>
+    </div>
 
     <div class="grid">
       <div class="panel">
@@ -928,8 +919,7 @@
           <div class="payRow">
             <div class="qr">
               <img id="qrImg" src="upi-qr.png" alt="UPI QR"
-                   onerror="this.style.display='none'; this.parentElement.innerHTML='Upload <b>upi-qr.png</b>';">
-            </div>
+                   onerror="this.style.display='none'; this.parentElement.innerHTML='Upload <b>upi-qr.png</b>';"></n            </div>
             <div style="flex:1; min-width:200px;">
               <div class="mutedSmall">Optional: Enter UTR / Transaction ID after payment</div>
               <input id="txnId" placeholder="UTR / Transaction ID (optional)" />
@@ -972,8 +962,8 @@
       {name:"Extra idly", price:15, desc:"Add-on", available:false}
     ],
     tomorrow: [
-      {name:"Puri (4 pieces ) with Aloo curry", price:130, desc:"Tomorrow breakfast", available:true}
-      {name:"Extra puri", price:15, desc:"Add-on", available:true}
+      {name:"Puri (4 pieces) with Aloo curry", price:130, desc:"Tomorrow breakfast", available:true},
+      {name:"Extra puri", price:15, desc:"Add-on", available:true},
       {name:"Aloo paneer sandwich (4 slices)", price:120, desc:"Tomorrow breakfast", available:false},
       {name:"Aloo cheese sandwich (4 slices)", price:120, desc:"Tomorrow breakfast", available:false},
       {name:"Methi paratha (4 pieces) with curd", price:100, desc:"Tomorrow breakfast", available:false},
@@ -1227,6 +1217,7 @@
         if(btn.dataset.act === 'inc') setQty(id, row, currentQty + 1);
         if(btn.dataset.act === 'dec') setQty(id, row, currentQty - 1);
 
+        updateCartUI();
         renderMenu();
       });
     });
@@ -1250,6 +1241,7 @@
         if(btn.dataset.act === 'inc') setQty(id, cartRow, currentQty + 1);
         if(btn.dataset.act === 'dec') setQty(id, cartRow, currentQty - 1);
 
+        updateCartUI();
         renderMenu();
       });
     });
@@ -1266,23 +1258,11 @@
   });
 
   function updateCartUI(){
-  const {count, total} = totals();
-  const bar = document.getElementById('cartBar');
-  const summary = document.getElementById('cartSummary');
+    const {count, total} = totals();
+    const bar = document.getElementById('cartBar');
+    const summary = document.getElementById('cartSummary');
 
-  if(!bar || !summary) return;
-
-  if(count <= 0){
-    bar.style.display = 'none';
-    summary.textContent = '0 items';
-    return;
-  }
-
-  bar.style.display = 'block';
-  bar.style.visibility = 'visible';
-  bar.style.opacity = '1';
-  summary.textContent = `${count} item${count > 1 ? 's' : ''} • Total ₹${total}`;
-}
+    if(!bar || !summary) return;
 
     if(count <= 0){
       bar.style.display = 'none';
@@ -1291,6 +1271,8 @@
     }
 
     bar.style.display = 'block';
+    bar.style.visibility = 'visible';
+    bar.style.opacity = '1';
     summary.textContent = `${count} item${count > 1 ? 's' : ''} • Total ₹${total}`;
   }
 
@@ -1365,6 +1347,7 @@
   }
 
   paymentMethodEl.addEventListener('change', togglePaymentBox);
+  document.addEventListener('DOMContentLoaded', togglePaymentBox);
   togglePaymentBox();
 
   function buildInvoiceText(){
@@ -1385,7 +1368,7 @@
       `TOTAL: ₹${total}`,
       "",
       `UPI: ${UPI_ID}`
-    ].join("\\n");
+    ].join("\n");
   }
 
   document.getElementById('invoiceBtn').addEventListener('click', () => {
@@ -1424,27 +1407,27 @@
       lines.push(`• ${v.item.name}${extra} × ${v.qty}${v.item.price ? ` (₹${v.item.price})` : ''}`);
     });
 
-    let msg = `Hi TasteHub 👋\\n\\nOrder Request\\n`;
-    msg += `Order ID: ${orderId}\\n`;
-    msg += `Name: ${name}\\n`;
-    msg += `Phone: ${phone}\\n`;
-    msg += `Apartment/Flat: ${flat}\\n`;
-    msg += `Preferred meal: ${time}\\n`;
-    if(time === 'Breakfast') msg += `Breakfast date selected: ${selectedBreakfastDate}\\n`;
-    msg += `Payment Method: ${paymentMethod}\\n`;
+    let msg = `Hi TasteHub 👋\n\nOrder Request\n`;
+    msg += `Order ID: ${orderId}\n`;
+    msg += `Name: ${name}\n`;
+    msg += `Phone: ${phone}\n`;
+    msg += `Apartment/Flat: ${flat}\n`;
+    msg += `Preferred meal: ${time}\n`;
+    if(time === 'Breakfast') msg += `Breakfast date selected: ${selectedBreakfastDate}\n`;
+    msg += `Payment Method: ${paymentMethod}\n`;
 
-    msg += `\\nItems:\\n${lines.join('\\n')}\\n`;
-    msg += `\\nTotal: ₹${total}\\n`;
+    msg += `\nItems:\n${lines.join('\n')}\n`;
+    msg += `\nTotal: ₹${total}\n`;
 
     if(paymentMethod === 'UPI'){
-      msg += `UPI ID: ${UPI_ID}\\n`;
-      if(txnId) msg += `Txn/UTR: ${txnId}\\n`;
+      msg += `UPI ID: ${UPI_ID}\n`;
+      if(txnId) msg += `Txn/UTR: ${txnId}\n`;
     } else {
-      msg += `Payment: Cash on Delivery\\n`;
+      msg += `Payment: Cash on Delivery\n`;
     }
 
-    if(notes) msg += `\\nNotes: ${notes}\\n`;
-    msg += `\\nPlease confirm my order. Thanks!`;
+    if(notes) msg += `\nNotes: ${notes}\n`;
+    msg += `\nPlease confirm my order. Thanks!`;
 
     return msg;
   }
