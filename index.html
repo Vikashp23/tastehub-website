@@ -179,24 +179,19 @@
     font-size:13px;
   }
 
-  .adsGrid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:12px;
-  }
-
-  .adCard{
+  .adCoverCard{
     background:var(--panel);
     border:1px solid rgba(90,65,30,.10);
-    border-radius:20px;
+    border-radius:24px;
     overflow:hidden;
     box-shadow:var(--shadow);
   }
 
-  .adCard img{
+  .adCoverCard img{
     width:100%;
-    aspect-ratio:4/5;
+    max-height:420px;
     object-fit:cover;
+    display:block;
   }
 
   .grid{
@@ -730,7 +725,6 @@
   }
 
   @media (max-width:980px){
-    .adsGrid{grid-template-columns:repeat(2,1fr)}
     .grid{grid-template-columns:1fr}
   }
 
@@ -748,7 +742,6 @@
       flex-direction:row;
       align-items:center;
     }
-    .adsGrid{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -784,17 +777,14 @@
     <div class="adSection">
       <div class="sectionHead">
         <div>
-          <h2>Advertisements & Highlights</h2>
-          <p class="sectionSub">Show your offers, menu banners and promotional posters here.</p>
+          <h2>Special Highlight</h2>
+          <p class="sectionSub">Today’s featured TasteHub banner</p>
         </div>
         <span class="chip green">TasteHub Promotions</span>
       </div>
 
-      <div class="adsGrid">
-        <div class="adCard"><img src="ad 1 .png" alt="TasteHub Ad 1"></div>
-        <div class="adCard"><img src="ad 2.png" alt="TasteHub Ad 2"></div>
-        <div class="adCard"><img src="ad 3.png" alt="TasteHub Ad 3"></div>
-        <div class="adCard"><img src="ad 4.png" alt="TasteHub Ad 4"></div>
+      <div class="adCoverCard">
+        <img src="ad 2.png" alt="TasteHub Promotion Banner">
       </div>
     </div>
 
@@ -1003,9 +993,18 @@
       {name:"Veg hakka noodles", price:100, desc:"Snack meal", available:true}
     ],
     dinner: [
-      {name:"Muli paratha (2 pieces) with curd", price:100, desc:"Light dinner", available:true},
-      {name:"Puri (4 pieces) with aloo curry", price:130, desc:"Classic dinner", available:true},
-      {name:"Mix veg curry with chapati", price:130, desc:"Healthy dinner", available:true}
+      {
+        name:"Plain paratha/chapati (4 pieces) with kadhai paneer (200gm)",
+        price:140,
+        desc:"Today Dinner",
+        available:true
+      },
+      {
+        name:"Extra Paratha/Chapati",
+        price:15,
+        desc:"Add-on",
+        available:true
+      }
     ]
   };
 
@@ -1019,7 +1018,7 @@
   const paymentMethodEl = document.getElementById('paymentMethod');
   const upiPaymentBox = document.getElementById('upiPaymentBox');
 
-  let activeKey = 'lunch';
+  let activeKey = 'dinner';
   let searchMode = false;
   let selectedBreakfastDate = 'today';
 
@@ -1371,7 +1370,7 @@
       `TOTAL: ₹${total}`,
       "",
       `UPI: ${UPI_ID}`
-    ].join("\n");
+    ].join("\\n");
   }
 
   document.getElementById('invoiceBtn').addEventListener('click', () => {
@@ -1410,27 +1409,27 @@
       lines.push(`• ${v.item.name}${extra} × ${v.qty}${v.item.price ? ` (₹${v.item.price})` : ''}`);
     });
 
-    let msg = `Hi TasteHub 👋\n\nOrder Request\n`;
-    msg += `Order ID: ${orderId}\n`;
-    msg += `Name: ${name}\n`;
-    msg += `Phone: ${phone}\n`;
-    msg += `Apartment/Flat: ${flat}\n`;
-    msg += `Preferred meal: ${time}\n`;
-    if(time === 'Breakfast') msg += `Breakfast date selected: ${selectedBreakfastDate}\n`;
-    msg += `Payment Method: ${paymentMethod}\n`;
+    let msg = `Hi TasteHub 👋\\n\\nOrder Request\\n`;
+    msg += `Order ID: ${orderId}\\n`;
+    msg += `Name: ${name}\\n`;
+    msg += `Phone: ${phone}\\n`;
+    msg += `Apartment/Flat: ${flat}\\n`;
+    msg += `Preferred meal: ${time}\\n`;
+    if(time === 'Breakfast') msg += `Breakfast date selected: ${selectedBreakfastDate}\\n`;
+    msg += `Payment Method: ${paymentMethod}\\n`;
 
-    msg += `\nItems:\n${lines.join('\n')}\n`;
-    msg += `\nTotal: ₹${total}\n`;
+    msg += `\\nItems:\\n${lines.join('\\n')}\\n`;
+    msg += `\\nTotal: ₹${total}\\n`;
 
     if(paymentMethod === 'UPI'){
-      msg += `UPI ID: ${UPI_ID}\n`;
-      if(txnId) msg += `Txn/UTR: ${txnId}\n`;
+      msg += `UPI ID: ${UPI_ID}\\n`;
+      if(txnId) msg += `Txn/UTR: ${txnId}\\n`;
     } else {
-      msg += `Payment: Cash on Delivery\n`;
+      msg += `Payment: Cash on Delivery\\n`;
     }
 
-    if(notes) msg += `\nNotes: ${notes}\n`;
-    msg += `\nPlease confirm my order. Thanks!`;
+    if(notes) msg += `\\nNotes: ${notes}\\n`;
+    msg += `\\nPlease confirm my order. Thanks!`;
 
     return msg;
   }
