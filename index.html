@@ -3,47 +3,57 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>TasteHub | Kannuru Nearby – Menu & Order</title>
-<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. Browse menu, add to cart, pay via UPI, and checkout on WhatsApp." />
+<title>TasteHub | Homemade Veg Meals</title>
+<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. Browse menu, view ads, add to cart, choose payment method, and order on WhatsApp." />
 
 <style>
   :root{
-    --bg:#0b0f14;
-    --surface:#121824;
-    --card:#151e2d;
-    --stroke:rgba(255,255,255,.10);
-    --text:#f6f7fb;
-    --muted:rgba(246,247,251,.72);
-    --brand:#20c997;
-    --danger:#ff4d4f;
-    --shadow:0 18px 60px rgba(0,0,0,.55);
+    --bg:#f5efe3;
+    --bg2:#fffaf0;
+    --panel:rgba(255,255,255,.92);
+    --panelSoft:rgba(255,255,255,.78);
+    --card:#fffdf8;
+    --stroke:rgba(90,65,30,.12);
+    --text:#2f2418;
+    --muted:#6d5d49;
+    --brand:#1f9f68;
+    --brand2:#f0a11c;
+    --danger:#c94848;
+    --shadow:0 16px 40px rgba(63,42,18,.12);
     --r:18px;
     --r2:24px;
-    --max:1120px;
+    --max:1180px;
   }
 
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+
   body{
     margin:0;
     font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     color:var(--text);
     background:
-      radial-gradient(1200px 700px at 15% -10%, rgba(32,201,151,.20), transparent 55%),
-      radial-gradient(900px 600px at 95% 0%, rgba(255,77,79,.12), transparent 55%),
-      linear-gradient(180deg, #080b10, #0b0f14 55%, #080b10);
+      linear-gradient(rgba(255,248,235,.78), rgba(255,248,235,.88)),
+      url("COVER.png") center top / cover fixed no-repeat;
     min-height:100vh;
   }
 
-  a{color:inherit; text-decoration:none}
-  .wrap{max-width:var(--max); margin:0 auto; padding:14px 14px 120px;}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+
+  .wrap{
+    max-width:var(--max);
+    margin:0 auto;
+    padding:14px 14px 120px;
+  }
 
   .appbar{
     position:sticky;
     top:0;
-    z-index:50;
-    background:rgba(11,15,20,.84);
+    z-index:60;
+    background:rgba(255,250,240,.82);
     backdrop-filter:blur(10px);
-    border-bottom:1px solid rgba(255,255,255,.07);
+    border-bottom:1px solid rgba(90,65,30,.10);
   }
 
   .appbarInner{
@@ -64,8 +74,8 @@
   }
 
   .logoWrap{
-    width:52px;
-    height:52px;
+    width:54px;
+    height:54px;
     border-radius:14px;
     background:#000;
     display:flex;
@@ -73,49 +83,44 @@
     justify-content:center;
     overflow:hidden;
     flex:0 0 auto;
-    border:1px solid rgba(255,255,255,.14);
-    box-shadow:0 6px 18px rgba(0,0,0,.35);
+    border:1px solid rgba(90,65,30,.12);
+    box-shadow:0 6px 18px rgba(0,0,0,.18);
   }
 
   .logoWrap img{
     width:100%;
     height:100%;
     object-fit:cover;
-    display:block;
   }
 
   .brandText{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    line-height:1.2;
     min-width:0;
+    line-height:1.2;
   }
 
   .brandText h1{
     margin:0;
-    font-size:17px;
+    font-size:18px;
     font-weight:800;
-    color:#fff;
-    letter-spacing:.2px;
+    color:#2d2418;
   }
 
   .brandText .tagline{
     margin-top:3px;
     font-size:11px;
-    color:#cfeee5;
+    color:#1f9f68;
+    font-weight:700;
   }
 
   .brandText .meta{
     margin-top:4px;
     font-size:11px;
     line-height:1.35;
-    color:rgba(255,255,255,.72);
+    color:var(--muted);
   }
 
   .brandText .meta b{
-    color:#fff;
-    font-weight:700;
+    color:#2d2418;
   }
 
   .chipRow{
@@ -129,46 +134,104 @@
   .chip{
     font-size:12px;
     font-weight:800;
-    padding:7px 10px;
+    padding:8px 12px;
     border-radius:999px;
-    background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.10);
-    color:rgba(246,247,251,.90);
+    background:rgba(255,255,255,.8);
+    border:1px solid rgba(90,65,30,.10);
+    color:#3d2f1f;
     white-space:nowrap;
+    box-shadow:0 4px 12px rgba(63,42,18,.06);
   }
 
   .chip.green{
-    background:rgba(32,201,151,.12);
-    border-color:rgba(32,201,151,.25);
-    color:#caffef;
+    background:rgba(31,159,104,.12);
+    border-color:rgba(31,159,104,.18);
+    color:#15754a;
   }
 
-  .chip.red{
-    background:rgba(255,77,79,.14);
-    border-color:rgba(255,77,79,.30);
-    color:#ffe1e1;
+  .chip.orange{
+    background:rgba(240,161,28,.12);
+    border-color:rgba(240,161,28,.18);
+    color:#b56f00;
+  }
+
+  .heroBanner{
+    margin-top:16px;
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    border:1px solid rgba(90,65,30,.12);
+    background:rgba(255,255,255,.45);
+  }
+
+  .heroBanner img{
+    width:100%;
+    height:auto;
+    object-fit:cover;
+  }
+
+  .adSection{
+    margin-top:16px;
+  }
+
+  .sectionHead{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+  }
+
+  .sectionHead h2{
+    margin:0;
+    font-size:22px;
+    color:#2c2318;
+  }
+
+  .sectionSub{
+    margin:0;
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  .adsGrid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+  }
+
+  .adCard{
+    background:var(--panel);
+    border:1px solid rgba(90,65,30,.10);
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+
+  .adCard img{
+    width:100%;
+    aspect-ratio:4/5;
+    object-fit:cover;
   }
 
   .grid{
-    margin-top:14px;
+    margin-top:16px;
     display:grid;
     grid-template-columns:1.35fr .65fr;
     gap:14px;
   }
 
-  @media (max-width:900px){
-    .grid{grid-template-columns:1fr;}
-  }
-
   .panel{
-    background:rgba(18,24,36,.70);
-    border:1px solid rgba(255,255,255,.10);
+    background:var(--panelSoft);
+    border:1px solid rgba(90,65,30,.10);
     border-radius:var(--r2);
     box-shadow:var(--shadow);
     overflow:hidden;
   }
 
-  .pad{padding:14px;}
+  .pad{padding:14px}
+
   .row{
     display:flex;
     align-items:center;
@@ -181,17 +244,17 @@
     margin:6px 0 0;
     color:var(--muted);
     font-size:13px;
-    line-height:1.35;
+    line-height:1.45;
   }
 
   .searchBox{
     display:flex;
     gap:10px;
     align-items:center;
-    padding:10px 12px;
+    padding:12px 14px;
     border-radius:16px;
-    border:1px solid rgba(255,255,255,.12);
-    background:rgba(0,0,0,.18);
+    border:1px solid rgba(90,65,30,.10);
+    background:rgba(255,255,255,.8);
   }
 
   .searchBox input{
@@ -205,7 +268,7 @@
 
   .searchHint{
     font-size:12px;
-    color:rgba(246,247,251,.65);
+    color:var(--muted);
     margin-top:8px;
   }
 
@@ -214,40 +277,36 @@
     gap:10px;
     overflow:auto;
     padding:12px 14px;
-    border-top:1px solid rgba(255,255,255,.06);
-    border-bottom:1px solid rgba(255,255,255,.06);
-    background:rgba(0,0,0,.18);
+    border-top:1px solid rgba(90,65,30,.08);
+    border-bottom:1px solid rgba(90,65,30,.08);
+    background:rgba(255,255,255,.45);
     scrollbar-width:none;
   }
-
   .tabs::-webkit-scrollbar{display:none}
 
   .tab{
     flex:0 0 auto;
-    padding:9px 12px;
+    padding:10px 14px;
     border-radius:999px;
-    border:1px solid rgba(255,255,255,.10);
-    background:rgba(255,255,255,.06);
-    color:rgba(246,247,251,.92);
-    font-weight:900;
+    border:1px solid rgba(90,65,30,.10);
+    background:#fff;
+    color:#4b3a28;
+    font-weight:800;
     font-size:12px;
     cursor:pointer;
-    display:inline-flex;
-    gap:8px;
-    align-items:center;
   }
 
   .tab.active{
-    background:rgba(32,201,151,.14);
-    border-color:rgba(32,201,151,.28);
-    color:#caffef;
+    background:linear-gradient(135deg, rgba(31,159,104,.14), rgba(240,161,28,.12));
+    border-color:rgba(31,159,104,.18);
+    color:#176947;
   }
 
   .sectionTitle{
     margin:10px 0 0;
     padding:0 14px 6px;
     font-size:12px;
-    color:rgba(246,247,251,.65);
+    color:#8d7c66;
     text-transform:uppercase;
     letter-spacing:.14em;
     font-weight:1000;
@@ -256,7 +315,7 @@
   .sectionInfo{
     margin:0 14px 10px;
     font-size:12px;
-    color:rgba(246,247,251,.72);
+    color:var(--muted);
   }
 
   .breakfastDateWrap{
@@ -272,9 +331,9 @@
   }
 
   .item{
-    background:rgba(21,30,45,.75);
-    border:1px solid rgba(255,255,255,.10);
-    border-radius:var(--r);
+    background:rgba(255,255,255,.88);
+    border:1px solid rgba(90,65,30,.10);
+    border-radius:18px;
     padding:12px;
     display:flex;
     gap:12px;
@@ -282,7 +341,7 @@
     justify-content:space-between;
   }
 
-  .iLeft{min-width:0;}
+  .iLeft{min-width:0}
   .iTop{
     display:flex;
     gap:10px;
@@ -294,20 +353,21 @@
     width:10px;
     height:10px;
     border-radius:3px;
-    border:1px solid rgba(32,201,151,.55);
-    background:rgba(32,201,151,.25);
-    box-shadow:0 0 0 3px rgba(32,201,151,.08);
+    border:1px solid rgba(31,159,104,.55);
+    background:rgba(31,159,104,.25);
+    box-shadow:0 0 0 3px rgba(31,159,104,.08);
   }
 
   .iname{
-    font-weight:1000;
+    font-weight:900;
     font-size:14px;
+    color:#2d2418;
   }
 
   .iprice{
-    font-weight:1000;
+    font-weight:900;
     font-size:13px;
-    color:#d9ffe9;
+    color:#176947;
     margin-top:2px;
   }
 
@@ -331,23 +391,23 @@
     gap:6px;
     padding:6px 10px;
     border-radius:999px;
-    border:1px solid rgba(255,255,255,.12);
-    background:rgba(0,0,0,.18);
-    font-weight:1000;
+    border:1px solid rgba(90,65,30,.10);
+    background:#fff;
+    font-weight:900;
     font-size:12px;
     white-space:nowrap;
   }
 
   .badge.av{
-    border-color:rgba(32,201,151,.25);
-    background:rgba(32,201,151,.10);
-    color:#caffef;
+    border-color:rgba(31,159,104,.18);
+    background:rgba(31,159,104,.10);
+    color:#176947;
   }
 
   .badge.na{
-    border-color:rgba(255,77,79,.28);
-    background:rgba(255,77,79,.12);
-    color:#ffe1e1;
+    border-color:rgba(201,72,72,.18);
+    background:rgba(201,72,72,.10);
+    color:#9c3030;
   }
 
   .qty{
@@ -356,16 +416,16 @@
     align-items:center;
     padding:7px 10px;
     border-radius:12px;
-    border:1px solid rgba(255,255,255,.12);
-    background:rgba(0,0,0,.18);
+    border:1px solid rgba(90,65,30,.10);
+    background:#fff;
   }
 
   .qbtn{
     width:28px;
     height:28px;
     border-radius:10px;
-    border:1px solid rgba(255,255,255,.14);
-    background:rgba(255,255,255,.06);
+    border:1px solid rgba(90,65,30,.12);
+    background:#fff;
     color:var(--text);
     font-weight:1000;
     cursor:pointer;
@@ -381,9 +441,9 @@
   .addBtn{
     padding:9px 12px;
     border-radius:12px;
-    border:1px solid rgba(32,201,151,.30);
-    background:rgba(32,201,151,.14);
-    color:#caffef;
+    border:1px solid rgba(31,159,104,.24);
+    background:rgba(31,159,104,.10);
+    color:#176947;
     font-weight:1000;
     font-size:12px;
     cursor:pointer;
@@ -391,9 +451,9 @@
   }
 
   .addBtn.primary{
-    background:linear-gradient(135deg, rgba(32,201,151,.95), rgba(32,201,151,.68));
+    background:linear-gradient(135deg, #1f9f68, #f0a11c);
     border:none;
-    color:#052015;
+    color:#fff;
   }
 
   .links{
@@ -407,11 +467,10 @@
     align-items:center;
     justify-content:space-between;
     gap:10px;
-    padding:12px 12px;
+    padding:12px;
     border-radius:16px;
-    border:1px solid rgba(255,255,255,.12);
-    background:rgba(255,255,255,.06);
-    color:var(--text);
+    border:1px solid rgba(90,65,30,.10);
+    background:rgba(255,255,255,.88);
   }
 
   .lL{
@@ -427,13 +486,13 @@
     border-radius:12px;
     display:grid;
     place-items:center;
-    background:rgba(0,0,0,.22);
-    border:1px solid rgba(255,255,255,.12);
+    background:rgba(240,161,28,.12);
+    border:1px solid rgba(240,161,28,.16);
     flex:0 0 auto;
   }
 
   .lt .t{
-    font-weight:1000;
+    font-weight:900;
     font-size:13px;
   }
 
@@ -443,8 +502,29 @@
   }
 
   .arr{
-    opacity:.8;
+    opacity:.7;
     font-size:18px;
+  }
+
+  .infoCard{
+    border:1px solid rgba(90,65,30,.10);
+    background:rgba(255,255,255,.82);
+    border-radius:16px;
+    padding:14px;
+    margin-top:14px;
+  }
+
+  .infoCard h3{
+    margin:0 0 8px;
+    font-size:15px;
+    color:#2d2418;
+  }
+
+  .miniList{
+    display:grid;
+    gap:6px;
+    font-size:13px;
+    color:var(--muted);
   }
 
   .cartBar{
@@ -452,10 +532,11 @@
     left:0;
     right:0;
     bottom:0;
-    z-index:60;
-    background:rgba(11,15,20,.90);
-    backdrop-filter:blur(10px);
-    border-top:1px solid rgba(255,255,255,.10);
+    z-index:999;
+    background:rgba(255,250,240,.96);
+    backdrop-filter:blur(12px);
+    border-top:1px solid rgba(90,65,30,.10);
+    display:none;
   }
 
   .cartInner{
@@ -472,17 +553,18 @@
     padding:12px 14px;
     border-radius:14px;
     border:none;
-    background:linear-gradient(135deg, rgba(32,201,151,.95), rgba(32,201,151,.70));
-    color:#052015;
+    background:linear-gradient(135deg, #1f9f68, #f0a11c);
+    color:#fff;
     font-weight:1100;
     cursor:pointer;
+    box-shadow:0 8px 18px rgba(240,161,28,.18);
   }
 
   .ghostBtn{
     padding:12px 12px;
     border-radius:14px;
-    border:1px solid rgba(255,255,255,.14);
-    background:rgba(255,255,255,.06);
+    border:1px solid rgba(90,65,30,.10);
+    background:#fff;
     color:var(--text);
     font-weight:1000;
     cursor:pointer;
@@ -491,8 +573,8 @@
   .drawerOverlay{
     position:fixed;
     inset:0;
-    z-index:80;
-    background:rgba(0,0,0,.55);
+    z-index:1000;
+    background:rgba(40,27,12,.42);
     display:none;
     align-items:flex-end;
     justify-content:center;
@@ -500,13 +582,13 @@
   }
 
   .drawer{
-    width:min(760px, 100%);
-    background:rgba(18,24,36,.92);
-    border:1px solid rgba(255,255,255,.10);
+    width:min(780px, 100%);
+    background:#fff9ef;
+    border:1px solid rgba(90,65,30,.10);
     border-radius:24px;
-    box-shadow:var(--shadow);
+    box-shadow:0 24px 60px rgba(63,42,18,.18);
     overflow:hidden;
-    max-height:90vh;
+    max-height:92vh;
     display:flex;
     flex-direction:column;
   }
@@ -516,15 +598,20 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    border-bottom:1px solid rgba(255,255,255,.08);
+    border-bottom:1px solid rgba(90,65,30,.08);
+    background:rgba(255,255,255,.7);
+  }
+
+  .drawerHead h3{
+    margin:0;
   }
 
   .closeBtn{
     width:40px;
     height:40px;
     border-radius:14px;
-    border:1px solid rgba(255,255,255,.14);
-    background:rgba(255,255,255,.06);
+    border:1px solid rgba(90,65,30,.10);
+    background:#fff;
     color:var(--text);
     font-weight:1000;
     cursor:pointer;
@@ -538,6 +625,7 @@
   .cartList{
     display:grid;
     gap:10px;
+    margin-bottom:14px;
   }
 
   .cartItem{
@@ -545,14 +633,14 @@
     align-items:center;
     justify-content:space-between;
     gap:12px;
-    background:rgba(0,0,0,.18);
-    border:1px solid rgba(255,255,255,.10);
+    background:#fff;
+    border:1px solid rgba(90,65,30,.10);
     border-radius:16px;
     padding:12px;
   }
 
   .cartItem .name{
-    font-weight:1000;
+    font-weight:900;
     font-size:13px;
   }
 
@@ -563,10 +651,10 @@
 
   .drawerFoot{
     padding:14px;
-    border-top:1px solid rgba(255,255,255,.08);
+    border-top:1px solid rgba(90,65,30,.08);
     display:grid;
     gap:12px;
-    background:rgba(0,0,0,.12);
+    background:rgba(255,255,255,.58);
   }
 
   .formGrid{
@@ -575,31 +663,19 @@
     gap:10px;
   }
 
-  @media (max-width:560px){
-    .formGrid{grid-template-columns:1fr;}
-    .appbarInner{
-      align-items:flex-start;
-      flex-direction:column;
-    }
-    .chipRow{
-      width:100%;
-      justify-content:flex-start;
-    }
-  }
-
   label{
     font-size:12px;
-    color:rgba(246,247,251,.78);
+    color:#4d3b28;
     font-weight:900;
   }
 
   input, textarea, select{
     width:100%;
-    background:rgba(0,0,0,.18);
-    border:1px solid rgba(255,255,255,.12);
+    background:#fff;
+    border:1px solid rgba(90,65,30,.10);
     color:var(--text);
     border-radius:14px;
-    padding:10px 12px;
+    padding:11px 12px;
     outline:none;
     font-size:14px;
   }
@@ -611,13 +687,13 @@
 
   .mutedSmall{
     font-size:12px;
-    color:rgba(246,247,251,.60);
+    color:var(--muted);
     line-height:1.35;
   }
 
   .payBox{
-    border:1px solid rgba(255,255,255,.12);
-    background:rgba(255,255,255,.04);
+    border:1px solid rgba(90,65,30,.10);
+    background:#fff;
     border-radius:16px;
     padding:12px;
     display:grid;
@@ -640,8 +716,8 @@
     width:180px;
     max-width:100%;
     border-radius:14px;
-    border:1px solid rgba(255,255,255,.12);
-    background:rgba(0,0,0,.18);
+    border:1px solid rgba(90,65,30,.10);
+    background:#fff;
     padding:10px;
     display:grid;
     place-items:center;
@@ -650,28 +726,50 @@
   .qr img{
     max-width:100%;
     height:auto;
-    display:block;
     border-radius:10px;
   }
 
   .toast{
     position:fixed;
     left:50%;
-    bottom:84px;
+    bottom:88px;
     transform:translateX(-50%);
-    background:rgba(0,0,0,.75);
-    border:1px solid rgba(255,255,255,.12);
-    color:rgba(246,247,251,.95);
+    background:#2d2418;
+    border:1px solid rgba(255,255,255,.10);
+    color:#fff;
     padding:10px 12px;
     border-radius:14px;
     display:none;
-    z-index:999;
+    z-index:1200;
     max-width:92vw;
     font-size:13px;
+  }
+
+  @media (max-width:980px){
+    .adsGrid{grid-template-columns:repeat(2,1fr)}
+    .grid{grid-template-columns:1fr}
+  }
+
+  @media (max-width:560px){
+    .formGrid{grid-template-columns:1fr}
+    .appbarInner{
+      align-items:flex-start;
+      flex-direction:column;
+    }
+    .chipRow{
+      width:100%;
+      justify-content:flex-start;
+    }
+    .cartInner{
+      flex-direction:row;
+      align-items:center;
+    }
+    .adsGrid{grid-template-columns:1fr}
   }
 </style>
 </head>
 <body>
+
   <div class="appbar">
     <div class="appbarInner">
       <div class="brandRow">
@@ -692,13 +790,35 @@
 
       <div class="chipRow">
         <span class="chip green" id="dateChip">Today</span>
-        <span class="chip">100% Veg</span>
-        <span class="chip red" id="siteSoldChip" style="display:none;">SOLD OUT</span>
+        <span class="chip orange">100% Veg</span>
       </div>
     </div>
   </div>
 
   <div class="wrap">
+
+    <div class="heroBanner">
+      <img src="COVER.png" alt="TasteHub Cover"
+           onerror="this.style.display='none'; this.parentElement.style.minHeight='240px'; this.parentElement.style.background='linear-gradient(135deg,#fff3dc,#f4fff3)';">
+    </div>
+
+    <div class="adSection">
+      <div class="sectionHead">
+        <div>
+          <h2>Advertisements & Highlights</h2>
+          <p class="sectionSub">Show your offers, menu banners and promotional posters here.</p>
+        </div>
+        <span class="chip green">TasteHub Promotions</span>
+      </div>
+
+      <div class="adsGrid">
+        <div class="adCard"><img src="ad 1 .png" alt="TasteHub Ad 1"></div>
+        <div class="adCard"><img src="ad 2.png" alt="TasteHub Ad 2"></div>
+        <div class="adCard"><img src="ad 3.png" alt="TasteHub Ad 3"></div>
+        <div class="adCard"><img src="ad 4.png" alt="TasteHub Ad 4"></div>
+      </div>
+    </div>
+
     <div class="grid">
       <div class="panel">
         <div class="pad">
@@ -706,14 +826,14 @@
             <div style="font-weight:1000;">Menu</div>
             <div class="chip green">Kannuru Nearby Only</div>
           </div>
-          <p class="sub" id="menuNote">
-            Check availability, view tomorrow breakfast, add to cart, then pay & checkout on WhatsApp.
+          <p class="sub">
+            Check availability, browse meals, add to cart, choose payment method, and submit on WhatsApp.
           </p>
 
           <div class="searchBox" style="margin-top:10px;">
             🔎 <input id="searchInput" placeholder="Search dishes..." autocomplete="off" />
           </div>
-          <div class="searchHint" id="searchHint">Tip: Search shows items from all meals with their availability.</div>
+          <div class="searchHint">Tip: Search shows items from all meals with their availability.</div>
         </div>
 
         <div class="tabs" id="tabs"></div>
@@ -752,11 +872,22 @@
             </a>
           </div>
 
-          <div class="payBox" style="margin-top:14px;">
-            <div class="mutedSmall">
-              <b>TasteHub</b><br>
-              Fresh homemade veg meals.<br>
-              Add items to cart, pay via UPI, and confirm your order on WhatsApp.
+          <div class="infoCard">
+            <h3>How to order</h3>
+            <div class="miniList">
+              <div>1) Select your food items</div>
+              <div>2) Open cart</div>
+              <div>3) Choose UPI or Cash on Delivery</div>
+              <div>4) Submit order on WhatsApp</div>
+            </div>
+          </div>
+
+          <div class="infoCard">
+            <h3>TasteHub</h3>
+            <div class="miniList">
+              <div>Fresh homemade veg meals</div>
+              <div>Breakfast • Lunch • Snacks • Dinner</div>
+              <div>UPI & Cash on Delivery supported</div>
             </div>
           </div>
         </div>
@@ -764,15 +895,15 @@
     </div>
   </div>
 
-  <div class="cartBar" id="cartBar" style="display:none;">
+  <div class="cartBar" id="cartBar">
     <div class="cartInner">
       <div style="min-width:0">
         <div style="font-weight:1000; font-size:14px;" id="cartSummary">0 items</div>
-        <div style="font-size:12px; color:var(--muted);">Open cart to pay & checkout</div>
+        <div style="font-size:12px; color:var(--muted);">Review cart and place your order</div>
       </div>
       <div style="display:flex; gap:10px; align-items:center;">
-        <button class="ghostBtn" id="viewCartBtn">View Cart</button>
-        <button class="checkoutBtn" id="checkoutBtn">Checkout</button>
+        <button class="ghostBtn" id="viewCartBtn" type="button">View Cart</button>
+        <button class="checkoutBtn" id="checkoutBtn" type="button">Checkout</button>
       </div>
     </div>
   </div>
@@ -791,11 +922,11 @@
       <div class="drawerFoot">
         <div class="formGrid">
           <div><label for="custName">Name *</label><input id="custName" placeholder="Customer name" /></div>
-          <div><label for="custPhone">Phone (optional)</label><input id="custPhone" placeholder="10-digit number" inputmode="numeric" /></div>
+          <div><label for="custPhone">Phone *</label><input id="custPhone" placeholder="10-digit number" inputmode="numeric" /></div>
         </div>
 
         <div class="formGrid">
-          <div><label for="custFlat">Apartment / Flat *</label><input id="custFlat" placeholder="J 1301, Raaga..." /></div>
+          <div><label for="custFlat">Apartment / Flat *</label><input id="custFlat" placeholder="J1301 / Flat / Address..." /></div>
           <div>
             <label for="custTime">Preferred Meal</label>
             <select id="custTime">
@@ -807,9 +938,17 @@
           </div>
         </div>
 
+        <div>
+          <label for="paymentMethod">Payment Method *</label>
+          <select id="paymentMethod">
+            <option value="UPI">UPI</option>
+            <option value="Cash on Delivery">Cash on Delivery</option>
+          </select>
+        </div>
+
         <div><label for="custNotes">Notes (optional)</label><textarea id="custNotes" placeholder="Less spicy, no onion/garlic, etc."></textarea></div>
 
-        <div class="payBox">
+        <div class="payBox" id="upiPaymentBox">
           <div class="payRow">
             <div>
               <div style="font-weight:1000;">Pay by UPI</div>
@@ -824,7 +963,7 @@
                    onerror="this.style.display='none'; this.parentElement.innerHTML='Upload <b>upi-qr.png</b>';">
             </div>
             <div style="flex:1; min-width:200px;">
-              <div class="mutedSmall">Optional: Enter UTR/Txn ID after payment</div>
+              <div class="mutedSmall">Optional: Enter UTR / Transaction ID after payment</div>
               <input id="txnId" placeholder="UTR / Transaction ID (optional)" />
               <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
                 <button class="checkoutBtn" id="payNowBtn" type="button">Pay Now</button>
@@ -835,7 +974,7 @@
         </div>
 
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="checkoutBtn" id="drawerCheckout" type="button">📲 Send Order on WhatsApp</button>
+          <button class="checkoutBtn" id="drawerCheckout" type="button">Submit Order</button>
           <button class="ghostBtn" id="clearCart" type="button">Clear</button>
         </div>
       </div>
@@ -848,16 +987,11 @@
   const WHATSAPP_NUMBER = "919632035612";
   const UPI_ID = "email.vikashpathak-1@okicici";
   const ORDER_API = "https://script.google.com/macros/s/AKfycbwal4w2qwbsN4H6qIhmmAB824dpTswVGzxZ3tJe5wkdUyxRTiW2lH25ldNyXc3svC-c/exec";
-  const SOLD_OUT_SITE = false;
 
   document.getElementById('dateChip').textContent =
     new Date().toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short' });
 
   document.getElementById('upiIdText').textContent = UPI_ID;
-
-  if (SOLD_OUT_SITE) {
-    document.getElementById('siteSoldChip').style.display = 'inline-flex';
-  }
 
   function isBreakfastWindowOpen(now = new Date()){
     const h = now.getHours();
@@ -870,29 +1004,29 @@
       {name:"Extra idly", price:15, desc:"Add-on", available:true}
     ],
     tomorrow: [
-      {name:"Aloo paneer sandwich (4 slices)", price:120, desc:"Tomorrow breakfast", available:false},
-      {name:"Aloo cheese sandwich (4 slices)", price:120, desc:"Tomorrow breakfast", available:false},
-      {name:"Methi paratha (4 pieces) with curd", price:100, desc:"Tomorrow breakfast", available:false},
-      {name:"Aloo paratha (2 pieces) with curd", price:90, desc:"Tomorrow breakfast", available:false},
-      {name:"Rajma with paratha/chapati (4 pieces)", price:140, desc:"Tomorrow breakfast", available:false}
+      {name:"Aloo paneer sandwich (4 slices)", price:120, desc:"Tomorrow breakfast", available:true},
+      {name:"Aloo cheese sandwich (4 slices)", price:120, desc:"Tomorrow breakfast", available:true},
+      {name:"Methi paratha (4 pieces) with curd", price:100, desc:"Tomorrow breakfast", available:true},
+      {name:"Aloo paratha (2 pieces) with curd", price:90, desc:"Tomorrow breakfast", available:true},
+      {name:"Rajma with paratha/chapati (4 pieces)", price:140, desc:"Tomorrow breakfast", available:true}
     ]
   };
 
   const MENU = {
     lunch: [
-      {name:"Plain paratha/chapati (4 pieces) with mix veg curry", price:130, desc:"", available:false},
-      {name:"Jeera rice with palak daal fry, papad", price:150, desc:"", available:false},
-      {name:"Veg fried rice with raita", price:140, desc:"", available:false}
+      {name:"Plain paratha/chapati (4 pieces) with mix veg curry", price:130, desc:"Simple homemade lunch", available:true},
+      {name:"Jeera rice with palak daal fry, papad", price:150, desc:"Comfort meal", available:true},
+      {name:"Veg fried rice with raita", price:140, desc:"Popular lunch option", available:true}
     ],
     snacks: [
-      {name:"Aloo bread roll (2 pieces) with chutney", price:70, desc:"", available:false},
-      {name:"Vada pav", price:40, desc:"", available:false},
-      {name:"Veg hakka noodles", price:100, desc:"", available:false}
+      {name:"Aloo bread roll (2 pieces) with chutney", price:70, desc:"Crispy snack", available:true},
+      {name:"Vada pav", price:40, desc:"Quick evening bite", available:true},
+      {name:"Veg hakka noodles", price:100, desc:"Snack meal", available:true}
     ],
     dinner: [
-      {name:"Muli paratha (2 pieces) with curd", price:100, desc:"", available:false},
-      {name:"Puri (4 pieces) with aloo curry", price:130, desc:"", available:false},
-      {name:"Mix veg curry with chapati", price:130, desc:"", available:true}
+      {name:"Muli paratha (2 pieces) with curd", price:100, desc:"Light dinner", available:true},
+      {name:"Puri (4 pieces) with aloo curry", price:130, desc:"Classic dinner", available:true},
+      {name:"Mix veg curry with chapati", price:130, desc:"Healthy dinner", available:true}
     ]
   };
 
@@ -903,6 +1037,8 @@
   const searchInput = document.getElementById('searchInput');
   const breakfastDateWrap = document.getElementById('breakfastDateWrap');
   const breakfastDateSelect = document.getElementById('breakfastDateSelect');
+  const paymentMethodEl = document.getElementById('paymentMethod');
+  const upiPaymentBox = document.getElementById('upiPaymentBox');
 
   let activeKey = 'lunch';
   let searchMode = false;
@@ -1157,6 +1293,7 @@
 
     if(count <= 0){
       bar.style.display = 'none';
+      summary.textContent = '0 items';
       return;
     }
 
@@ -1208,6 +1345,7 @@
   function openDrawer(){
     document.getElementById('drawerOverlay').style.display = 'flex';
     renderCartDrawer();
+    togglePaymentBox();
   }
 
   function closeDrawer(){
@@ -1227,6 +1365,14 @@
     renderCartDrawer();
     renderMenu();
   });
+
+  function togglePaymentBox(){
+    if (!paymentMethodEl || !upiPaymentBox) return;
+    upiPaymentBox.style.display = paymentMethodEl.value === 'UPI' ? 'grid' : 'none';
+  }
+
+  paymentMethodEl.addEventListener('change', togglePaymentBox);
+  togglePaymentBox();
 
   function buildInvoiceText(){
     const {total} = totals();
@@ -1276,6 +1422,7 @@
     const time = document.getElementById('custTime').value;
     const notes = document.getElementById('custNotes').value.trim();
     const txnId = document.getElementById('txnId').value.trim();
+    const paymentMethod = document.getElementById('paymentMethod').value;
     const {total} = totals();
 
     const lines = [];
@@ -1284,19 +1431,28 @@
       lines.push(`• ${v.item.name}${extra} × ${v.qty}${v.item.price ? ` (₹${v.item.price})` : ''}`);
     });
 
-    let msg = `Hi TasteHub 👋\n\nOrder Request (Kannuru Nearby)\n`;
+    let msg = `Hi TasteHub 👋\n\nOrder Request\n`;
     msg += `Order ID: ${orderId}\n`;
-    if(name) msg += `Name: ${name}\n`;
-    if(phone) msg += `Phone: ${phone}\n`;
-    if(flat) msg += `Apartment/Flat: ${flat}\n`;
+    msg += `Name: ${name}\n`;
+    msg += `Phone: ${phone}\n`;
+    msg += `Apartment/Flat: ${flat}\n`;
     msg += `Preferred meal: ${time}\n`;
     if(time === 'Breakfast') msg += `Breakfast date selected: ${selectedBreakfastDate}\n`;
+    msg += `Payment Method: ${paymentMethod}\n`;
+
     msg += `\nItems:\n${lines.join('\n')}\n`;
     msg += `\nTotal: ₹${total}\n`;
-    msg += `Paid via UPI: ${UPI_ID}\n`;
-    if(txnId) msg += `Txn/UTR: ${txnId}\n`;
+
+    if(paymentMethod === 'UPI'){
+      msg += `UPI ID: ${UPI_ID}\n`;
+      if(txnId) msg += `Txn/UTR: ${txnId}\n`;
+    } else {
+      msg += `Payment: Cash on Delivery\n`;
+    }
+
     if(notes) msg += `\nNotes: ${notes}\n`;
-    msg += `\nThanks!`;
+    msg += `\nPlease confirm my order. Thanks!`;
+
     return msg;
   }
 
@@ -1323,10 +1479,17 @@
 
   document.getElementById('drawerCheckout').addEventListener('click', async () => {
     const name = document.getElementById('custName').value.trim();
+    const phone = document.getElementById('custPhone').value.trim();
     const flat = document.getElementById('custFlat').value.trim();
+    const paymentMethod = document.getElementById('paymentMethod').value;
 
-    if(!name || !flat) return alert("Please enter Name and Apartment/Flat.");
-    if(cart.size === 0) return alert("Your cart is empty.");
+    if(!name || !phone || !flat){
+      return alert("Please enter Name, Phone and Apartment/Flat.");
+    }
+
+    if(cart.size === 0){
+      return alert("Your cart is empty.");
+    }
 
     const orderId = genOrderId();
     const {total, count} = totals();
@@ -1336,7 +1499,7 @@
       createdAt: new Date().toISOString(),
       customer: {
         name,
-        phone: document.getElementById('custPhone').value.trim(),
+        phone,
         flat,
         preferredMeal: document.getElementById('custTime').value,
         breakfastDate: selectedBreakfastDate
@@ -1351,17 +1514,17 @@
       })),
       totals:{count, total},
       payment:{
-        method:'UPI',
-        upiId:UPI_ID,
-        txnId:document.getElementById('txnId').value.trim()
+        method: paymentMethod,
+        upiId: paymentMethod === 'UPI' ? UPI_ID : '',
+        txnId: paymentMethod === 'UPI' ? document.getElementById('txnId').value.trim() : ''
       },
-      notes:document.getElementById('custNotes').value.trim(),
+      notes: document.getElementById('custNotes').value.trim(),
       source:'Website'
     };
 
     const logged = await logOrder(payload);
-    if(!logged.ok) toast("Order saved to WhatsApp. Sheet logging failed.");
-    else toast("Order logged to sheet");
+    if(!logged.ok) toast("Order submitted. Sheet logging failed.");
+    else toast("Order submitted");
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppText(orderId))}`;
     window.open(url, '_blank');
