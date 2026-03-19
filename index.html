@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>TasteHub | Kannuru Nearby – Menu, Order & DoorDrop</title>
-<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. Browse menu, view tomorrow breakfast, add to cart, estimate delivery, and checkout on WhatsApp." />
+<title>TasteHub | Kannuru Nearby – Menu & Order</title>
+<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. Browse menu, add to cart, pay via UPI, and checkout on WhatsApp." />
 
 <style>
   :root{
@@ -50,13 +50,25 @@
   }
   .brandRow{display:flex; gap:10px; align-items:center; min-width:0;}
   .logo{
-    width:44px; height:44px; border-radius:14px;
-    background:linear-gradient(135deg, rgba(32,201,151,.95), rgba(32,201,151,.45));
-    display:grid; place-items:center;
-    color:#052015; font-weight:1000;
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    background:#ffffff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     border:1px solid rgba(255,255,255,.12);
     flex:0 0 auto;
+    overflow:hidden;
+    padding:4px;
   }
+  .logo img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+  }
+
   .titleBlock h1{margin:0; font-size:18px; line-height:1.1;}
   .titleBlock .meta{margin:4px 0 0; font-size:12px; color:var(--muted); line-height:1.35;}
 
@@ -375,32 +387,15 @@
     max-width:92vw;
     font-size:13px;
   }
-
-  .floatingSocial{
-    position:fixed;
-    right:14px;
-    bottom:110px;
-    z-index:999;
-    display:grid;
-    gap:10px;
-  }
-  .floatingSocial a{
-    width:48px; height:48px;
-    border-radius:18px;
-    display:grid; place-items:center;
-    text-decoration:none;
-    background:rgba(0,0,0,.30);
-    border:1px solid rgba(255,255,255,.14);
-    box-shadow:0 10px 30px rgba(0,0,0,.35);
-    font-size:20px;
-  }
 </style>
 </head>
 <body>
   <div class="appbar">
     <div class="appbarInner">
       <div class="brandRow">
-        <div class="logo">TH</div>
+        <div class="logo">
+          <img src="logo.png" alt="TasteHub Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='TH'; this.parentElement.style.fontWeight='1000'; this.parentElement.style.color='#052015'; this.parentElement.style.background='linear-gradient(135deg, rgba(32,201,151,.95), rgba(32,201,151,.45))';">
+        </div>
         <div class="titleBlock">
           <h1>TasteHub</h1>
           <div class="meta">
@@ -454,72 +449,29 @@
       <div class="panel">
         <div class="pad">
           <div class="row">
-            <div style="font-weight:1000;">Quick Links</div>
+            <div style="font-weight:1000;">Quick Contact</div>
             <div class="chip">Fast access</div>
           </div>
 
           <div class="links">
             <a class="linkBtn" href="https://wa.me/919632035612" target="_blank">
-              <div class="lL"><div class="ic">💬</div><div class="lt"><div class="t">WhatsApp Order Help</div><div class="s">Ask availability / plans</div></div></div>
-              <div class="arr">›</div>
-            </a>
-
-            <a class="linkBtn" href="https://chat.whatsapp.com/JBd3TRn4JezJNemrVJ1XWm?mode=gi_t" target="_blank">
-              <div class="lL"><div class="ic">👥</div><div class="lt"><div class="t">Join WhatsApp Group</div><div class="s">Daily menu updates</div></div></div>
-              <div class="arr">›</div>
-            </a>
-
-            <a class="linkBtn" href="https://maps.app.goo.gl/ZkxNT4HRU3ppFe65A" target="_blank">
-              <div class="lL"><div class="ic">📍</div><div class="lt"><div class="t">Google Maps</div><div class="s">Kolte Patil Raaga (Kannuru)</div></div></div>
+              <div class="lL">
+                <div class="ic">💬</div>
+                <div class="lt">
+                  <div class="t">Chat on WhatsApp</div>
+                  <div class="s">Order food / Ask menu / Payment help</div>
+                </div>
+              </div>
               <div class="arr">›</div>
             </a>
           </div>
 
-          <div class="sub" style="margin-top:14px; font-weight:1000;">DoorDrop Delivery Service</div>
-          <div class="payBox" style="margin-top:10px;">
+          <div class="payBox" style="margin-top:14px;">
             <div class="mutedSmall">
-              <b>Powered by DoorDrop</b><br>
-              Hyperlocal pickup & delivery support for TasteHub and nearby kitchens.
+              <b>TasteHub</b><br>
+              Fresh homemade veg meals.<br>
+              Add items to cart, pay via UPI, and confirm your order on WhatsApp.
             </div>
-
-            <div class="links" style="margin-top:4px;">
-              <a class="linkBtn" href="https://chat.whatsapp.com/LYlochc9FKCE1vGUXscI1F" target="_blank">
-                <div class="lL"><div class="ic">🚚</div><div class="lt"><div class="t">Book DoorDrop Delivery</div><div class="s">Nearby apartment delivery</div></div></div>
-                <div class="arr">›</div>
-              </a>
-
-              <a class="linkBtn" href="https://chat.whatsapp.com/LYlochc9FKCE1vGUXscI1F" target="_blank">
-                <div class="lL"><div class="ic">🏍️</div><div class="lt"><div class="t">Join as Delivery Partner</div><div class="s">Rider enquiry</div></div></div>
-                <div class="arr">›</div>
-              </a>
-
-              <a class="linkBtn" href="https://chat.whatsapp.com/LYlochc9FKCE1vGUXscI1F" target="_blank">
-                <div class="lL"><div class="ic">🍱</div><div class="lt"><div class="t">Kitchen Partner Enquiry</div><div class="s">For home chefs / kitchens</div></div></div>
-                <div class="arr">›</div>
-              </a>
-            </div>
-          </div>
-
-          <div class="sub" style="margin-top:14px; font-weight:1000;">Delivery Charge Estimator</div>
-          <div class="payBox" style="margin-top:10px;">
-            <div class="mutedSmall"><b>From:</b> Kolte Patil Raaga, Kannuru</div>
-
-            <label style="margin-top:8px;">Customer address</label>
-            <input id="delAddress" placeholder="Enter customer apartment / address" />
-
-            <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
-              <button class="ghostBtn" type="button" id="openMapsBtn">Open in Maps</button>
-            </div>
-
-            <label style="margin-top:10px;">Distance (km)</label>
-            <input id="delKm" placeholder="Enter km shown in Maps" inputmode="decimal" />
-
-            <div class="mutedSmall" style="margin-top:8px;">
-              DoorDrop fee = Base ₹<span id="baseFeeTxt">30</span> + ₹<span id="perKmTxt">12</span>/km
-            </div>
-
-            <button class="checkoutBtn" type="button" id="calcDeliveryBtn" style="margin-top:10px;">Calculate Delivery</button>
-            <div class="sub" id="deliveryResult" style="margin-top:10px;"></div>
           </div>
         </div>
       </div>
@@ -605,12 +557,6 @@
   </div>
 
   <div class="toast" id="toast"></div>
-
-  <div class="floatingSocial">
-    <a href="https://wa.me/919632035612" target="_blank">💬</a>
-    <a href="https://maps.app.goo.gl/ZkxNT4HRU3ppFe65A" target="_blank">📍</a>
-    <a href="https://wa.me/919632035612?text=Hi%20I%20want%20DoorDrop%20delivery" target="_blank">🚚</a>
-  </div>
 
 <script>
   const WHATSAPP_NUMBER = "919632035612";
@@ -1124,26 +1070,6 @@
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppText(orderId))}`;
     window.open(url, '_blank');
-  });
-
-  const DELIVERY_BASE_FEE = 30;
-  const DELIVERY_PER_KM = 12;
-  document.getElementById('baseFeeTxt').textContent = DELIVERY_BASE_FEE;
-  document.getElementById('perKmTxt').textContent = DELIVERY_PER_KM;
-
-  document.getElementById('openMapsBtn').addEventListener('click', () => {
-    const dest = document.getElementById('delAddress').value.trim();
-    if(!dest) return alert("Please enter customer address");
-    const origin = encodeURIComponent("Kolte Patil Raaga, Kannuru, Bengaluru 560077");
-    const destination = encodeURIComponent(dest);
-    window.open(`https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`, '_blank');
-  });
-
-  document.getElementById('calcDeliveryBtn').addEventListener('click', () => {
-    const km = parseFloat(document.getElementById('delKm').value);
-    if(isNaN(km) || km <= 0) return alert("Enter valid km");
-    const fee = Math.round(DELIVERY_BASE_FEE + (DELIVERY_PER_KM * km));
-    document.getElementById('deliveryResult').innerHTML = `<b>Estimated DoorDrop Charge:</b> ₹${fee}`;
   });
 
   renderTabs();
