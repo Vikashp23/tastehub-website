@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TasteHub Homemade Veg Meals</title>
-<meta name="description" content="TasteHub Homemade Veg Meals near Kannuru. Browse menu, add to cart, choose payment method, and order on WhatsApp.">
+<title>TasteHub | Homemade Veg Meals</title>
+<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. Browse menu, add to cart, choose payment method, and order on WhatsApp.">
 
 <style>
 :root {
@@ -345,6 +345,10 @@ img { max-width: 100%; display: block; }
   border: none;
   color: #fff;
 }
+.addBtn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
 .links { display: grid; gap: 10px; margin-top: 10px; }
 .linkBtn {
@@ -387,7 +391,7 @@ img { max-width: 100%; display: block; }
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 900; /* LOWER than drawer */
+  z-index: 900;
   background: rgba(255,250,240,.98);
   backdrop-filter: blur(12px);
   border-top: 1px solid rgba(90,65,30,.10);
@@ -423,125 +427,6 @@ img { max-width: 100%; display: block; }
   cursor: pointer;
 }
 
-.drawerOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 2000; /* HIGHER than cart */
-  background: rgba(40,27,12,.42);
-  display: none;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 14px;
-}
-/* Hide cart when drawer open */
-body.drawer-open .cartBar { display: none !important; }
-
-.drawer {
-  width: min(780px, 100%);
-  background: #fff9ef;
-  border: 1px solid rgba(90,65,30,.10);
-  border-radius: 24px;
-  box-shadow: 0 24px 60px rgba(63,42,18,.18);
-  overflow: hidden;
-  max-height: 92vh;
-  display: flex;
-  flex-direction: column;
-}
-.drawerHead {
-  padding: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(90,65,30,.08);
-  background: rgba(255,255,255,.7);
-}
-.drawerHead h3 { margin: 0; }
-.closeBtn {
-  width: 40px;
-  height: 40px;
-  border-radius: 14px;
-  border: 1px solid rgba(90,65,30,.10);
-  background: #fff;
-  color: var(--text);
-  font-weight: 1000;
-  cursor: pointer;
-}
-.drawerContent { display: flex; flex-direction: column; min-height: 0; flex: 1; }
-.drawerBody { padding: 14px; overflow: auto; flex: 1; }
-.cartList { display: grid; gap: 10px; margin-bottom: 14px; }
-.cartItem {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  background: #fff;
-  border: 1px solid rgba(90,65,30,.10);
-  border-radius: 16px;
-  padding: 12px;
-}
-.cartItem .name { font-weight: 900; font-size: 13px; }
-.cartItem .meta { font-size: 12px; color: var(--muted); }
-.drawerFoot {
-  padding: 14px;
-  border-top: 1px solid rgba(90,65,30,.08);
-  display: grid;
-  gap: 12px;
-  background: rgba(255,255,255,.58);
-}
-.formGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-label {
-  font-size: 12px;
-  color: #4d3b28;
-  font-weight: 900;
-}
-input, textarea, select {
-  width: 100%;
-  background: #fff;
-  border: 1px solid rgba(90,65,30,.10);
-  color: var(--text);
-  border-radius: 14px;
-  padding: 11px 12px;
-  outline: none;
-  font-size: 14px;
-}
-textarea { min-height: 76px; resize: vertical; }
-.mutedSmall {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.35;
-}
-.payBox {
-  border: 1px solid rgba(90,65,30,.10);
-  background: #fff;
-  border-radius: 16px;
-  padding: 12px;
-  display: grid;
-  gap: 8px;
-}
-#upiPaymentBox { display: none; }
-.payRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.payId { font-weight: 1000; }
-.qr {
-  width: 180px;
-  max-width: 100%;
-  border-radius: 14px;
-  border: 1px solid rgba(90,65,30,.10);
-  background: #fff;
-  padding: 10px;
-  display: grid;
-  place-items: center;
-}
-.qr img { max-width: 100%; height: auto; border-radius: 10px; }
 .toast {
   position: fixed;
   left: 50%;
@@ -557,29 +442,10 @@ textarea { min-height: 76px; resize: vertical; }
   max-width: 92vw;
   font-size: 13px;
 }
-
-@media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
-@media (max-width: 560px) {
-  .formGrid { grid-template-columns: 1fr; }
-  .appbarInner { align-items: flex-start; flex-direction: column; }
-  .chipRow { width: 100%; justify-content: flex-start; }
-  .cartInner { flex-direction: row; align-items: center; }
-  .drawerOverlay { padding: 0; align-items: flex-end; }
-  .drawer {
-    width: 100%;
-    max-width: 100%;
-    max-height: 100vh;
-    height: 100vh;
-    border-radius: 20px 20px 0 0;
-  }
-  .drawerHead { position: sticky; top: 0; z-index: 2; }
-  .drawerBody { padding-bottom: 120px; }
-}
 </style>
 </head>
 
 <body>
-
 <div class="appbar">
   <div class="appbarInner">
     <div class="brandRow">
@@ -608,7 +474,7 @@ textarea { min-height: 76px; resize: vertical; }
       <h2>Special Highlight</h2>
     </div>
     <div class="adCoverCard">
-      <img src="ad 2.png" alt="TasteHub Promotion Banner">
+      <img src="ad2.png" alt="Promotion Banner">
     </div>
   </div>
 
@@ -640,715 +506,178 @@ textarea { min-height: 76px; resize: vertical; }
       </div>
       <div class="menuGrid" id="menuGrid"></div>
     </div>
-
-    <!-- RIGHT PANEL - CONTACT -->
-    <div class="panel">
-      <div class="pad">
-        <div class="row">
-          <div style="font-weight: 1000;">Quick Contact</div>
-          <div class="chip">Fast access</div>
-        </div>
-        
-        <div class="links">
-          <a class="linkBtn" href="https://wa.me/919632035612" target="_blank">
-            <div class="lL">
-              <div class="ic">💬</div>
-              <div class="lt">
-                <div class="t">Chat on WhatsApp</div>
-                <div class="s">Order food • Ask menu • Payment help</div>
-              </div>
-            </div>
-            <div class="arr">→</div>
-          </a>
-        </div>
-
-        <div class="infoCard">
-          <h3>How to order</h3>
-          <div class="miniList">
-            <div>1) Select your food items</div>
-            <div>2) Open cart</div>
-            <div>3) Choose UPI or Cash on Delivery</div>
-            <div>4) Submit order on WhatsApp</div>
+    
+    <!-- RIGHT PANEL - LINKS & Info -->
+    <div>
+      <div class="links">
+        <div class="linkBtn">
+          <div class="lL">
+            <div class="ic">💳</div>
+            <div class="lt"><div class="t">UPI Payment</div><div class="s" id="upiIdText"></div></div>
           </div>
+          <div class="arr">→</div>
         </div>
-
-        <div class="infoCard">
-          <h3>TasteHub</h3>
-          <div class="miniList">
-            <div>Fresh homemade veg meals</div>
-            <div>Breakfast • Lunch • Snacks • Dinner</div>
-            <div>UPI • Cash on Delivery supported</div>
+        <div class="linkBtn">
+          <div class="lL">
+            <div class="ic">📞</div>
+            <div class="lt"><div class="t">WhatsApp Order</div><div class="s">Send your order directly</div></div>
           </div>
+          <div class="arr">→</div>
+        </div>
+      </div>
+      <div class="infoCard">
+        <h3>How to Order</h3>
+        <div class="miniList">
+          <div>1. Browse menu and add items</div>
+          <div>2. Choose payment method</div>
+          <div>3. Confirm order on WhatsApp</div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- CART BAR -->
+<!-- Cart Bar -->
 <div class="cartBar" id="cartBar">
   <div class="cartInner">
-    <div style="min-width: 0;">
-      <div style="font-weight: 1000; font-size: 14px;" id="cartSummary">0 items</div>
-      <div style="font-size: 12px; color: var(--muted);">Review cart and place your order</div>
-    </div>
-    <div style="display: flex; gap: 10px; align-items: center;">
-      <button class="ghostBtn" id="viewCartBtn" type="button">View Cart</button>
-      <button class="checkoutBtn" id="checkoutBtn" type="button">Checkout</button>
-    </div>
+    <div id="cartSummary">0 items • ₹0</div>
+    <button class="checkoutBtn" onclick="checkout()">Place Order</button>
   </div>
 </div>
 
-<!-- DRAWER OVERLAY -->
-<div class="drawerOverlay" id="drawerOverlay">
-  <div class="drawer">
-    <div class="drawerHead">
-      <h3>Cart & Checkout</h3>
-      <button class="closeBtn" id="closeDrawer">×</button>
-    </div>
-    <div class="drawerContent">
-      <div class="drawerBody">
-        <div class="cartList" id="cartList"></div>
-      </div>
-      <div class="drawerFoot">
-        <div class="formGrid">
-          <div>
-            <label for="custName">Name</label>
-            <input id="custName" placeholder="Customer name">
-          </div>
-          <div>
-            <label for="custPhone">Phone</label>
-            <input id="custPhone" placeholder="10-digit number" inputmode="numeric">
-          </div>
-        </div>
-        <div class="formGrid">
-          <div>
-            <label for="custFlat">Apartment/Flat</label>
-            <input id="custFlat" placeholder="J1301 Flat Address...">
-          </div>
-          <div>
-            <label for="custTime">Preferred Meal</label>
-            <select id="custTime">
-              <option value="Breakfast">Breakfast</option>
-              <option value="Lunch">Lunch</option>
-              <option value="Snacks">Snacks</option>
-              <option value="Dinner">Dinner</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label for="paymentMethod">Payment Method</label>
-          <select id="paymentMethod">
-            <option value="UPI">UPI</option>
-            <option value="Cash on Delivery">Cash on Delivery</option>
-          </select>
-        </div>
-        <label for="custNotes">Notes (optional)</label>
-        <textarea id="custNotes" placeholder="Less spicy, no onion/garlic, etc."></textarea>
-        
-        <div class="payBox" id="upiPaymentBox">
-          <div class="payRow">
-            <div style="font-weight: 1000;">Pay by UPI</div>
-            <div class="mutedSmall">UPI ID <span class="payId" id="upiIdText"></span></div>
-          </div>
-          <button class="ghostBtn" id="copyUpiBtn" type="button">Copy UPI</button>
-          <div class="payRow">
-            <div class="qr">
-              <img id="qrImg" src="upi-qr.png" alt="UPI QR" onerror="handleQrError(this)">
-            </div>
-          </div>
-          <div style="flex: 1; min-width: 200px;">
-            <div class="mutedSmall">Optional: Enter UTR/Transaction ID after payment</div>
-            <input id="txnId" placeholder="UTR Transaction ID (optional)">
-          </div>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
-            <button class="checkoutBtn" id="payNowBtn" type="button">Pay Now</button>
-            <button class="ghostBtn" id="invoiceBtn" type="button">Invoice</button>
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-          <button class="checkoutBtn" id="drawerCheckout" type="button">Submit Order</button>
-          <button class="ghostBtn" id="clearCart" type="button">Clear</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
+<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
 const WHATSAPPNUMBER = '919632035612';
 const UPIID = 'email.vikashpathak-1@okicici';
-const ORDERAPI = 'https://script.google.com/macros/s/AKfycbwal4w2qwbsN4H6qIhmmAB824dpTswVGzxZ3tJe5wkdUyxRTiW2lH25ldNyXc3svC/exec';
 
-function handleLogoError(img) {
-  const wrap = document.getElementById('logoWrap');
-  if (!wrap) return;
-  if (img) img.remove();
-  wrap.textContent = 'TH';
-}
-
-function handleQrError(img) {
-  const qr = img.parentElement;
-  if (!qr) return;
-  img.remove();
-  qr.innerHTML = '<b>Upload upi-qr.png</b>';
-}
-
-document.getElementById('dateChip').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
-document.getElementById('upiIdText').textContent = UPIID;
-
-function isBreakfastWindowOpen(now = new Date()) {
-  const h = now.getHours();
-  return (h >= 0 && h < 10);
-}
+function fmtPrice(p){ return (!p||p==0)?'₹0':`₹${p}`; }
 
 const BREAKFASTMENUS = {
-  today: [
-    { name: 'Veg Poha', price: 90, desc: 'Fresh homemade breakfast', available: true }
-  ],
-  tomorrow: [
-    { name: ' Upma ', price: 110, desc: 'Breakfast special', available: false }
-  ]
+  today: [{ name:'Veg Poha', price:90, desc:'Fresh homemade breakfast', available:true }],
+  tomorrow: [{ name:'Upma', price:110, desc:'Breakfast special', available:true }]
 };
-
 const MENU = {
   lunch: [
-    { name: 'Plain paratha/chapati (4 pieces) with mix veg curry', price: 130, desc: 'Simple homemade lunch', available: false },
-    { name: 'Jeera rice with palak daal fry + papad', price: 150, desc: 'Comfort meal', available: false },
-    { name: 'Veg fried rice with raita', price: 140, desc: 'Popular lunch option', available: false }
+    { name:'Plain paratha/chapati (4 pieces) with mix veg curry', price:130, desc:'Simple homemade lunch', available:true },
+    { name:'Jeera rice with palak daal fry + papad', price:150, desc:'Comfort meal', available:true },
+    { name:'Veg fried rice with raita', price:140, desc:'Popular lunch option', available:true }
   ],
   snacks: [
-    { name: 'Aloo bread roll (2 pieces) with chutney', price: 70, desc: 'Crispy snack', available: false },
-    { name: 'Vada pav', price: 40, desc: 'Quick evening bite', available: false },
-    { name: 'Veg hakka noodles', price: 100, desc: 'Snack meal', available: false }
+    { name:'Aloo bread roll (2 pieces) with chutney', price:70, desc:'Crispy snack', available:true },
+    { name:'Vada pav', price:40, desc:'Quick evening bite', available:true },
+    { name:'Veg hakka noodles', price:100, desc:'Snack meal', available:true }
   ],
   dinner: [
-    { name: 'Plain Paratha/Chapati (4 pieces) with Kadhai Paneer 200gm', price: 140, desc: 'Today Dinner', available: false },
-    { name: 'Extra Paratha/Chapati', price: 15, desc: 'Add-on', available: false }
+    { name:'Plain Paratha/Chapati (4 pieces) with Kadhai Paneer 200gm', price:140, desc:'Today Dinner', available:true },
+    { name:'Extra Paratha/Chapati', price:15, desc:'Add-on', available:true }
   ],
-  // *** NEW SWEETS TAB ADDED ***
   sweets: [
-    { name: 'Rasgulla (3 boxes)', price: 36, desc: 'Soft & juicy', available: true },
-    { name: 'Gujiya(Pedkiya)', price: 30, desc: 'prepared with love using Rich Mawa(khoa),Suji & Dry Fruits,Crispy', available: true },
-
+    { name:'Rasgulla (3 boxes)', price:36, desc:'Soft & juicy', available:true },
+    { name:'Gujiya(Pedkiya)', price:30, desc:'Crispy & sweet', available:true }
   ]
 };
 
-const tabsEl = document.getElementById('tabs');
-const gridEl = document.getElementById('menuGrid');
-const sectionTitleEl = document.getElementById('sectionTitle');
-const sectionInfoEl = document.getElementById('sectionInfo');
-const searchInput = document.getElementById('searchInput');
-const breakfastDateWrap = document.getElementById('breakfastDateWrap');
-const breakfastDateSelect = document.getElementById('breakfastDateSelect');
-const paymentMethodEl = document.getElementById('paymentMethod');
-const upiPaymentBox = document.getElementById('upiPaymentBox');
-
-let activeKey = 'dinner';
-let searchMode = false;
-let selectedBreakfastDate = 'today';
-
 const sections = [
-  { key: 'breakfast', label: 'Breakfast' },
-  { key: 'lunch', label: 'Lunch' },
-  { key: 'snacks', label: 'Snacks' },
-  { key: 'dinner', label: 'Dinner' },
-  { key: 'sweets', label: 'Sweets & Beverages' } // *** NEW TAB ADDED ***
+  { key:'breakfast', label:'Breakfast' },
+  { key:'lunch', label:'Lunch' },
+  { key:'snacks', label:'Snacks' },
+  { key:'dinner', label:'Dinner' },
+  { key:'sweets', label:'Sweets & Beverages' }
 ];
 
 const cart = new Map();
+let activeKey='dinner', selectedBreakfastDate='today', searchMode=false;
+const tabsEl=document.getElementById('tabs'), gridEl=document.getElementById('menuGrid');
+const sectionTitleEl=document.getElementById('sectionTitle'), sectionInfoEl=document.getElementById('sectionInfo');
+const searchInput=document.getElementById('searchInput'), breakfastDateWrap=document.getElementById('breakfastDateWrap');
+const breakfastDateSelect=document.getElementById('breakfastDateSelect');
 
-function toast(msg) {
-  const toastEl = document.getElementById('toast');
-  toastEl.textContent = msg;
-  toastEl.style.display = 'block';
-  clearTimeout(toastEl.t);
-  toastEl.t = setTimeout(() => toastEl.style.display = 'none', 2200);
+document.getElementById('upiIdText').textContent=UPIID;
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t.t);t.t=setTimeout(()=>t.style.display='none',2200);}
+
+function getMenuItems(key){return key==='breakfast'?BREAKFASTMENUS[selectedBreakfastDate]:MENU[key]||[];}
+function getQty(id){return cart.has(id)?cart.get(id).qty:0;}
+function setQty(id,data,qty){if(qty<=0) cart.delete(id); else cart.set(id,{...data,qty}); updateCartUI(); renderMenu();}
+function totals(){let c=0,t=0;cart.forEach(v=>{c+=v.qty;t+=(v.item.price||0)*v.qty;});return [c,t];}
+
+function renderTabs(){
+  tabsEl.innerHTML=sections.map(s=>`<button class="tab ${s.key===activeKey?'active':''}" data-key="${s.key}">${s.label}</button>`).join('');
+  tabsEl.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{activeKey=b.dataset.key;searchInput.value='';searchMode=false;renderTabs();renderMenu();}));
 }
 
-function fmtPrice(p) {
-  return (!p || p == 0) ? '₹0' : `₹${p}`;
-}
-
-function getMenuItems(sectionKey) {
-  if (sectionKey === 'breakfast') return BREAKFASTMENUS[selectedBreakfastDate];
-  return MENU[sectionKey];
-}
-
-function isAvailable(sectionKey, item) {
-  if (sectionKey === 'breakfast' && selectedBreakfastDate === 'tomorrow') {
-    return item.available !== false;
-  }
-  if (sectionKey === 'breakfast' && selectedBreakfastDate === 'today') {
-    return isBreakfastWindowOpen() && item.available !== false;
-  }
-  return item.available !== false;
-}
-
-function itemId(sectionKey, idx) {
-  return sectionKey === 'breakfast' ? `${sectionKey}-${selectedBreakfastDate}-${idx}` : `${sectionKey}-${idx}`;
-}
-
-function getQty(id) {
-  return cart.has(id) ? cart.get(id).qty : 0;
-}
-
-function setQty(id, row, qty) {
-  if (qty == 0) {
-    cart.delete(id);
-  } else {
-    cart.set(id, { ...row, qty });
-  }
-  updateCartUI();
-}
-
-function totals() {
-  let count = 0;
-  let total = 0;
-  cart.forEach(v => {
-    count += v.qty;
-    total += (v.item.price || 0) * v.qty;
-  });
-  return [count, total];
-}
-
-function renderTabs() {
-  tabsEl.innerHTML = sections.map(s => {
-    const active = s.key === activeKey ? 'active' : '';
-    return `<button class="tab ${active}" data-key="${s.key}">${s.label}</button>`;
-  }).join('');
-  
-  tabsEl.querySelectorAll('.tab').forEach(btn => {
-    btn.addEventListener('click', () => {
-      activeKey = btn.dataset.key;
-      searchMode = false;
-      searchInput.value = '';
-      renderTabs();
-      renderMenu();
-    });
-  });
-}
-
-function renderMenu() {
-  const items = getMenuItems(activeKey);
-  sectionTitleEl.textContent = searchMode ? 'SEARCH RESULTS' : activeKey.toUpperCase();
-  
-  breakfastDateWrap.style.display = (!searchMode && activeKey === 'breakfast') ? 'block' : 'none';
-  
-  if (!searchMode && activeKey === 'breakfast') {
-    sectionInfoEl.textContent = selectedBreakfastDate === 'today' ? 
-      (isBreakfastWindowOpen() ? "Today's breakfast orders are open." : "Today's breakfast orders are closed. Showing tomorrow's breakfast menu.") : 
-      '';
-  } else if (searchMode) {
-    sectionInfoEl.textContent = 'Showing matching dishes from all sections. Available items shown below.';
-  }
-  
-  let displayItems = items;
-  
-  if (searchMode) {
-    const q = searchInput.value.trim().toLowerCase();
-    const all = [];
-    sections.forEach(s => {
-      const source = s.key === 'breakfast' ? [...BREAKFASTMENUS.today, ...BREAKFASTMENUS.tomorrow] : MENU[s.key];
-      source.forEach((it, idx) => {
-        const hay = `${it.name} ${it.desc} ${s.label}`.toLowerCase();
-        if (!q || hay.includes(q)) {
-          all.push({ sectionKey: s.key, idx, item: it, label: s.label });
-        }
-      });
-    });
-    displayItems = all;
-  }
-  
-  if (displayItems.length == 0) {
-    gridEl.innerHTML = '<div class="item"><div class="iLeft"><div class="iname">No results</div></div></div>';
-    return;
-  }
-  
-  if (searchMode) {
-    gridEl.innerHTML = displayItems.map(row => {
-      const id = `${row.sectionKey}-${row.idx}-${row.item.name}`;
-      const qty = getQty(id);
-      const ok = row.item.available !== false;
-      return `
-        <div class="item">
-          <div class="iLeft">
-            <div class="iTop">
-              <span class="vegDot"></span>
-              <div class="iname">${row.item.name}</div>
-              <span class="badge">${row.label}</span>
-            </div>
-            <div class="iprice">${fmtPrice(row.item.price)}</div>
-            ${row.item.desc ? `<div class="idesc">${row.item.desc}</div>` : ''}
-            <div style="margin-top: 8px">
-              ${ok ? `<span class="badge av">Available</span>` : `<span class="badge na">Not Available</span>`}
-            </div>
-          </div>
-          <div class="iRight">
-            ${ok ? (qty > 0 ? `
-              <div class="qty">
-                <button class="qbtn" data-act="dec" data-id="${id}">−</button>
-                <div class="qnum">${qty}</div>
-                <button class="qbtn" data-act="inc" data-id="${id}">+</button>
-              </div>
-            ` : `
-              <button class="addBtn primary" data-act="add" data-id="${id}">ADD</button>
-            `) : `
-              <button class="addBtn disabled">NOT AVAILABLE</button>
-            `}
-          </div>
-        </div>`;
-    }).join('');
-    bindSearchButtons(displayItems);
-  } else {
-    gridEl.innerHTML = displayItems.map((it, idx) => {
-      const id = itemId(activeKey, idx);
-      const qty = getQty(id);
-      const ok = isAvailable(activeKey, it);
-      return `
-        <div class="item">
-          <div class="iLeft">
-            <div class="iTop">
-              <span class="vegDot"></span>
-              <div class="iname">${it.name}</div>
-            </div>
-            <div class="iprice">${fmtPrice(it.price)}</div>
-            ${it.desc ? `<div class="idesc">${it.desc}</div>` : ''}
-            <div style="margin-top: 8px">
-              ${ok ? `<span class="badge av">Available</span>` : `<span class="badge na">Not Available</span>`}
-            </div>
-          </div>
-          <div class="iRight">
-            ${ok ? (qty > 0 ? `
-              <div class="qty">
-                <button class="qbtn" data-act="dec" data-id="${id}">−</button>
-                <div class="qnum">${qty}</div>
-                <button class="qbtn" data-act="inc" data-id="${id}">+</button>
-              </div>
-            ` : `
-              <button class="addBtn primary" data-act="add" data-id="${id}">ADD</button>
-            `) : `
-              <button class="addBtn disabled">NOT AVAILABLE</button>
-            `}
-          </div>
-        </div>`;
-    }).join('');
-    bindNormalButtons(displayItems);
-  }
-}
-
-function bindNormalButtons(items) {
-  gridEl.querySelectorAll('[data-act]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const [section, breakfastDayOrIdx, maybeIdx] = btn.dataset.id.split('-');
-      const idx = section === 'breakfast' ? parseInt(maybeIdx, 10) : parseInt(breakfastDayOrIdx, 10);
-      const item = items[idx];
-      if (!item) return;
-      
-      const id = btn.dataset.id;
-      const currentQty = getQty(id);
-      const row = {
-        item,
-        sectionKey: section,
-        breakfastDateMeta: section === 'breakfast' ? selectedBreakfastDate : null
-      };
-      
-      if (btn.dataset.act === 'add') setQty(id, row, 1);
-      if (btn.dataset.act === 'inc') setQty(id, row, currentQty + 1);
-      if (btn.dataset.act === 'dec') setQty(id, row, currentQty - 1);
-      renderMenu();
-    });
-  });
-}
-
-function bindSearchButtons(rows) {
-  gridEl.querySelectorAll('[data-act]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.id;
-      const row = rows.find(r => `${r.sectionKey}-${r.idx}-${r.item.name}` === id);
-      if (!row) return;
-      
-      const currentQty = getQty(id);
-      const cartRow = {
-        item: row.item,
-        sectionKey: row.sectionKey,
-        breakfastDateMeta: row.sectionKey === 'breakfast' ? selectedBreakfastDate : null
-      };
-      
-      if (btn.dataset.act === 'add') setQty(id, cartRow, 1);
-      if (btn.dataset.act === 'inc') setQty(id, cartRow, currentQty + 1);
-      if (btn.dataset.act === 'dec') setQty(id, cartRow, currentQty - 1);
-      renderMenu();
-    });
-  });
-}
-
-searchInput.addEventListener('input', () => {
-  searchMode = searchInput.value.trim().length > 0;
-  renderMenu();
-});
-
-breakfastDateSelect.addEventListener('change', (e) => {
-  selectedBreakfastDate = e.target.value;
-  renderMenu();
-});
-
-function updateCartUI() {
-  const [count, total] = totals();
-  const bar = document.getElementById('cartBar');
-  const summary = document.getElementById('cartSummary');
-  
-  if (!bar || !summary) return;
-  
-  if (document.getElementById('drawerOverlay').style.display === 'flex') {
-    bar.style.display = 'none';
-    return;
-  }
-  
-  if (count == 0) {
-    bar.style.display = 'none';
-    summary.textContent = '0 items';
-    return;
-  }
-  
-  bar.style.display = 'block';
-  summary.textContent = `${count} item${count === 1 ? '' : 's'} • Total ${fmtPrice(total)}`;
-}
-
-function renderCartDrawer() {
-  const list = document.getElementById('cartList');
-  const [total] = totals();
-  
-  if (cart.size == 0) {
-    list.innerHTML = '<div class="mutedSmall">Your cart is empty.</div>';
-    return;
-  }
-  
-  list.innerHTML = Array.from(cart.entries()).map(([id, v]) => {
-    const extra = v.breakfastDateMeta ? ` (${v.breakfastDateMeta})` : '';
-    return `
-      <div class="cartItem">
-        <div>
-          <div class="name">${v.item.name}</div>
-          <div class="meta">${fmtPrice(v.item.price)} × ${v.qty} ${v.sectionKey}${extra}</div>
-        </div>
-        <div class="qty">
-          <button class="qbtn" data-cart-act="dec" data-id="${id}">−</button>
-          <div class="qnum">${v.qty}</div>
-          <button class="qbtn" data-cart-act="inc" data-id="${id}">+</button>
-        </div>
-      </div>`;
-  }).join('') + `
-    <div class="cartItem" style="justify-content: flex-start;">
-      <div class="name">Total</div>
-      <div class="meta">${fmtPrice(total)}</div>
+function renderMenu(){
+  let items=searchMode?searchAll():getMenuItems(activeKey);
+  sectionTitleEl.textContent=searchMode?'SEARCH RESULTS':activeKey.toUpperCase();
+  breakfastDateWrap.style.display=!searchMode&&activeKey==='breakfast'?'block':'none';
+  sectionInfoEl.textContent=searchMode?'Showing matching items':'';
+  if(!items.length){gridEl.innerHTML='<div class="item"><div class="iname">No results</div></div>';return;}
+  gridEl.innerHTML=items.map((it,idx)=>{
+    const id=searchMode?`${it.sectionKey}-${idx}-${it.item.name}`:`${activeKey}-${idx}`;
+    const itemData=searchMode?it.item:it;
+    const avail=itemData.available!==false, qty=getQty(id);
+    return `<div class="item">
+      <div class="iLeft">
+        <div class="iTop"><span class="vegDot"></span><div class="iname">${itemData.name}</div>${searchMode?`<span class="badge">${it.label}</span>`:''}</div>
+        <div class="iprice">${fmtPrice(itemData.price)}</div>${itemData.desc?`<div class="idesc">${itemData.desc}</div>`:''}
+        <div style="margin-top:8px">${avail?'<span class="badge av">Available</span>':'<span class="badge na">Not Available</span>'}</div>
+      </div>
+      <div class="iRight">${avail?(qty>0?`<div class="qty"><button class="qbtn" data-act="dec" data-id="${id}">−</button><div class="qnum">${qty}</div><button class="qbtn" data-act="inc" data-id="${id}">+</button></div>`:`<button class="addBtn primary" data-act="add" data-id="${id}">ADD</button>`):`<button class="addBtn disabled">NOT AVAILABLE</button>`}</div>
     </div>`;
-  
-  list.querySelectorAll('[data-cart-act]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.id;
-      const row = cart.get(id);
-      if (!row) return;
-      
-      if (btn.dataset.cartAct === 'inc') setQty(id, row, row.qty + 1);
-      if (btn.dataset.cartAct === 'dec') setQty(id, row, row.qty - 1);
-      renderCartDrawer();
-    });
+  }).join('');
+  bindButtons(items);
+}
+
+function searchAll(){
+  const q=searchInput.value.trim().toLowerCase(), res=[];
+  sections.forEach(s=>{
+    const src=s.key==='breakfast'?[...BREAKFASTMENUS.today,...BREAKFASTMENUS.tomorrow]:MENU[s.key];
+    src.forEach((it,idx)=>{if(`${it.name} ${it.desc}`.toLowerCase().includes(q)) res.push({sectionKey:s.key,idx,item:it,label:s.label});});
   });
+  return res;
 }
 
-function openDrawer() {
-  document.body.classList.add('drawer-open');
-  document.getElementById('drawerOverlay').style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-  updateCartUI();
-  renderCartDrawer();
-  togglePaymentBox();
+function bindButtons(items){
+  gridEl.querySelectorAll('[data-act]').forEach(btn=>{btn.onclick=()=>{
+    const id=btn.dataset.id;
+    let data, qty=getQty(id);
+    if(searchMode){
+      const row=items.find(r=>`${r.sectionKey}-${r.idx}-${r.item.name}`===id); if(!row) return;
+      data={item:row.item,sectionKey:row.sectionKey,breakfastDateMeta:row.sectionKey==='breakfast'?selectedBreakfastDate:null};
+    } else {
+      const idx=parseInt(id.split('-')[1],10), item=items[idx]; if(!item) return;
+      data={item,sectionKey:activeKey,breakfastDateMeta:activeKey==='breakfast'?selectedBreakfastDate:null};
+    }
+    if(btn.dataset.act==='add') setQty(id,data,1);
+    if(btn.dataset.act==='inc') setQty(id,data,qty+1);
+    if(btn.dataset.act==='dec') setQty(id,data,qty-1);
+  };});
 }
 
-function closeDrawer() {
-  document.body.classList.remove('drawer-open');
-  document.getElementById('drawerOverlay').style.display = 'none';
-  document.body.style.overflow = '';
-  updateCartUI();
+searchInput.oninput=()=>{searchMode=searchInput.value.trim().length>0; renderMenu();}
+breakfastDateSelect.onchange=e=>{selectedBreakfastDate=e.target.value; renderMenu();}
+
+function updateCartUI(){
+  const [count,total]=totals();
+  const bar=document.getElementById('cartBar');
+  const summary=document.getElementById('cartSummary');
+  if(count==0){bar.style.display='none'; summary.textContent='0 items'; return;}
+  bar.style.display='flex';
+  summary.textContent=`${count} item${count>1?'s':''} • Total ${fmtPrice(total)}`;
 }
 
-document.getElementById('viewCartBtn').addEventListener('click', openDrawer);
-document.getElementById('checkoutBtn').addEventListener('click', openDrawer);
-document.getElementById('closeDrawer').addEventListener('click', closeDrawer);
-document.getElementById('drawerOverlay').addEventListener('click', (e) => {
-  if (e.target.id === 'drawerOverlay') closeDrawer();
-});
-document.getElementById('clearCart').addEventListener('click', () => {
-  cart.clear();
-  updateCartUI();
-  renderCartDrawer();
-  renderMenu();
-});
-
-function togglePaymentBox() {
-  if (!paymentMethodEl || !upiPaymentBox) return;
-  upiPaymentBox.style.display = paymentMethodEl.value === 'UPI' ? 'grid' : 'none';
+function checkout(){
+  if(cart.size===0){toast('Cart is empty'); return;}
+  let msg='Hello! I want to order:\n';
+  cart.forEach(v=>{msg+=`- ${v.item.name} x ${v.qty}\n`;});
+  msg+=`Total: ₹${totals()[1]}\n`;
+  window.open(`https://wa.me/${WHATSAPPNUMBER}?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
-paymentMethodEl.addEventListener('change', togglePaymentBox);
-togglePaymentBox();
-
-function buildInvoiceText() {
-  const [total] = totals();
-  const lines = [];
-  cart.forEach(v => {
-    const extra = v.breakfastDateMeta ? ` (${v.breakfastDateMeta})` : '';
-    lines.push(`${v.item.name}${extra} ×${v.qty} ${fmtPrice((v.item.price || 0) * v.qty)}`);
-  });
-  return [
-    'TASTE HUB - INVOICE',
-    'J 1301, Kolte Patil Raaga, Kannuru, Bengaluru 560077',
-    'FSSAI: 21226008000011',
-    '--------------------------------',
-    ...lines,
-    '--------------------------------',
-    `TOTAL ${fmtPrice(total)}`,
-    '',
-    `UPI: ${UPIID}`
-  ].join('\n');
-}
-
-document.getElementById('invoiceBtn').addEventListener('click', () => {
-  if (cart.size == 0) return alert('Cart is empty.');
-  alert(buildInvoiceText());
-});
-
-document.getElementById('copyUpiBtn').addEventListener('click', async () => {
-  try {
-    await navigator.clipboard.writeText(UPIID);
-    toast('UPI ID copied');
-  } catch (e) {
-    toast('Copy failed');
-  }
-});
-
-document.getElementById('payNowBtn').addEventListener('click', () => {
-  const [total] = totals();
-  if (total == 0) return alert('Cart total is 0.');
-  window.location.href = `upi://pay?pa=${encodeURIComponent(UPIID)}&pn=${encodeURIComponent('TasteHub')}&am=${encodeURIComponent(String(total))}&cu=INR`;
-});
-
-function buildWhatsAppText(orderId) {
-  const name = document.getElementById('custName').value.trim();
-  const phone = document.getElementById('custPhone').value.trim();
-  const flat = document.getElementById('custFlat').value.trim();
-  const time = document.getElementById('custTime').value;
-  const notes = document.getElementById('custNotes').value.trim();
-  const txnId = document.getElementById('txnId').value.trim();
-  const paymentMethod = document.getElementById('paymentMethod').value;
-  const [total] = totals();
-  
-  const lines = [];
-  cart.forEach(v => {
-    const extra = v.breakfastDateMeta ? ` (${v.breakfastDateMeta})` : '';
-    lines.push(`${v.item.name}${extra} ×${v.qty} ${v.item.price ? fmtPrice(v.item.price) : ''}`);
-  });
-  
-  let msg = `Hi TasteHub!%0A%0ARequest: NEW ORDER%0AOrder ID: ${orderId}%0A`;
-  msg += `Name: ${name}%0A`;
-  msg += `Phone: ${phone}%0A`;
-  msg += `Apartment/Flat: ${flat}%0A`;
-  msg += `Preferred meal time: ${time}%0A`;
-  if (time === 'Breakfast') msg += `Breakfast date: ${selectedBreakfastDate}%0A`;
-  msg += `Payment Method: ${paymentMethod}%0A`;
-  msg += lines.join('%0A');
-  msg += `%0A${fmtPrice(total)}%0A`;
-  
-  if (paymentMethod === 'UPI') {
-    msg += `UPI ID: ${UPIID}%0A`;
-    if (txnId) msg += `Txn/UTR: ${txnId}%0A`;
-  } else {
-    msg += `Payment: Cash on Delivery%0A`;
-  }
-  
-  if (notes) msg += `Notes: ${notes}%0A`;
-  msg += `%0APlease confirm my order. Thanks!`;
-  
-  return msg;
-}
-
-async function logOrder(payload) {
-  if (!ORDERAPI) return { ok: false, msg: 'No ORDERAPI set' };
-  
-  try {
-    const res = await fetch(ORDERAPI, {
-      method: 'POST',
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const txt = await res.text();
-    return { ok: true, msg: txt };
-  } catch (e) {
-    return { ok: false, msg: String(e) };
-  }
-}
-
-function genOrderId() {
-  const t = new Date();
-  return `TH-${String(t.getFullYear()).slice(-2)}${String(t.getMonth() + 1).padStart(2, '0')}${String(t.getDate()).padStart(2, '0')}-${String(t.getHours()).padStart(2, '0')}${String(t.getMinutes()).padStart(2, '0')}`;
-}
-
-document.getElementById('drawerCheckout').addEventListener('click', async () => {
-  const name = document.getElementById('custName').value.trim();
-  const phone = document.getElementById('custPhone').value.trim();
-  const flat = document.getElementById('custFlat').value.trim();
-  const paymentMethod = document.getElementById('paymentMethod').value;
-  
-  if (!name || !phone || !flat) return alert('Please enter Name, Phone and Apartment/Flat.');
-  if (cart.size == 0) return alert('Your cart is empty.');
-  
-  const orderId = genOrderId();
-  const [total, count] = totals();
-  
-  const payload = {
-    orderId,
-    createdAt: new Date().toISOString(),
-    customer: { name, phone, flat, preferredMeal: document.getElementById('custTime').value, breakfastDate: selectedBreakfastDate },
-    items: Array.from(cart.values()).map(v => ({
-      section: v.sectionKey,
-      name: v.item.name,
-      price: v.item.price || 0,
-      qty: v.qty,
-      lineTotal: (v.item.price || 0) * v.qty,
-      breakfastDate: v.breakfastDateMeta || null
-    })),
-    totals: { count, total },
-    payment: {
-      method: paymentMethod,
-      upiId: paymentMethod === 'UPI' ? UPIID : '',
-      txnId: paymentMethod === 'UPI' ? document.getElementById('txnId').value.trim() : '',
-      notes: document.getElementById('custNotes').value.trim()
-    },
-    source: 'Website'
-  };
-  
-  const logged = await logOrder(payload);
-  if (!logged.ok) toast('Order submitted. Sheet logging failed.');
-  else toast('Order submitted!');
-  
-  const url = `https://wa.me/${WHATSAPPNUMBER}?text=${encodeURIComponent(buildWhatsAppText(orderId))}`;
-  window.open(url, '_blank');
-  
-  renderTabs();
-  renderMenu();
-  updateCartUI();
-});
-
-// INITIALIZE
 renderTabs();
 renderMenu();
-updateCartUI();
 </script>
-
 </body>
 </html>
