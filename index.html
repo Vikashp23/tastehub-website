@@ -29,7 +29,7 @@
     color:var(--text);
     background:
       linear-gradient(rgba(255,247,235,.84), rgba(255,247,235,.88)),
-      url("COVER.png") center center / cover fixed no-repeat fixed;
+      url("COVER.png") center center / cover fixed no-repeat;
     min-height:100vh;
   }
 
@@ -880,10 +880,8 @@
           <div class="infoCard">
             <h3>TasteHub</h3>
             <div class="miniList">
-              <div> Breakfast: 10 PM – 7 AM</div>
-              <div> Lunch: 10 AM –  1 PM</div>
-              <div> Snacks: 03 PM – 6 PM</div>
-              <div> Dinner: 07 PM – 8 PM</div>
+              <div>Fresh homemade veg meals</div>
+              <div>Breakfast • Lunch • Snacks • Dinner</div>
               <div>UPI & Cash on Delivery supported</div>
             </div>
           </div>
@@ -1011,16 +1009,18 @@
   }
 
   const BREAKFAST_MENUS = {
-      {name:"Veg poha", price:90, desc:"Tomorrow breakfast", available:true},
-      {name:"Puri (4 pieces) with Aloo curry", price:130, desc:"Tomorrow breakfast", available:false},
-      {name:"Extra puri", price:15, desc:"Add-on", available:false},
+    today: [
+      {name:"Idly (4 pieces) with sambhar & chutney", price:90, desc:"Fresh homemade breakfast", available:false},
+      {name:"Extra idly", price:15, desc:"Add-on", available:false}
+    ],
+    tomorrow: [
+      {name:"Puri (4 pieces) with Aloo curry", price:130, desc:"Tomorrow breakfast", available:true},
+      {name:"Extra puri", price:15, desc:"Add-on", available:true},
       {name:"Aloo paneer sandwich (4 slices)", price:120, desc:"Tomorrow breakfast", available:false},
       {name:"Aloo cheese sandwich (4 slices)", price:120, desc:"Tomorrow breakfast", available:false},
       {name:"Methi paratha (4 pieces) with curd", price:100, desc:"Tomorrow breakfast", available:false},
       {name:"Aloo paratha (2 pieces) with curd", price:90, desc:"Tomorrow breakfast", available:false},
       {name:"Rajma with paratha/chapati (4 pieces)", price:140, desc:"Tomorrow breakfast", available:false}
-      {name:"Idly (4 pieces) with sambhar & chutney", price:90, desc:"Fresh homemade breakfast", available:false},
-      {name:"Extra idly", price:15, desc:"Add-on", available:false}
     ]
   };
 
@@ -1029,19 +1029,16 @@
       {name:"Plain paratha/chapati (4 pieces) with mix veg curry", price:130, desc:"Simple homemade lunch", available:false},
       {name:"Jeera rice with palak daal fry, papad", price:150, desc:"Comfort meal", available:false},
       {name:"Veg fried rice with raita", price:140, desc:"Popular lunch option", available:false}
-      {name:"Plain rice with kadhi, Papad ", price:140, desc:"Popular lunch option", available:false}
     ],
     snacks: [
       {name:"Aloo bread roll (2 pieces) with chutney", price:70, desc:"Crispy snack", available:false},
       {name:"Vada pav", price:40, desc:"Quick evening bite", available:false},
       {name:"Veg hakka noodles", price:100, desc:"Snack meal", available:false}
-      {name:"Bread pakoda (2 pieces) with chatni ", price:80, desc:"Snack meal", available:false}
     ],
     dinner: [
-      {name:"Plain Paratha/Chapati (4 pieces) with Kadhai Paneer (200gm)", price:140, desc:"Today Dinner", available:false},
-      {name:"Extra Paratha/Chapati", price:15, desc:"Add-on", available:false},
-      {name:"Plain Paratha/Chapati (4 pieces) with Chhole  (200gm)", price:140, desc:"Today Dinner", available:false},
-      ]
+      {name:"Plain Paratha/Chapati (4 pieces) with Kadhai Paneer (200gm)", price:140, desc:"Today Dinner", available:true},
+      {name:"Extra Paratha/Chapati", price:15, desc:"Add-on", available:true}
+    ]
   };
 
   const tabsEl = document.getElementById('tabs');
