@@ -11,11 +11,15 @@
     --bg:#f7f1e6;
     --panel:rgba(255,251,244,.90);
     --panelSoft:rgba(255,251,244,.82);
+    --card:#fffdf8;
+    --stroke:rgba(90,65,30,.12);
     --text:#2f2418;
     --muted:#6d5d49;
     --brand:#1f9f68;
     --brand2:#f0a11c;
+    --danger:#c94848;
     --shadow:0 16px 40px rgba(63,42,18,.14);
+    --r:18px;
     --r2:24px;
     --max:1180px;
   }
@@ -39,7 +43,7 @@
   .wrap{
     max-width:var(--max);
     margin:0 auto;
-    padding:14px 14px 140px;
+    padding:14px 14px 120px;
   }
 
   .appbar{
@@ -80,9 +84,6 @@
     flex:0 0 auto;
     border:1px solid rgba(90,65,30,.12);
     box-shadow:0 6px 18px rgba(0,0,0,.18);
-    color:#fff;
-    font-weight:900;
-    font-size:16px;
   }
 
   .logoWrap img{
@@ -153,14 +154,16 @@
     color:#b56f00;
   }
 
-  .adSection{margin-top:16px}
+  .adSection{
+    margin-top:16px;
+  }
 
   .sectionHead{
     display:flex;
     align-items:center;
-    justify-content:flex-start;
+    justify-content:space-between;
     gap:12px;
-    margin-bottom:10px;
+    margin-bottom:12px;
     flex-wrap:wrap;
   }
 
@@ -168,6 +171,12 @@
     margin:0;
     font-size:22px;
     color:#2c2318;
+  }
+
+  .sectionSub{
+    margin:0;
+    color:var(--muted);
+    font-size:13px;
   }
 
   .adCoverCard{
@@ -180,7 +189,8 @@
 
   .adCoverCard img{
     width:100%;
-    height:auto;
+    max-height:420px;
+    object-fit:cover;
     display:block;
   }
 
@@ -501,12 +511,11 @@
     left:0;
     right:0;
     bottom:0;
-    z-index:900; /* LOWER than drawer */
-    background:rgba(255,250,240,.98);
+    z-index:999;
+    background:rgba(255,250,240,.96);
     backdrop-filter:blur(12px);
     border-top:1px solid rgba(90,65,30,.10);
     display:none;
-    box-shadow:0 -8px 24px rgba(0,0,0,.08);
   }
 
   .cartInner{
@@ -543,22 +552,6 @@
   .drawerOverlay{
     position:fixed;
     inset:0;
-    z-index:2000; /* HIGHER than cart */
-    background:rgba(40,27,12,.42);
-    display:none;
-    align-items:flex-end;
-    justify-content:center;
-    padding:14px;
-  }
-
-  /* Hide cart when drawer open */
-  body.drawer-open .cartBar{
-    display:none !important;
-  }
-
-  .drawerOverlay{
-    position:fixed;
-    inset:0;
     z-index:1000;
     background:rgba(40,27,12,.42);
     display:none;
@@ -588,7 +581,9 @@
     background:rgba(255,255,255,.7);
   }
 
-  .drawerHead h3{margin:0}
+  .drawerHead h3{
+    margin:0;
+  }
 
   .closeBtn{
     width:40px;
@@ -601,17 +596,9 @@
     cursor:pointer;
   }
 
-  .drawerContent{
-    display:flex;
-    flex-direction:column;
-    min-height:0;
-    flex:1;
-  }
-
   .drawerBody{
     padding:14px;
     overflow:auto;
-    flex:1;
   }
 
   .cartList{
@@ -692,8 +679,6 @@
     gap:8px;
   }
 
-  #upiPaymentBox{display:none}
-
   .payRow{
     display:flex;
     align-items:center;
@@ -702,7 +687,9 @@
     flex-wrap:wrap;
   }
 
-  .payId{font-weight:1000}
+  .payId{
+    font-weight:1000;
+  }
 
   .qr{
     width:180px;
@@ -755,25 +742,6 @@
       flex-direction:row;
       align-items:center;
     }
-    .drawerOverlay{
-      padding:0;
-      align-items:flex-end;
-    }
-    .drawer{
-      width:100%;
-      max-width:100%;
-      max-height:100vh;
-      height:100vh;
-      border-radius:20px 20px 0 0;
-    }
-    .drawerHead{
-      position:sticky;
-      top:0;
-      z-index:2;
-    }
-    .drawerBody{
-      padding-bottom:120px;
-    }
   }
 </style>
 </head>
@@ -782,8 +750,9 @@
   <div class="appbar">
     <div class="appbarInner">
       <div class="brandRow">
-        <div class="logoWrap" id="logoWrap">
-          <img src="logo.png" alt="TasteHub Logo" onerror="handleLogoError(this)">
+        <div class="logoWrap">
+          <img src="logo.png" alt="TasteHub Logo"
+               onerror="this.style.display='none'; this.parentElement.innerHTML='TH'; this.parentElement.style.color='#fff'; this.parentElement.style.fontWeight='900'; this.parentElement.style.fontSize='16px';">
         </div>
 
         <div class="brandText">
@@ -804,9 +773,14 @@
   </div>
 
   <div class="wrap">
+
     <div class="adSection">
       <div class="sectionHead">
-        <div><h2>Special Highlight</h2></div>
+        <div>
+          <h2>Special Highlight</h2>
+          <p class="sectionSub">Today’s featured TasteHub banner</p>
+        </div>
+        <span class="chip green">TasteHub Promotions</span>
       </div>
 
       <div class="adCoverCard">
@@ -910,68 +884,67 @@
         <button class="closeBtn" id="closeDrawer">✕</button>
       </div>
 
-      <div class="drawerContent">
-        <div class="drawerBody">
-          <div class="cartList" id="cartList"></div>
+      <div class="drawerBody">
+        <div class="cartList" id="cartList"></div>
+      </div>
 
-          <div class="drawerFoot">
-            <div class="formGrid">
-              <div><label for="custName">Name *</label><input id="custName" placeholder="Customer name" /></div>
-              <div><label for="custPhone">Phone *</label><input id="custPhone" placeholder="10-digit number" inputmode="numeric" /></div>
-            </div>
+      <div class="drawerFoot">
+        <div class="formGrid">
+          <div><label for="custName">Name *</label><input id="custName" placeholder="Customer name" /></div>
+          <div><label for="custPhone">Phone *</label><input id="custPhone" placeholder="10-digit number" inputmode="numeric" /></div>
+        </div>
 
-            <div class="formGrid">
-              <div><label for="custFlat">Apartment / Flat *</label><input id="custFlat" placeholder="J1301 / Flat / Address..." /></div>
-              <div>
-                <label for="custTime">Preferred Meal</label>
-                <select id="custTime">
-                  <option value="Breakfast">Breakfast</option>
-                  <option value="Lunch">Lunch</option>
-                  <option value="Snacks">Snacks</option>
-                  <option value="Dinner">Dinner</option>
-                </select>
-              </div>
-            </div>
+        <div class="formGrid">
+          <div><label for="custFlat">Apartment / Flat *</label><input id="custFlat" placeholder="J1301 / Flat / Address..." /></div>
+          <div>
+            <label for="custTime">Preferred Meal</label>
+            <select id="custTime">
+              <option value="Breakfast">Breakfast</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Snacks">Snacks</option>
+              <option value="Dinner">Dinner</option>
+            </select>
+          </div>
+        </div>
 
+        <div>
+          <label for="paymentMethod">Payment Method *</label>
+          <select id="paymentMethod">
+            <option value="UPI">UPI</option>
+            <option value="Cash on Delivery">Cash on Delivery</option>
+          </select>
+        </div>
+
+        <div><label for="custNotes">Notes (optional)</label><textarea id="custNotes" placeholder="Less spicy, no onion/garlic, etc."></textarea></div>
+
+        <div class="payBox" id="upiPaymentBox">
+          <div class="payRow">
             <div>
-              <label for="paymentMethod">Payment Method *</label>
-              <select id="paymentMethod">
-                <option value="UPI">UPI</option>
-                <option value="Cash on Delivery">Cash on Delivery</option>
-              </select>
+              <div style="font-weight:1000;">Pay by UPI</div>
+              <div class="mutedSmall">UPI ID: <span class="payId" id="upiIdText"></span></div>
             </div>
+            <button class="ghostBtn" id="copyUpiBtn" type="button">Copy UPI</button>
+          </div>
 
-            <div><label for="custNotes">Notes (optional)</label><textarea id="custNotes" placeholder="Less spicy, no onion/garlic, etc."></textarea></div>
-
-            <div class="payBox" id="upiPaymentBox">
-              <div class="payRow">
-                <div>
-                  <div style="font-weight:1000;">Pay by UPI</div>
-                  <div class="mutedSmall">UPI ID: <span class="payId" id="upiIdText"></span></div>
-                </div>
-                <button class="ghostBtn" id="copyUpiBtn" type="button">Copy UPI</button>
-              </div>
-
-              <div class="payRow">
-                <div class="qr">
-                  <img id="qrImg" src="upi-qr.png" alt="UPI QR" onerror="handleQrError(this)">
-                </div>
-                <div style="flex:1; min-width:200px;">
-                  <div class="mutedSmall">Optional: Enter UTR / Transaction ID after payment</div>
-                  <input id="txnId" placeholder="UTR / Transaction ID (optional)" />
-                  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-                    <button class="checkoutBtn" id="payNowBtn" type="button">Pay Now</button>
-                    <button class="ghostBtn" id="invoiceBtn" type="button">Invoice</button>
-                  </div>
-                </div>
-              </div>
+          <div class="payRow">
+            <div class="qr">
+              <img id="qrImg" src="upi-qr.png" alt="UPI QR"
+                   onerror="this.style.display='none'; this.parentElement.innerHTML='Upload <b>upi-qr.png</b>';">
             </div>
-
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-              <button class="checkoutBtn" id="drawerCheckout" type="button">Submit Order</button>
-              <button class="ghostBtn" id="clearCart" type="button">Clear</button>
+            <div style="flex:1; min-width:200px;">
+              <div class="mutedSmall">Optional: Enter UTR / Transaction ID after payment</div>
+              <input id="txnId" placeholder="UTR / Transaction ID (optional)" />
+              <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+                <button class="checkoutBtn" id="payNowBtn" type="button">Pay Now</button>
+                <button class="ghostBtn" id="invoiceBtn" type="button">Invoice</button>
+              </div>
             </div>
           </div>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="checkoutBtn" id="drawerCheckout" type="button">Submit Order</button>
+          <button class="ghostBtn" id="clearCart" type="button">Clear</button>
         </div>
       </div>
     </div>
@@ -984,20 +957,6 @@
   const UPI_ID = "email.vikashpathak-1@okicici";
   const ORDER_API = "https://script.google.com/macros/s/AKfycbwal4w2qwbsN4H6qIhmmAB824dpTswVGzxZ3tJe5wkdUyxRTiW2lH25ldNyXc3svC-c/exec";
 
-  function handleLogoError(img){
-    const wrap = document.getElementById('logoWrap');
-    if (!wrap) return;
-    if (img) img.remove();
-    wrap.textContent = 'TH';
-  }
-
-  function handleQrError(img){
-    const qr = img && img.parentElement;
-    if (!qr) return;
-    img.remove();
-    qr.innerHTML = 'Upload <b>upi-qr.png</b>';
-  }
-
   document.getElementById('dateChip').textContent =
     new Date().toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short' });
 
@@ -1008,32 +967,44 @@
     return h >= 0 && h < 10;
   }
 
-  const menu = {
-    breakfast: [
-      {
-        name:"Veg Poha", 
-        price:90,
-        desc:"Fresh homemade breakfast", 
-        available:true
-      }
-       
+  const BREAKFAST_MENUS = {
+    today: [
+      {name:"Idly (4 pieces) with sambhar & chutney", price:90, desc:"Fresh homemade breakfast", available:true},
+      {name:"Extra idly", price:15, desc:"Add-on", available:true}
+    ],
+    tomorrow: [
+      {name:"Aloo paneer sandwich (4 slices)", price:120, desc:"Tomorrow breakfast", available:true},
+      {name:"Aloo cheese sandwich (4 slices)", price:120, desc:"Tomorrow breakfast", available:true},
+      {name:"Methi paratha (4 pieces) with curd", price:100, desc:"Tomorrow breakfast", available:true},
+      {name:"Aloo paratha (2 pieces) with curd", price:90, desc:"Tomorrow breakfast", available:true},
+      {name:"Rajma with paratha/chapati (4 pieces)", price:140, desc:"Tomorrow breakfast", available:true}
     ]
-  }
+  };
 
   const MENU = {
     lunch: [
-      {name:"Plain paratha/chapati (4 pieces) with mix veg curry", price:130, desc:"Simple homemade lunch", available:false},
-      {name:"Jeera rice with palak daal fry, papad", price:150, desc:"Comfort meal", available:false},
-      {name:"Veg fried rice with raita", price:140, desc:"Popular lunch option", available:false}
+      {name:"Plain paratha/chapati (4 pieces) with mix veg curry", price:130, desc:"Simple homemade lunch", available:true},
+      {name:"Jeera rice with palak daal fry, papad", price:150, desc:"Comfort meal", available:true},
+      {name:"Veg fried rice with raita", price:140, desc:"Popular lunch option", available:true}
     ],
     snacks: [
-      {name:"Aloo bread roll (2 pieces) with chutney", price:70, desc:"Crispy snack", available:false},
-      {name:"Vada pav", price:40, desc:"Quick evening bite", available:false},
-      {name:"Veg hakka noodles", price:100, desc:"Snack meal", available:false}
+      {name:"Aloo bread roll (2 pieces) with chutney", price:70, desc:"Crispy snack", available:true},
+      {name:"Vada pav", price:40, desc:"Quick evening bite", available:true},
+      {name:"Veg hakka noodles", price:100, desc:"Snack meal", available:true}
     ],
     dinner: [
-      {name:"Plain Paratha/Chapati (4 pieces) with Kadhai Paneer (200gm)", price:140, desc:"Today Dinner", available:false},
-      {name:"Extra Paratha/Chapati", price:15, desc:"Add-on", available:false}
+      {
+        name:"Plain paratha/chapati (4 pieces) with kadhai paneer (200gm)",
+        price:140,
+        desc:"Today Dinner",
+        available:true
+      },
+      {
+        name:"Extra Paratha/Chapati",
+        price:15,
+        desc:"Add-on",
+        available:true
+      }
     ]
   };
 
@@ -1073,13 +1044,19 @@
   }
 
   function getMenuItems(sectionKey){
-    if(sectionKey === 'breakfast') return BREAKFAST_MENUS[selectedBreakfastDate] || [];
+    if(sectionKey === 'breakfast'){
+      return BREAKFAST_MENUS[selectedBreakfastDate] || [];
+    }
     return MENU[sectionKey] || [];
   }
 
   function isAvailable(sectionKey, item){
-    if(sectionKey === 'breakfast' && selectedBreakfastDate === 'tomorrow') return item.available !== false;
-    if(sectionKey === 'breakfast' && selectedBreakfastDate === 'today') return isBreakfastWindowOpen() && item.available !== false;
+    if(sectionKey === 'breakfast' && selectedBreakfastDate === 'tomorrow'){
+      return item.available !== false;
+    }
+    if(sectionKey === 'breakfast' && selectedBreakfastDate === 'today'){
+      return isBreakfastWindowOpen() && item.available !== false;
+    }
     return item.available !== false;
   }
 
@@ -1136,7 +1113,9 @@
         ? (isBreakfastWindowOpen() ? "Today's breakfast orders are open." : "Today's breakfast orders are closed.")
         : "Showing tomorrow's breakfast menu.";
     } else {
-      sectionInfoEl.textContent = searchMode ? 'Showing matching dishes from all sections' : 'Available items shown below';
+      sectionInfoEl.textContent = searchMode
+        ? 'Showing matching dishes from all sections'
+        : 'Available items shown below';
     }
 
     let displayItems = items;
@@ -1152,7 +1131,9 @@
 
         source.forEach((it, idx) => {
           const hay = `${it.name} ${it.desc || ''} ${s.label}`.toLowerCase();
-          if(!q || hay.includes(q)) all.push({sectionKey:s.key, idx, item:it, label:s.label});
+          if(!q || hay.includes(q)){
+            all.push({sectionKey:s.key, idx, item:it, label:s.label});
+          }
         });
       });
 
@@ -1229,8 +1210,8 @@
     gridEl.querySelectorAll('[data-act]').forEach(btn => {
       btn.addEventListener('click', () => {
         const [section, breakfastDayOrIdx, maybeIdx] = btn.dataset.id.split(':');
-        const idx = section === 'breakfast' ? parseInt(maybeIdx, 10) : parseInt(breakfastDayOrIdx, 10);
-        const item = items[idx];
+        let idx = section === 'breakfast' ? parseInt(maybeIdx, 10) : parseInt(breakfastDayOrIdx, 10);
+        let item = items[idx];
         if(!item) return;
 
         const id = btn.dataset.id;
@@ -1288,13 +1269,6 @@
     const bar = document.getElementById('cartBar');
     const summary = document.getElementById('cartSummary');
 
-    if(!bar || !summary) return;
-
-    if(document.getElementById('drawerOverlay').style.display === 'flex'){
-      bar.style.display = 'none';
-      return;
-    }
-
     if(count <= 0){
       bar.style.display = 'none';
       summary.textContent = '0 items';
@@ -1347,19 +1321,13 @@
   }
 
   function openDrawer(){
-    document.body.classList.add('drawer-open');
     document.getElementById('drawerOverlay').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    updateCartUI();
     renderCartDrawer();
     togglePaymentBox();
   }
 
   function closeDrawer(){
-    document.body.classList.remove('drawer-open');
     document.getElementById('drawerOverlay').style.display = 'none';
-    document.body.style.overflow = '';
-    updateCartUI();
   }
 
   document.getElementById('viewCartBtn').addEventListener('click', openDrawer);
@@ -1393,35 +1361,35 @@
     });
 
     return [
-      'TASTE HUB - INVOICE',
-      'J 1301, Kolte Patil Raaga, Kannuru, Bengaluru 560077',
-      'FSSAI: 21226008000011',
-      '--------------------------------',
+      "TASTE HUB - INVOICE",
+      "J 1301, Kolte Patil Raaga, Kannuru, Bengaluru 560077",
+      "FSSAI: 21226008000011",
+      "--------------------------------",
       ...lines,
-      '--------------------------------',
+      "--------------------------------",
       `TOTAL: ₹${total}`,
-      '',
+      "",
       `UPI: ${UPI_ID}`
-    ].join('\n');
+    ].join("\\n");
   }
 
   document.getElementById('invoiceBtn').addEventListener('click', () => {
-    if(cart.size === 0) return alert('Cart is empty.');
+    if(cart.size === 0) return alert("Cart is empty.");
     alert(buildInvoiceText());
   });
 
   document.getElementById('copyUpiBtn').addEventListener('click', async () => {
     try{
       await navigator.clipboard.writeText(UPI_ID);
-      toast('UPI ID copied');
+      toast("UPI ID copied");
     }catch(e){
-      toast('Copy failed');
+      toast("Copy failed");
     }
   });
 
   document.getElementById('payNowBtn').addEventListener('click', () => {
     const {total} = totals();
-    if(total <= 0) return alert('Cart total is 0.');
+    if(total <= 0) return alert("Cart total is 0.");
     window.location.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent('TasteHub')}&am=${encodeURIComponent(String(total))}&cu=INR`;
   });
 
@@ -1441,26 +1409,28 @@
       lines.push(`• ${v.item.name}${extra} × ${v.qty}${v.item.price ? ` (₹${v.item.price})` : ''}`);
     });
 
-    let msg = `Hi TasteHub 👋\n\nOrder Request\n`;
-    msg += `Order ID: ${orderId}\n`;
-    msg += `Name: ${name}\n`;
-    msg += `Phone: ${phone}\n`;
-    msg += `Apartment/Flat: ${flat}\n`;
-    msg += `Preferred meal: ${time}\n`;
-    if(time === 'Breakfast') msg += `Breakfast date selected: ${selectedBreakfastDate}\n`;
-    msg += `Payment Method: ${paymentMethod}\n`;
-    msg += `\nItems:\n${lines.join('\n')}\n`;
-    msg += `\nTotal: ₹${total}\n`;
+    let msg = `Hi TasteHub 👋\\n\\nOrder Request\\n`;
+    msg += `Order ID: ${orderId}\\n`;
+    msg += `Name: ${name}\\n`;
+    msg += `Phone: ${phone}\\n`;
+    msg += `Apartment/Flat: ${flat}\\n`;
+    msg += `Preferred meal: ${time}\\n`;
+    if(time === 'Breakfast') msg += `Breakfast date selected: ${selectedBreakfastDate}\\n`;
+    msg += `Payment Method: ${paymentMethod}\\n`;
+
+    msg += `\\nItems:\\n${lines.join('\\n')}\\n`;
+    msg += `\\nTotal: ₹${total}\\n`;
 
     if(paymentMethod === 'UPI'){
-      msg += `UPI ID: ${UPI_ID}\n`;
-      if(txnId) msg += `Txn/UTR: ${txnId}\n`;
+      msg += `UPI ID: ${UPI_ID}\\n`;
+      if(txnId) msg += `Txn/UTR: ${txnId}\\n`;
     } else {
-      msg += `Payment: Cash on Delivery\n`;
+      msg += `Payment: Cash on Delivery\\n`;
     }
 
-    if(notes) msg += `\nNotes: ${notes}\n`;
-    msg += `\nPlease confirm my order. Thanks!`;
+    if(notes) msg += `\\nNotes: ${notes}\\n`;
+    msg += `\\nPlease confirm my order. Thanks!`;
+
     return msg;
   }
 
@@ -1491,8 +1461,13 @@
     const flat = document.getElementById('custFlat').value.trim();
     const paymentMethod = document.getElementById('paymentMethod').value;
 
-    if(!name || !phone || !flat) return alert('Please enter Name, Phone and Apartment/Flat.');
-    if(cart.size === 0) return alert('Your cart is empty.');
+    if(!name || !phone || !flat){
+      return alert("Please enter Name, Phone and Apartment/Flat.");
+    }
+
+    if(cart.size === 0){
+      return alert("Your cart is empty.");
+    }
 
     const orderId = genOrderId();
     const {total, count} = totals();
@@ -1526,8 +1501,8 @@
     };
 
     const logged = await logOrder(payload);
-    if(!logged.ok) toast('Order submitted. Sheet logging failed.');
-    else toast('Order submitted');
+    if(!logged.ok) toast("Order submitted. Sheet logging failed.");
+    else toast("Order submitted");
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppText(orderId))}`;
     window.open(url, '_blank');
