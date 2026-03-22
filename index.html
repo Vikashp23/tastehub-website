@@ -1148,7 +1148,11 @@ const MENU = {
 
     if(!searchMode && activeKey === 'breakfast'){
   sectionInfoEl.textContent = "Showing tomorrow's breakfast menu.";
-}
+} else {
+  sectionInfoEl.textContent = searchMode 
+    ? 'Showing matching dishes from all sections' 
+    : 'Available items shown below';
+} 
         ? (isBreakfastWindowOpen() ? "Today's breakfast orders are open." : "Today's breakfast orders are closed.")
         : "Showing tomorrow's breakfast menu.";
     } else {
