@@ -843,7 +843,6 @@
         <div id="breakfastDateWrap" class="breakfastDateWrap">
           <label for="breakfastDateSelect">Choose breakfast date</label>
           <select id="breakfastDateSelect">
-            <option value="today">Today</option>
             <option value="tomorrow">Tomorrow</option>
           </select>
         </div>
@@ -1014,13 +1013,13 @@
 
   const BREAKFAST_MENUS = {
   today: [
-    {name:"Veg poha", price:90, desc:"Fresh homemade breakfast", available:false}
+    {name:".....", price:..., desc:"Fresh homemade breakfast", available:false}
   ],
   tomorrow: [
     {name:"Aloo paratha (2 pieces) with curd", price:90, desc:"Fresh homemade breakfast", available:true},
     {name:"Extra Paratha ", price:40, desc:"Add-on", available:true},
     {name:"Moong daal masala dosa (2 pieces) with onion tomato chatni , sambar", price:140, desc:"Fresh homemade breakfast", available:false},
-    {name:"Extra dosa", price:55, desc:"Add-on", available:true},
+    {name:"Extra Moong daal masala dosa", price:55, desc:"Add-on", available:true},
     {name:"Puri (4 pieces) with Aloo curry", price:130, desc:"Tomorrow breakfast", available:false},
     {name:"Extra puri", price:15, desc:"Add-on", available:false},
     {name:"Aloo paneer sandwich (4 slices)", price:120, desc:"Tomorrow breakfast", available:false},
@@ -1050,8 +1049,8 @@ const MENU = {
 
   dinner: [
     {name:"Plain Paratha/Chapati (4 pieces) with Kadhai Paneer (200gm)", price:140, desc:"Today Dinner", available:false},
-    {name:"Extra Paratha/Chapati", price:15, desc:"Add-on", available:true},
-    {name:"Plain paratha/chapati (4 pieces) with ghugni", price:140, desc:"Today Dinner", available:true}
+    {name:"Extra Paratha/Chapati", price:15, desc:"Add-on", available:false},
+    {name:"Plain paratha/chapati (4 pieces) with ghugni", price:140, desc:"Today Dinner", available:false}
   ]
 };
 
@@ -1067,7 +1066,7 @@ const MENU = {
 
   let activeKey = 'dinner';
   let searchMode = false;
-  let selectedBreakfastDate = 'today';
+  let selectedBreakfastDate = 'tomorrow';
 
   const sections = [
     {key:'breakfast', label:'Breakfast'},
@@ -1096,10 +1095,11 @@ const MENU = {
   }
 
   function isAvailable(sectionKey, item){
-    if(sectionKey === 'breakfast' && selectedBreakfastDate === 'tomorrow') return item.available !== false;
-    if(sectionKey === 'breakfast' && selectedBreakfastDate === 'today') return isBreakfastWindowOpen() && item.available !== false;
-    return item.available !== false;
+  if(sectionKey === 'breakfast'){
+    return item.available !== false; // only tomorrow menu now
   }
+  return item.available !== false;
+}
 
   function itemId(sectionKey, idx){
     return sectionKey === 'breakfast'
@@ -1150,7 +1150,8 @@ const MENU = {
     breakfastDateWrap.style.display = (!searchMode && activeKey === 'breakfast') ? 'block' : 'none';
 
     if(!searchMode && activeKey === 'breakfast'){
-      sectionInfoEl.textContent = selectedBreakfastDate === 'today'
+  sectionInfoEl.textContent = "Showing tomorrow's breakfast menu.";
+}
         ? (isBreakfastWindowOpen() ? "Today's breakfast orders are open." : "Today's breakfast orders are closed.")
         : "Showing tomorrow's breakfast menu.";
     } else {
