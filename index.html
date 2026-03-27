@@ -882,7 +882,44 @@
           </div>
 
           <div class="infoCard">
-            <h3>TasteHub</h3>
+            <div class="infoCard">
+  <h3>Monthly Subscription</h3>
+
+  <input id="subName" placeholder="Your Name">
+  <input id="subPhone" placeholder="Phone Number">
+
+  <select id="subPlan">
+    <option>Lunch</option>
+    <option>Dinner</option>
+    <option>Lunch + Dinner</option>
+  </select>
+
+  <select id="subPeople">
+    <option value="1">1 Person</option>
+    <option value="3">3 People (10% OFF)</option>
+  </select>
+
+  <button onclick="sendSubscription()">Subscribe on WhatsApp</button>
+</div>
+
+<div class="infoCard">
+  <h3>Party Order 🎉</h3>
+
+  <input id="partyName" placeholder="Your Name">
+  <input id="partyPhone" placeholder="Phone Number">
+  <input id="guestCount" placeholder="Guests">
+
+  <select id="partyMenu">
+    <option>Basic Veg</option>
+    <option>Premium Veg</option>
+    <option>Custom Menu</option>
+  </select>
+
+  <input id="partyDate" type="date">
+  <textarea id="partyNotes" placeholder="Extra requirements"></textarea>
+
+  <button onclick="sendPartyOrder()">Send Party Order</button>
+</div>
             <div class="miniList">
               <div>Fresh homemade veg meals</div>
               <div>Breakfast • Lunch • Snacks • Dinner</div>
@@ -1015,14 +1052,20 @@
   const BREAKFAST_MENUS = {
   today: [
     {name:"Idly (3pieces and 1 Vada) with Sambar,chatni", price:100, desc:"Fresh homemade breakfast", available:false},
+    {name:"Idly (4 pieces ) with Sambar, chatni", price:90, desc:"Fresh homemade breakfast", available:false},
+    {name:"Extra Idly", price:15, desc:"Fresh homemade breakfast", available:false},
+    {name:"Aloo paratha (2 pieces) with curd ", price:140, desc:"Fresh homemade breakfast", available:false},
     {name:"Aloo paratha (2 pieces) with curd ", price:140, desc:"Fresh homemade breakfast", available:false},
     {name:"Extra Aloo paratha ", price:40, desc:"Add-on", available:false},
+    {name:"Masala dosa (2 pieces) with Sambar, chatni", price:130, desc:"Add-on", available:false},
+    {name:"Extra dosa", price:50, desc:"Fresh homemade breakfast", available:false}
   ],
   tomorrow: [
-    {name:"Idly (3pieces and 1 Vada) with Sambar,chatni", price:100, desc:"Fresh homemade breakfast", available:true},
+    {name:"Idly (3pieces and 1 Vada) with Sambar,chatni", price:100, desc:"Fresh homemade breakfast", available:false},
+    {name:"Idly (4 pieces ) with Sambar, chatni", price:90, desc:"Fresh homemade breakfast", available:true},
     {name:"Extra Idly", price:15, desc:"Fresh homemade breakfast", available:true},
-    {name:"Puri (4 pieces) with Aloo curry", price:130, desc:"Fresh homemade breakfast", available:true},
-    {name:"Extra Puri ", price:15, desc:"Fresh homemade breakfast", available:true},
+    {name:"Puri (4 pieces) with Aloo curry", price:130, desc:"Fresh homemade breakfast", available:false},
+    {name:"Extra Puri ", price:15, desc:"Fresh homemade breakfast", available:false},
     {name:"Aloo paratha (2 pieces) with curd ", price:140, desc:"Fresh homemade breakfast", available:false},
     {name:"Extra Aloo paratha ", price:40, desc:"Add-on", available:false},
     {name:"Moong daal masala dosa (2 pieces) with onion tomato chatni , sambar", price:140, desc:"Fresh homemade breakfast", available:false},
@@ -1034,7 +1077,10 @@
     {name:"Methi paratha (4 pieces) with curd", price:100, desc:"Tomorrow breakfast", available:false},
     {name:"Aloo paratha (2 pieces) with curd", price:90, desc:"Tomorrow breakfast", available:false},
     {name:"Rajma with paratha/chapati (4 pieces)", price:140, desc:"Tomorrow breakfast", available:false},
-    {name:"Veg poha", price:90, desc:"Fresh homemade breakfast", available:false}
+    {name:"Veg poha", price:90, desc:"Fresh homemade breakfast", available:false},
+    {name:"Masala dosa (2 pieces) with Sambar, chatni", price:130, desc:"Add-on", available:true},
+    {name:"Extra dosa", price:50, desc:"Fresh homemade breakfast", available:true}
+
   ]
 };
 
@@ -1563,6 +1609,65 @@ const MENU = {
   renderTabs();
   renderMenu();
   updateCartUI();
+renderTabs();
+renderMenu();
+updateCartUI();
+
+
+// 👉 PASTE YOUR NEW CODE HERE 👇
+
+// SUBSCRIPTION
+function sendSubscription(){
+  const name = document.getElementById('subName').value;
+  const phone = document.getElementById('subPhone').value;
+  const plan = document.getElementById('subPlan').value;
+  const people = document.getElementById('subPeople').value;
+
+  if(!name || !phone){
+    alert("Please fill details");
+    return;
+  }
+
+  let msg = `Hi TasteHub 👋
+
+Subscription Request:
+Name: ${name}
+Phone: ${phone}
+Plan: ${plan}
+People: ${people}`;
+
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`);
+}
+
+
+// PARTY ORDER
+function sendPartyOrder(){
+  const name = document.getElementById('partyName').value;
+  const phone = document.getElementById('partyPhone').value;
+  const guests = document.getElementById('guestCount').value;
+  const menu = document.getElementById('partyMenu').value;
+  const date = document.getElementById('partyDate').value;
+  const notes = document.getElementById('partyNotes').value;
+
+  if(!name || !phone || !guests){
+    alert("Please fill required fields");
+    return;
+  }
+
+  let msg = `Hi TasteHub 👋
+
+Party Order 🎉
+Name: ${name}
+Phone: ${phone}
+Guests: ${guests}
+Menu: ${menu}
+Date: ${date}
+Notes: ${notes}`;
+
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`);
+}
+
+</script>
 </script>
 </body>
 </html>
