@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TasteHub Orders</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0b0f14;
+  color:white;
+}
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+.card{
+  background:#111827;
+  padding:20px;
+  border-radius:16px;
+  margin-bottom:20px;
+}
+h2{margin-top:0}
+input,select,textarea{
+  width:100%;
+  padding:10px;
+  margin-top:5px;
+  margin-bottom:12px;
+  border-radius:10px;
+  border:none;
+}
+button{
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.primary{
+  background:#20c997;
+  color:black;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<!-- 🔥 SUBSCRIPTION -->
+<div class="card">
+<h2>📦 Monthly Subscription</h2>
+
+<input id="subName" placeholder="Your Name">
+<input id="subPhone" placeholder="Phone Number">
+
+<select id="subPlan">
+  <option>Breakfast</option>
+  <option>Lunch</option>
+  <option>Dinner</option>
+</select>
+
+<select id="subPeople">
+  <option value="1">1 Person</option>
+  <option value="2">2 People</option>
+  <option value="3">3 People (10% OFF)</option>
+</select>
+
+<button class="primary" onclick="sendSubscription()">Send on WhatsApp</button>
+</div>
+
+<!-- 🎉 PARTY ORDER -->
+<div class="card">
+<h2>🎉 Party / Bulk Order</h2>
+
+<input id="partyName" placeholder="Your Name">
+<input id="partyPhone" placeholder="Phone Number">
+<input id="guestCount" type="number" placeholder="Guests Count">
+
+<select id="partyMenu">
+  <option>Breakfast</option>
+  <option>Lunch</option>
+  <option>Dinner</option>
+  <option>Custom</option>
+</select>
+
+<input id="partyDate" type="date">
+<textarea id="partyNotes" placeholder="Extra requirements"></textarea>
+
+<button class="primary" onclick="sendPartyOrder()">Send Party Request</button>
+</div>
+
+</div>
+
+<script>
+const WHATSAPP_NUMBER = "919632035612";
+
+// ✅ SUBSCRIPTION FUNCTION
+function sendSubscription(){
+  const name = document.getElementById("subName").value.trim();
+  const phone = document.getElementById("subPhone").value.trim();
+  const plan = document.getElementById("subPlan").value;
+  const people = document.getElementById("subPeople").value;
+
+  if(!name || !phone){
+    alert("Enter name & phone");
+    return;
+  }
+
+  let discount = people === "3" ? " (10% OFF)" : "";
+
+  let msg = `Hi TasteHub 👋
+
+📦 Subscription Request
+Name: ${name}
+Phone: ${phone}
+Plan: ${plan}
+People: ${people}${discount}
+
+Please share details.`;
+
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`);
+}
+
+// ✅ PARTY ORDER FUNCTION
+function sendPartyOrder(){
+  const name = document.getElementById("partyName").value.trim();
+  const phone = document.getElementById("partyPhone").value.trim();
+  const guests = document.getElementById("guestCount").value.trim();
+  const menu = document.getElementById("partyMenu").value;
+  const date = document.getElementById("partyDate").value;
+  const notes = document.getElementById("partyNotes").value;
+
+  if(!name || !phone || !guests){
+    alert("Fill required fields");
+    return;
+  }
+
+  let msg = `Hi TasteHub 👋
+
+🎉 Party Order Request
+Name: ${name}
+Phone: ${phone}
+Guests: ${guests}
+Menu: ${menu}
+Date: ${date}
+
+Requirements: ${notes || "None"}
+
+Please confirm price & availability.`;
+
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`);
+}
+</script>
+
+</body>
+</html>
