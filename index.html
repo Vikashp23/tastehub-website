@@ -1051,8 +1051,10 @@
 
   const BREAKFAST_MENUS = {
   today: [
-    {name:"Idly (3pieces and 1 Vada) with Sambar,chatni", price:100, desc:"Fresh homemade breakfast", available:true},
-    {name:"Idly (4 pieces ) with Sambar, chatni", price:90, desc:"Fresh homemade breakfast", available:true},
+    {name:"Plain chilla (2 pieces) with chatni", price:90, desc:"Fresh homemade breakfast", available:false},
+    {name:"poha", price:90, desc:"Fresh homemade breakfast", available:false},
+    {name:"Idly (3pieces and 1 Vada) with Sambar,chatni", price:100, desc:"Fresh homemade breakfast", available:false},
+    {name:"Idly (4 pieces ) with Sambar, chatni", price:90, desc:"Fresh homemade breakfast", available:false},
     {name:"Extra Idly", price:15, desc:"Fresh homemade breakfast", available:false},
     {name:"Aloo paratha (2 pieces) with curd ", price:140, desc:"Fresh homemade breakfast", available:false},
     {name:"Aloo paratha (2 pieces) with curd ", price:140, desc:"Fresh homemade breakfast", available:false},
@@ -1063,6 +1065,8 @@
     {name:"Aloo paneer sandwich (4Slices) ", price:130, desc:"Fresh homemade breakfast", available:false}
   ],
   tomorrow: [
+    {name:"Plain chilla (2 pieces) with chatni", price:90, desc:"Fresh homemade breakfast", available:true},
+    {name:"poha", price:90, desc:"Fresh homemade breakfast", available:true},
     {name:"Idly (3pieces and 1 Vada) with Sambar,chatni", price:100, desc:"Fresh homemade breakfast", available:false},
     {name:"Idly (4 pieces ) with Sambar, chatni", price:90, desc:"Fresh homemade breakfast", available:false},
     {name:"Extra Idly", price:15, desc:"Fresh homemade breakfast", available:false},
@@ -1090,6 +1094,7 @@
 
 const MENU = {
   lunch: [
+    {name:"Veg paneer fried rice with papad", price:150, desc:"Simple homemade lunch", available:false},
     {name:"Plain rice with daal, aloo soya curry", price:160, desc:"Simple homemade lunch", available:false},
     {name:"Plain paratha/chapati (4 pieces) with mix veg curry", price:130, desc:"Simple homemade lunch", available:false},
     {name:"Jeera rice with palak daal fry, papad", price:150, desc:"Comfort meal", available:false},
@@ -1099,6 +1104,8 @@ const MENU = {
   ],
 
   snacks: [
+    {name:"Sabudana vada (4pieces)with chatni", price:70, desc:"Crispy snack", available:false},
+    {name:"veg hakka noodles", price:110, desc:"Crispy snack", available:false},
     {name:"Aloo dum dahi vada (spicy and tangy flavour)(4pieces)", price:80, desc:"Crispy snack", available:false},
     {name:"Aloo bread roll (2 pieces) with chutney", price:70, desc:"Crispy snack", available:false},
     {name:"Vada pav", price:40, desc:"Quick evening bite", available:false},
@@ -1107,6 +1114,7 @@ const MENU = {
   ],
 
   dinner: [
+    {name:"Litti chokha , tamatar chatni (4pieces)", price:160, desc:"Today Dinner", available:false},
     {name:"Plain Paratha/Chapati (4 pieces) with mix veg", price:140, desc:"Today Dinner", available:false},
     {name:"Extra Paratha/Chapati", price:15, desc:"Add-on", available:false},
     {name:"Plain Paratha/Chapati (4 pieces) with Chole (200gm)", price:140, desc:"Today Dinner", available:false},
@@ -1114,7 +1122,17 @@ const MENU = {
     {name:"Sattu puri (4pieces) with Aloo curry ", price:140, desc:"Today Dinner", available:true},
     {name:"Extra Puri", price:20, desc:"Add-on", available:true}
     
+  ],
+
+  snacksSweets: [
+    {name:"Methi Mathari (1 KG)", price:500, desc:"Homemade Snack", available:true},
+    {name:"Thekua (1 KG)", price:560, desc:"Traditional Sweet Snack", available:true},
+    {name:"Chiwra / Chiwda Mix (500g)", price:280, desc:"Light Crunchy Snack", available:true},
+    {name:"Nimki (1 KG)", price:500, desc:"Crunchy Homemade Snack", available:true},
+    {name:"Gujiya (1 KG)", price:700, desc:"Sweet with Mawa & Dry Fruits", available:true}
+  
   ]
+  
 };
 
   const tabsEl = document.getElementById('tabs');
