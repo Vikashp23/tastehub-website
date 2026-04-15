@@ -11,27 +11,84 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans';background:#FFF8F0}
 
-nav{text-align:center;padding:10px;background:#fff}
+/* NAV */
+nav{text-align:center;padding:12px;background:#fff}
 nav img{height:60px}
 
+/* HERO */
 .hero{text-align:center;padding:20px}
-.hero h1{font-family:'Playfair Display'}
-button{padding:10px 20px;margin:5px;border:none;border-radius:20px;cursor:pointer}
+.hero h1{font-family:'Playfair Display';font-size:28px}
+.hero p{color:#555;margin:5px 0}
+
+button{padding:10px 20px;margin:5px;border:none;border-radius:20px;cursor:pointer;font-weight:600}
 .primary{background:#2C1810;color:white}
 .orange{background:#E8611A;color:white}
 
-#timing{background:#fff3cd;padding:10px;margin:10px;border-radius:10px;text-align:center}
+/* TIMING */
+#timing{
+background:#fff3cd;
+padding:12px;
+margin:10px;
+border-radius:10px;
+text-align:center;
+font-size:14px
+}
 
+/* MENU */
 section{padding:20px}
-.tab-btn{padding:8px 15px;border:1px solid #ccc;margin:5px;border-radius:20px}
+.tab-btn{
+padding:8px 15px;
+border:1px solid #ccc;
+margin:5px;
+border-radius:20px;
+background:#fff
+}
 .active{background:#E8611A;color:white}
 
-.meal{background:#fff;padding:15px;margin:10px 0;border-radius:10px}
-.price{color:#E8611A;font-weight:bold}
+.meal{
+background:#fff;
+padding:15px;
+margin:10px 0;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.05)
+}
 
-.cart{position:fixed;bottom:10px;right:10px;background:#E8611A;color:white;padding:12px;border-radius:30px;cursor:pointer}
+.price{color:#E8611A;font-weight:bold;margin:5px 0}
 
-footer{text-align:center;background:#2C1810;color:white;padding:20px}
+/* SUBSCRIPTION */
+.plan{
+background:#fff;
+padding:15px;
+border-radius:12px;
+margin:10px 0;
+border:2px solid #E8611A;
+text-align:center
+}
+
+.plan h4{margin-bottom:5px}
+.plan-price{color:#E8611A;font-size:20px;font-weight:bold}
+
+/* CART */
+.cart{
+position:fixed;
+bottom:15px;
+right:15px;
+background:#E8611A;
+color:white;
+padding:14px;
+border-radius:30px;
+cursor:pointer;
+box-shadow:0 5px 15px rgba(0,0,0,0.2)
+}
+
+/* FOOTER */
+footer{
+text-align:center;
+background:#2C1810;
+color:white;
+padding:20px;
+margin-top:20px
+}
 </style>
 </head>
 
@@ -50,7 +107,7 @@ footer{text-align:center;background:#2C1810;color:white;padding:20px}
 </a>
 
 <a href="party.html">
-<button class="orange"> Party and Subscription Orders</button>
+<button class="orange">Party & Subscription Orders</button>
 </a>
 
 <button class="primary" onclick="orderNow()">Order Now</button>
@@ -64,7 +121,8 @@ Breakfast before 7AM | Lunch before 12PM | Snacks before 4PM | Dinner before 7PM
 <section>
 <h2>Menu</h2>
 
-<button class="tab-btn active" onclick="show('lunch',this)">Lunch</button>
+<button class="tab-btn active" onclick="show('breakfast',this)">Breakfast</button>
+<button class="tab-btn" onclick="show('lunch',this)">Lunch</button>
 <button class="tab-btn" onclick="show('snacks',this)">Snacks</button>
 <button class="tab-btn" onclick="show('dinner',this)">Dinner</button>
 
@@ -74,19 +132,41 @@ Breakfast before 7AM | Lunch before 12PM | Snacks before 4PM | Dinner before 7PM
 <section>
 <h2>Subscription Plans</h2>
 
-<div class="meal">
-<h4>Weekly Plan</h4>
-<p>Lunch + Dinner (5 Days)</p>
-<div class="price">₹999</div>
-<button onclick="subscribe('Weekly ₹999')">Subscribe</button>
+<div class="plan">
+<h4>Breakfast Plan</h4>
+<p>20 Days</p>
+<div class="plan-price">₹1799</div>
+<button onclick="subscribe('Breakfast Plan ₹1799')">Subscribe</button>
 </div>
 
-<div class="meal">
-<h4>Monthly Plan</h4>
-<p>Lunch + Dinner (20 Days)</p>
-<div class="price">₹3499</div>
-<button onclick="subscribe('Monthly ₹3499')">Subscribe</button>
+<div class="plan">
+<h4>Lunch Plan</h4>
+<p>20 Days</p>
+<div class="plan-price">₹2499</div>
+<button onclick="subscribe('Lunch Plan ₹2499')">Subscribe</button>
 </div>
+
+<div class="plan">
+<h4>Dinner Plan</h4>
+<p>20 Days</p>
+<div class="plan-price">₹2399</div>
+<button onclick="subscribe('Dinner Plan ₹2399')">Subscribe</button>
+</div>
+
+<div class="plan">
+<h4>Lunch + Dinner 🔥</h4>
+<p>20 Days</p>
+<div class="plan-price">₹4499</div>
+<button onclick="subscribe('Lunch + Dinner ₹4499')">Subscribe</button>
+</div>
+
+<div class="plan">
+<h4>Weekly Plan</h4>
+<p>5 Days (Lunch + Dinner)</p>
+<div class="plan-price">₹1199</div>
+<button onclick="subscribe('Weekly ₹1199')">Subscribe</button>
+</div>
+
 </section>
 
 <section style="text-align:center">
@@ -105,12 +185,17 @@ Breakfast before 7AM | Lunch before 12PM | Snacks before 4PM | Dinner before 7PM
 let cart=[];
 
 const data={
+breakfast:[
+ {name:"Masala Dosa (2 pcs)",price:"130"},
+ {name:"Extra Dosa",price:"50"},
+ {name:"Handvo (4 pcs)",price:"100"}
+],
 lunch:[
  {name:"Plain Rice + Daal Tadka + Aloo Palak + Salad",price:"160"},
  {name:"Chapati Available",price:"15"}
 ],
 snacks:[
- {name:"Onion Kachori (2pcs)",price:"70"}
+ {name:"Onion Kachori (2 pcs)",price:"70"}
 ],
 dinner:[
  {name:"4 Chapati/Paratha + Chhole",price:"140"},
@@ -118,17 +203,9 @@ dinner:[
 ]
 };
 
-function checkLocation(){
- let loc=prompt("Enter your area:");
- if(!loc || !loc.toLowerCase().includes("kannuru")){
-   alert("❌ Only Kannuru delivery available");
-   return false;
- }
- return true;
-}
-
 function isOpen(type){
  let h=new Date().getHours();
+ if(type==="breakfast" && h>=7) return false;
  if(type==="lunch" && h>=12) return false;
  if(type==="snacks" && h>=16) return false;
  if(type==="dinner" && h>=19) return false;
@@ -163,14 +240,12 @@ function add(item){
 }
 
 function orderNow(){
- if(!checkLocation()) return;
-
  if(cart.length===0){
   alert("Cart empty");
   return;
  }
 
- let msg="Hello TasteHub,%0AOrder:%0A";
+ let msg="Hello TasteHub 👋%0AOrder:%0A";
  cart.forEach(i=>msg+="- "+i+"%0A");
 
  window.open("https://wa.me/919632035612?text="+msg);
@@ -186,7 +261,7 @@ function paymentDone(){
  window.open("https://wa.me/919632035612?text="+encodeURIComponent(msg));
 }
 
-show('lunch',document.querySelector('.tab-btn'));
+show('breakfast',document.querySelector('.tab-btn'));
 </script>
 
 </body>
