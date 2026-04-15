@@ -13,7 +13,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,248,240,0.95);padding:
 .logo span{color:var(--orange)}
 .nav-links{display:flex;gap:28px;list-style:none}
 .nav-links a{font-size:13px;color:var(--muted);text-decoration:none}
-.nav-cta{background:var(--orange);color:white;padding:8px 20px;border-radius:24px;border:none}
+.nav-cta{background:var(--orange);color:white;padding:8px 20px;border-radius:24px;border:none;cursor:pointer}
 
 /* HERO */
 .hero{min-height:80vh;display:flex;align-items:center;padding:0 5%}
@@ -21,7 +21,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,248,240,0.95);padding:
 .hero h1{font-family:'Playfair Display',serif;font-size:52px;color:var(--brown)}
 .hero h1 em{color:var(--orange)}
 .hero p{color:var(--muted);margin:20px 0}
-.btn-primary{background:var(--brown);color:white;padding:12px 26px;border-radius:30px;border:none}
+.btn-primary{background:var(--brown);color:white;padding:12px 26px;border-radius:30px;border:none;cursor:pointer}
 .btn-outline{border:2px solid var(--brown);padding:12px 26px;border-radius:30px}
 
 /* MENU */
@@ -36,6 +36,10 @@ section{padding:60px 5%}
 .price{color:var(--orange);font-weight:600}
 .tag{font-size:10px;color:green}
 
+/* QR */
+.qr-section{text-align:center;padding:40px}
+.qr-section img{width:200px;border-radius:12px;margin-top:10px}
+
 /* FOOTER */
 footer{background:var(--brown);color:white;padding:30px;text-align:center}
 </style>
@@ -48,7 +52,7 @@ footer{background:var(--brown);color:white;padding:30px;text-align:center}
       <li><a href="#">Menu</a></li>
       <li><a href="#">Subscription</a></li>
     </ul>
-    <button class="nav-cta">Order Now</button>
+    <button class="nav-cta" onclick="orderNow()">Order Now</button>
   </div>
 </nav>
 
@@ -76,6 +80,14 @@ footer{background:var(--brown);color:white;padding:30px;text-align:center}
   <div id="meal-grid" class="meal-grid"></div>
 </section>
 
+<!-- QR PAYMENT -->
+<div class="qr-section">
+  <h2>Pay via UPI</h2>
+  <p>After placing order on WhatsApp, scan & pay</p>
+  <img src="your-qr.png" alt="QR Code">
+  <p>UPI ID: yourupi@bank</p>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <p>© 2026 TasteHub | Fresh Meals Daily</p>
@@ -84,19 +96,21 @@ footer{background:var(--brown);color:white;padding:30px;text-align:center}
 <script>
 const meals = {
   breakfast: [
-    {e:"🥞",n:"Masala dosa (2pieces) with sambar chatni",p:"₹130",t:"South Indian"},
-    {e:"🍳",n:"Extra dosa",p:"₹50",t:"Bestseller"},
-    {e:"🥣",n:"Handvo – A delicious Gujarati dish made with mixed dals, rich in protein and fiber(4 pieces) ",p:"₹100",t:"Light"}
+    {e:"🥞",n:"Masala dosa (2pcs) with sambar & chutney",p:"₹130",t:"South Indian"},
+    {e:"➕",n:"Extra dosa",p:"₹50",t:"Add-on"},
+    {e:"🥣",n:"Handvo (4pcs - Gujarati dish)",p:"₹100",t:"Healthy"}
   ],
   lunch: [
-    {e:"🍱",n:"Plain Rice with Daal Tadka,Aloo Palak , Salads",p:"₹160",t:"limited"}
+    {e:"🍚",n:"Plain Rice + Dal Tadka + Aloo Palak + Salad",p:"₹160",t:"Full Meal"},
+    {e:"🫓",n:"Chapati Available",p:"Extra",t:"Optional"}
   ],
   snacks: [
-    {e:"🍕",n:"Onion kachori (2pieces) with Chatni",p:"₹70",t:"Fast Food"}
+    {e:"🥟",n:"Onion Kachori (2pcs) with chutney",p:"₹70",t:"Crispy"}
   ],
   dinner: [
-    {e:"🍛",n:"Plain paratha/chapati (4pieces) with chhole",p:"₹140",t:"Combo"},
-   ]
+    {e:"🍛",n:"4 Paratha/Chapati with Chhole",p:"₹140",t:"Combo"},
+    {e:"➕",n:"Extra Paratha/Chapati",p:"₹15",t:"Add-on"}
+  ]
 };
 
 function showTab(category, btn){
@@ -113,6 +127,25 @@ function showTab(category, btn){
       <div class="tag">${item.t}</div>
     </div>
   `).join('');
+}
+
+function orderNow(){
+  let message = "🍽 *TasteHub Order*%0A%0A";
+
+  const activeTab = document.querySelector('.tab-btn.active').innerText;
+  message += "*Category:* " + activeTab + "%0A%0A";
+
+  const items = document.querySelectorAll('#meal-grid .meal-item');
+  items.forEach(item=>{
+    const name = item.querySelector('h4').innerText;
+    const price = item.querySelector('.price').innerText;
+    message += "• " + name + " - " + price + "%0A";
+  });
+
+  message += "%0A📍 Address: _______%0A📞 Contact: _______%0A%0A💳 Pay via UPI";
+
+  const phone = "91XXXXXXXXXX"; // ADD YOUR NUMBER
+  window.open("https://wa.me/" + phone + "?text=" + message, "_blank");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
