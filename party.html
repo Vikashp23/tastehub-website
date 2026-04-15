@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>TasteHub | Party Orders</title>
+<title>TasteHub | Party & Subscription</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=DM+Sans&display=swap" rel="stylesheet">
 
@@ -19,10 +19,10 @@ body{
 .header{
   background:#2C1810;
   color:white;
-  padding:15px;
+  padding:18px;
   text-align:center;
   font-family:'Playfair Display';
-  font-size:22px;
+  font-size:24px;
 }
 
 /* CONTAINER */
@@ -35,10 +35,10 @@ body{
 /* CARD */
 .card{
   background:white;
-  border-radius:16px;
+  border-radius:18px;
   padding:20px;
   margin-bottom:20px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.08);
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
 }
 
 /* TITLE */
@@ -47,11 +47,7 @@ h2{
   color:#2C1810;
 }
 
-/* MENU GRID */
-.menu-section{
-  margin-bottom:20px;
-}
-
+/* MENU */
 .menu-item{
   display:flex;
   justify-content:space-between;
@@ -83,6 +79,17 @@ input, select, textarea{
   width:100%;
   font-size:16px;
   cursor:pointer;
+  margin-top:10px;
+  transition:0.2s;
+}
+.btn:hover{opacity:0.9}
+
+/* PLAN */
+.plan{
+  border:1px solid #eee;
+  padding:15px;
+  border-radius:12px;
+  margin-top:10px;
 }
 
 /* NOTE */
@@ -98,16 +105,16 @@ input, select, textarea{
 
 <body>
 
-<div class="header">🍽 TasteHub Party Orders</div>
+<div class="header">🍽 TasteHub</div>
 
 <div class="container">
 
-<!-- FORM -->
+<!-- PARTY ORDER -->
 <div class="card">
-<h2>🎉 Book Party / Bulk Order</h2>
+<h2> Party and Subscription Orders</h2>
 
 <input id="name" placeholder="Your Name">
-<input id="location" placeholder="Apartment / Location">
+<input id="location" placeholder="Apartment / Location (560077 only)">
 <input id="people" type="number" placeholder="People Count">
 
 <select id="category">
@@ -119,7 +126,7 @@ input, select, textarea{
 
 <textarea id="items" placeholder="Custom requirements (optional)"></textarea>
 
-<button class="btn" onclick="sendOrder()">Send on WhatsApp</button>
+<button class="btn" onclick="sendOrder()">Send Party Order</button>
 
 <div class="note">
 📍 Service only for <b>Pincode 560077</b><br>
@@ -127,10 +134,9 @@ input, select, textarea{
 </div>
 </div>
 
-<!-- MENU -->
+<!-- PARTY MENU -->
 <div class="card">
 <h2>🥗 Snacks & Starters</h2>
-
 <div class="menu-item"><span>Bread Pakoda (2 pcs)</span><span class="price">₹80</span></div>
 <div class="menu-item"><span>Sabudana Vada (4 pcs)</span><span class="price">₹70</span></div>
 <div class="menu-item"><span>Aloo Bonda (4 pcs)</span><span class="price">₹80</span></div>
@@ -143,7 +149,6 @@ input, select, textarea{
 
 <div class="card">
 <h2>🍛 Indian Platters</h2>
-
 <div class="menu-item"><span>Aloo Paratha (2 pcs)</span><span class="price">₹90</span></div>
 <div class="menu-item"><span>Chapati (4) + Mix Veg</span><span class="price">₹140</span></div>
 <div class="menu-item"><span>Chapati (4) + Chhole</span><span class="price">₹140</span></div>
@@ -152,7 +157,6 @@ input, select, textarea{
 
 <div class="card">
 <h2>🍽 Special Combos</h2>
-
 <div class="menu-item"><span>Litti Chokha (4 pcs)</span><span class="price">₹160</span></div>
 <div class="menu-item"><span>Puri (4) + Aloo Curry</span><span class="price">₹130</span></div>
 <div class="menu-item"><span>Daal Puri (4)</span><span class="price">₹150</span></div>
@@ -160,38 +164,83 @@ input, select, textarea{
 
 <div class="card">
 <h2>🍚 Rice & Noodles</h2>
-
 <div class="menu-item"><span>Jeera Rice + Chhole</span><span class="price">₹150</span></div>
 <div class="menu-item"><span>Paneer Fried Rice</span><span class="price">₹160</span></div>
 <div class="menu-item"><span>Noodles</span><span class="price">₹120</span></div>
+</div>
+
+<!-- SUBSCRIPTION -->
+<div class="card">
+<h2>📦 Subscription Plans</h2>
+
+<div class="plan">
+<h3>Weekly Plan</h3>
+<p>Lunch + Dinner (5 Days)</p>
+<b>₹999</b>
+<button class="btn" onclick="subscribe('Weekly Plan')">Subscribe</button>
+</div>
+
+<div class="plan">
+<h3>Monthly Plan</h3>
+<p>Lunch + Dinner (20 Days)</p>
+<b>₹3499</b>
+<button class="btn" onclick="subscribe('Monthly Plan')">Subscribe</button>
+</div>
+
+<!-- SUBSCRIPTION MENU -->
+<h3 style="margin-top:20px;">🍳 Breakfast Menu</h3>
+<div class="menu-item"><span>Veg Poha</span><span class="price">₹90</span></div>
+<div class="menu-item"><span>Veg Upma</span><span class="price">₹90</span></div>
+<div class="menu-item"><span>Aloo Paratha + Curd</span><span class="price">₹90</span></div>
+<div class="menu-item"><span>Idli + Sambhar</span><span class="price">₹90</span></div>
+
+<h3 style="margin-top:15px;">🍛 Lunch Menu</h3>
+<div class="menu-item"><span>Jeera Rice + Dal</span><span class="price">₹150</span></div>
+<div class="menu-item"><span>Veg Fried Rice</span><span class="price">₹140</span></div>
+<div class="menu-item"><span>Rice + Chole</span><span class="price">₹130</span></div>
+
+<h3 style="margin-top:15px;">🌙 Dinner Menu</h3>
+<div class="menu-item"><span>Chapati + Mix Veg</span><span class="price">₹130</span></div>
+<div class="menu-item"><span>Puri + Aloo Curry</span><span class="price">₹130</span></div>
+
+<div class="note">
+✔ Fresh homemade veg meals<br>
+✔ Rotating menu<br>
+✔ Custom options available<br>
+🎉 10% OFF for 3+ people (monthly)
+</div>
+
 </div>
 
 </div>
 
 <script>
 function sendOrder(){
-  let name = document.getElementById('name').value;
   let location = document.getElementById('location').value;
   let people = document.getElementById('people').value;
-  let category = document.getElementById('category').value;
-  let items = document.getElementById('items').value;
 
-  if(!location || !people){
-    alert("Enter location & people count");
+  if(!location.includes("560077")){
+    alert("Service only for 560077");
+    return;
+  }
+
+  if(!people){
+    alert("Enter people count");
     return;
   }
 
   let msg = `Hi TasteHub 👋
 Party Order Request
 
-Name: ${name}
 Location: ${location}
-People: ${people}
-Category: ${category}
+People: ${people}`;
 
-Requirements:
-${items}`;
+  window.open(`https://wa.me/919632035612?text=${encodeURIComponent(msg)}`);
+}
 
+function subscribe(plan){
+  let msg = `Hi TasteHub 👋
+I want to subscribe for ${plan}`;
   window.open(`https://wa.me/919632035612?text=${encodeURIComponent(msg)}`);
 }
 </script>
