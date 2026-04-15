@@ -1,74 +1,138 @@
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=DM+Sans&display=swap" rel="stylesheet">
+
+<title>TasteHub</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --cream:#FFF8F0;--brown:#2C1810;--orange:#E8611A;--gold:#D4A017;--green:#3D6B4F;
-  --light:#FEF3E8;--text:#1A0F0A;--muted:#7A5C4A;--white:#FFFFFF;
+body{font-family:'DM Sans';background:#FFF8F0}
+
+/* NAV */
+nav{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:15px;
+  background:#fff;
 }
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text)}
-nav{position:sticky;top:0;z-index:100;background:rgba(255,248,240,0.95);padding:0 5%}
-.nav-inner{display:flex;justify-content:space-between;align-items:center;height:64px}
-.logo{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--brown)}
-.logo span{color:var(--orange)}
-.nav-links{display:flex;gap:28px;list-style:none}
-.nav-links a{font-size:13px;color:var(--muted);text-decoration:none}
-.nav-cta{background:var(--orange);color:white;padding:8px 20px;border-radius:24px;border:none;cursor:pointer}
+.logo img{width:60px;border-radius:50%}
+.logo-text{font-family:'Playfair Display';font-size:22px;margin-top:5px}
+.cart-btn{
+  margin-top:10px;
+  background:#25D366;
+  color:white;
+  padding:8px 18px;
+  border:none;
+  border-radius:20px;
+}
 
 /* HERO */
-.hero{min-height:80vh;display:flex;align-items:center;padding:0 5%}
-.hero-content{max-width:550px}
-.hero h1{font-family:'Playfair Display',serif;font-size:52px;color:var(--brown)}
-.hero h1 em{color:var(--orange)}
-.hero p{color:var(--muted);margin:20px 0}
-.btn-primary{background:var(--brown);color:white;padding:12px 26px;border-radius:30px;border:none;cursor:pointer}
-.btn-outline{border:2px solid var(--brown);padding:12px 26px;border-radius:30px}
+.hero{text-align:center;padding:30px}
+.hero h1{font-family:'Playfair Display';font-size:32px}
+.hero em{color:#E8611A}
 
-/* MENU */
-section{padding:60px 5%}
-.section-title{font-family:'Playfair Display';font-size:32px;color:var(--brown)}
-.tab-bar{display:flex;gap:10px;margin:20px 0}
-.tab-btn{padding:10px 20px;border-radius:20px;border:1px solid #ccc;cursor:pointer}
-.tab-btn.active{background:var(--orange);color:white}
-.meal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px}
-.meal-item{background:white;border-radius:15px;padding:15px;text-align:center}
-.meal-emoji{font-size:40px}
-.price{color:var(--orange);font-weight:600}
-.tag{font-size:10px;color:green}
+/* SLIDER */
+.slider{
+  position:relative;
+  width:90%;
+  margin:20px auto;
+  height:160px;
+  overflow:hidden;
+  border-radius:15px;
+}
+.slide{
+  position:absolute;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition:0.6s;
+}
+.slide.active{opacity:1}
 
-/* QR */
-.qr-section{text-align:center;padding:40px}
-.qr-section img{width:200px;border-radius:12px;margin-top:10px}
+/* SECTION */
+section{padding:30px 5%}
+.tab-bar{display:flex;gap:10px;margin:15px 0}
+.tab-btn{
+  padding:8px 15px;
+  border-radius:20px;
+  border:1px solid #ccc;
+  background:white;
+}
+.tab-btn.active{background:#E8611A;color:white}
+
+.meal-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+}
+.meal-item{
+  background:white;
+  padding:15px;
+  border-radius:12px;
+  text-align:center;
+}
+.price{color:#E8611A;font-weight:600}
+
+/* INPUT */
+input{
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  width:70%;
+}
 
 /* FOOTER */
-footer{background:var(--brown);color:white;padding:30px;text-align:center}
+footer{
+  background:#2C1810;
+  color:white;
+  text-align:center;
+  padding:20px;
+}
 </style>
+</head>
+
+<body>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-inner">
-    <div class="logo">Taste<span>Hub</span></div>
-    <ul class="nav-links">
-      <li><a href="#">Menu</a></li>
-      <li><a href="#">Subscription</a></li>
-    </ul>
-    <button class="nav-cta" onclick="orderNow()">Order Now</button>
+  <div class="logo">
+    <img src="logo.png">
   </div>
+  <div class="logo-text">TasteHub</div>
+  <button class="cart-btn" onclick="sendToWhatsApp()">🛒 Order</button>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-content">
-    <h1>Delicious Food,<br><em>Every Day</em></h1>
-    <p>Fresh homemade meals delivered in Kannuru & nearby. Order breakfast, lunch, snacks or dinner easily.</p>
-    <button class="btn-primary" onclick="document.querySelector('#menu').scrollIntoView()">Explore Menu</button>
-    <button class="btn-outline">Subscribe</button>
-  </div>
+  <h1>Fresh Homemade Food,<br><em>Delivered Daily</em></h1>
+  <p>Serving Kannuru & nearby</p>
 </div>
 
+<!-- SLIDER -->
+<div class="slider">
+  <img src="ad1.png" class="slide active">
+  <img src="ad2.png" class="slide">
+  <img src="ad3.png" class="slide">
+  <img src="ad4.png" class="slide">
+  <img src="ad5.png" class="slide">
+</div>
+
+<!-- LOCATION -->
+<section>
+  <h3>Check Delivery</h3><br>
+  <input id="locationInput" placeholder="Enter your area">
+  <button onclick="checkLocation()">Check</button>
+</section>
+
 <!-- MENU -->
-<section id="menu">
-  <div class="section-title">Our Menu</div>
+<section>
+  <h2>Menu</h2>
 
   <div class="tab-bar">
     <button class="tab-btn active" onclick="showTab('breakfast',this)">Breakfast</button>
@@ -80,75 +144,108 @@ footer{background:var(--brown);color:white;padding:30px;text-align:center}
   <div id="meal-grid" class="meal-grid"></div>
 </section>
 
-<!-- QR PAYMENT -->
-<div class="qr-section">
-  <h2>Pay via UPI</h2>
-  <p>After placing order on WhatsApp, scan & pay</p>
-  <img src="your-qr.png" alt="QR Code">
-  <p>UPI ID: yourupi@bank</p>
-</div>
+<!-- PAYMENT -->
+<section style="text-align:center">
+  <h3>Scan & Pay</h3><br>
+  <img src="upi-qr.png" style="width:200px;border-radius:12px">
+  <p>After payment click Order</p>
+</section>
 
-<!-- FOOTER -->
 <footer>
-  <p>© 2026 TasteHub | Fresh Meals Daily</p>
+  © 2026 TasteHub | Fresh Meals Daily
 </footer>
 
 <script>
-const meals = {
-  breakfast: [
-    {e:"🥞",n:"Masala dosa (2pcs) with sambar & chutney",p:"₹130",t:"South Indian"},
-    {e:"➕",n:"Extra dosa",p:"₹50",t:"Add-on"},
-    {e:"🥣",n:"Handvo (4pcs - Gujarati dish)",p:"₹100",t:"Healthy"}
+
+/* CART */
+let cart=[];
+
+/* MENU DATA */
+const meals={
+  breakfast:[
+    {n:"Masala dosa (2pcs)",p:"₹130"},
+    {n:"Extra dosa",p:"₹50"},
+    {n:"Handvo (4 pcs)",p:"₹100"}
   ],
-  lunch: [
-    {e:"🍚",n:"Plain Rice + Dal Tadka + Aloo Palak + Salad",p:"₹160",t:"Full Meal"},
-    {e:"🫓",n:"Chapati Available",p:"Extra",t:"Optional"}
+  lunch:[
+    {n:"Plain rice + daal tadka + aloo palak + salads",p:"₹160"},
+    {n:"Chapati available",p:"₹0"}
   ],
-  snacks: [
-    {e:"🥟",n:"Onion Kachori (2pcs) with chutney",p:"₹70",t:"Crispy"}
+  snacks:[
+    {n:"Onion kachori (2pcs)",p:"₹70"}
   ],
-  dinner: [
-    {e:"🍛",n:"4 Paratha/Chapati with Chhole",p:"₹140",t:"Combo"},
-    {e:"➕",n:"Extra Paratha/Chapati",p:"₹15",t:"Add-on"}
+  dinner:[
+    {n:"4 chapati/paratha + chhole",p:"₹140"},
+    {n:"Extra chapati",p:"₹15"}
   ]
 };
 
-function showTab(category, btn){
+/* SHOW MENU */
+function showTab(cat,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 
-  const grid = document.getElementById('meal-grid');
+  let grid=document.getElementById('meal-grid');
 
-  grid.innerHTML = meals[category].map(item => `
+  grid.innerHTML=meals[cat].map(item=>`
     <div class="meal-item">
-      <div class="meal-emoji">${item.e}</div>
       <h4>${item.n}</h4>
       <div class="price">${item.p}</div>
-      <div class="tag">${item.t}</div>
+      <button onclick="addToCart('${item.n}','${item.p}')">Add</button>
     </div>
   `).join('');
 }
 
-function orderNow(){
-  let message = "🍽 *TasteHub Order*%0A%0A";
-
-  const activeTab = document.querySelector('.tab-btn.active').innerText;
-  message += "*Category:* " + activeTab + "%0A%0A";
-
-  const items = document.querySelectorAll('#meal-grid .meal-item');
-  items.forEach(item=>{
-    const name = item.querySelector('h4').innerText;
-    const price = item.querySelector('.price').innerText;
-    message += "• " + name + " - " + price + "%0A";
-  });
-
-  message += "%0A📍 Address: _______%0A📞 Contact: _______%0A%0A💳 Pay via UPI";
-
-  const phone = "91XXXXXXXXXX"; // ADD YOUR NUMBER
-  window.open("https://wa.me/" + phone + "?text=" + message, "_blank");
+/* ADD CART */
+function addToCart(name,price){
+  cart.push({name,price});
+  alert(name+" added");
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  showTab('breakfast', document.querySelector('.tab-btn'));
-});
+/* WHATSAPP ORDER */
+function sendToWhatsApp(){
+  if(cart.length==0){alert("Cart empty");return;}
+
+  let msg="Order:%0A";
+  let total=0;
+
+  cart.forEach((i,index)=>{
+    msg+=`${index+1}. ${i.name} - ${i.price}%0A`;
+    total+=parseInt(i.price.replace('₹',''))||0;
+  });
+
+  msg+=`%0ATotal: ₹${total}`;
+
+  window.open(`https://wa.me/919632035612?text=${msg}`);
+}
+
+/* LOCATION CHECK */
+function checkLocation(){
+  let loc=document.getElementById("locationInput").value.toLowerCase();
+  let areas=["kannuru","whitefield","kr puram"];
+
+  if(areas.some(a=>loc.includes(a))){
+    alert("✅ Delivery Available");
+  } else{
+    alert("❌ Not Available");
+  }
+}
+
+/* SLIDER */
+let slides=document.querySelectorAll(".slide");
+let index=0;
+
+function autoSlide(){
+  slides.forEach(s=>s.classList.remove("active"));
+  index=(index+1)%slides.length;
+  slides[index].classList.add("active");
+}
+setInterval(autoSlide,3000);
+
+/* LOAD */
+showTab('breakfast',document.querySelector('.tab-btn'));
+
 </script>
+
+</body>
+</html>your 
