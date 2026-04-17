@@ -1,249 +1,1057 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-<title>TasteHub | Party & Subscription</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=DM+Sans&display=swap" rel="stylesheet">
-
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>TasteHub | Homemade Veg Meals · Kannuru</title>
+<meta name="description" content="TasteHub – Homemade Veg Meals near Kannuru. Browse menu, add to cart, choose payment method, and order on WhatsApp."/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-body{
-  margin:0;
-  font-family:'DM Sans',sans-serif;
-  background:#FFF8F0;
+:root{
+  --bg:#FBF5EC;
+  --white:#FFFFFF;
+  --cream:#FFF8EE;
+  --panel:#FFFCF5;
+  --brand:#1B8C5A;
+  --brand2:#E8920A;
+  --brand-light:rgba(27,140,90,.10);
+  --brand2-light:rgba(232,146,10,.10);
+  --text:#1E1409;
+  --muted:#6B5540;
+  --border:rgba(80,55,25,.10);
+  --shadow:0 12px 40px rgba(60,35,10,.11);
+  --r:16px;
+  --rLg:22px;
+  --max:1160px;
+  --font:'Plus Jakarta Sans',system-ui,sans-serif;
+  --display:'Fraunces',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font-family:var(--font)}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(80,55,25,.18);border-radius:99px}
+
+/* ── APPBAR ── */
+.appbar{
+  position:sticky;top:0;z-index:60;
+  background:rgba(251,245,236,.93);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 2px 16px rgba(60,35,10,.06);
+}
+.appbarInner{
+  max-width:var(--max);margin:0 auto;
+  padding:10px 20px;
+  display:flex;gap:14px;align-items:center;justify-content:space-between;
+}
+.brandRow{display:flex;align-items:center;gap:14px;min-width:0}
+.logoWrap{
+  width:52px;height:52px;border-radius:14px;
+  background:linear-gradient(135deg,#1B8C5A,#0e5c3a);
+  display:flex;align-items:center;justify-content:center;
+  flex:0 0 auto;box-shadow:0 4px 14px rgba(27,140,90,.28);
+  color:#fff;font-weight:800;font-size:17px;font-family:var(--display);
+  overflow:hidden;border:1.5px solid rgba(27,140,90,.3);
+}
+.logoWrap img{width:100%;height:100%;object-fit:cover}
+.brandText h1{font-family:var(--display);font-size:19px;font-weight:700;color:var(--text);letter-spacing:-.3px}
+.brandText .tagline{font-size:11px;color:var(--brand);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-top:1px}
+.brandText .meta{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+.brandText .meta b{color:var(--text)}
+.chipRow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+.chip{
+  font-size:11px;font-weight:700;padding:6px 12px;border-radius:99px;
+  background:rgba(255,255,255,.85);border:1px solid var(--border);
+  color:var(--muted);white-space:nowrap;letter-spacing:.1px;
+}
+.chip.green{background:rgba(27,140,90,.10);border-color:rgba(27,140,90,.18);color:#136843}
+.chip.orange{background:rgba(232,146,10,.10);border-color:rgba(232,146,10,.20);color:#9A5E00}
+
+/* ── WRAP ── */
+.wrap{max-width:var(--max);margin:0 auto;padding:20px 20px 140px}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg,#1B2E1F 0%,#2C4A30 100%);
+  border-radius:var(--rLg);border:1px solid rgba(255,255,255,.06);
+  overflow:hidden;padding:36px 40px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  position:relative;margin-bottom:20px;
+  box-shadow:0 16px 48px rgba(20,40,20,.22);
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(232,146,10,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-text{position:relative;z-index:1;max-width:520px}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:rgba(232,146,10,.9);background:rgba(232,146,10,.12);
+  border:1px solid rgba(232,146,10,.2);padding:5px 12px;border-radius:99px;margin-bottom:16px;
+}
+.hero h2{
+  font-family:var(--display);font-size:clamp(26px,4vw,42px);
+  font-weight:700;color:#fff;line-height:1.15;margin-bottom:10px;letter-spacing:-.5px;
+}
+.hero h2 em{color:#F0A81C;font-style:italic}
+.hero p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:20px}
+.hero-badges{display:flex;gap:10px;flex-wrap:wrap}
+.hbadge{
+  display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:99px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  font-size:12px;font-weight:600;color:rgba(255,255,255,.8);
+}
+.hero-emoji{font-size:80px;line-height:1;position:relative;z-index:1}
+
+/* ── GRID ── */
+.grid{display:grid;grid-template-columns:1.4fr .6fr;gap:18px;margin-top:20px}
+
+/* ── PANEL ── */
+.panel{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--rLg);box-shadow:var(--shadow);overflow:hidden;
 }
 
-/* HEADER */
-.header{
-  background:#2C1810;
-  color:white;
-  padding:18px;
-  text-align:center;
-  font-family:'Playfair Display';
-  font-size:24px;
+/* ── MENU PANEL ── */
+.menuHeader{padding:18px 18px 14px}
+.menuHeader .row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.menuHeader .title{font-size:16px;font-weight:700;color:var(--text)}
+.sub{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* SEARCH */
+.searchWrap{margin-top:12px;position:relative}
+.searchWrap .icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none}
+.searchWrap input{
+  width:100%;padding:11px 14px 11px 38px;
+  background:rgba(255,255,255,.9);border:1px solid var(--border);
+  border-radius:12px;font-size:14px;color:var(--text);outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.searchWrap input:focus{border-color:rgba(27,140,90,.3);box-shadow:0 0 0 3px rgba(27,140,90,.07)}
+.searchHint{font-size:11.5px;color:var(--muted);margin-top:6px;padding-left:2px}
+
+/* TABS */
+.tabs{
+  display:flex;gap:8px;overflow:auto;padding:12px 18px;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  background:rgba(255,255,255,.4);scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:0 0 auto;padding:8px 18px;border-radius:99px;
+  border:1px solid var(--border);background:rgba(255,255,255,.85);
+  color:var(--muted);font-weight:700;font-size:12.5px;cursor:pointer;
+  transition:all .18s;white-space:nowrap;
+}
+.tab:hover{border-color:rgba(27,140,90,.2);color:var(--brand)}
+.tab.active{
+  background:linear-gradient(135deg,var(--brand),#239a6d);
+  border-color:transparent;color:#fff;
+  box-shadow:0 4px 14px rgba(27,140,90,.28);
 }
 
-/* CONTAINER */
-.container{
-  padding:20px;
-  max-width:900px;
-  margin:auto;
+/* SECTION INFO */
+.sectionTitle{padding:10px 18px 4px;font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#9C8068}
+.sectionInfo{padding:0 18px 10px;font-size:12px;color:var(--muted)}
+
+/* BREAKFAST DATE */
+.breakfastDateWrap{display:none;padding:0 18px 12px}
+.breakfastDateWrap label{font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:5px}
+.breakfastDateWrap select{
+  width:100%;background:#fff;border:1px solid var(--border);
+  color:var(--text);border-radius:10px;padding:9px 12px;font-size:13px;outline:none;
 }
 
-/* CARD */
-.card{
-  background:white;
-  border-radius:18px;
-  padding:20px;
-  margin-bottom:20px;
-  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+/* MENU GRID */
+.menuGrid{display:grid;gap:10px;padding:0 18px 18px}
+
+/* ITEM */
+.item{
+  background:rgba(255,255,255,.88);border:1px solid var(--border);
+  border-radius:14px;padding:13px;display:flex;gap:12px;
+  align-items:flex-start;justify-content:space-between;
+  transition:box-shadow .2s,border-color .2s;
+}
+.item:hover{box-shadow:0 6px 24px rgba(60,35,10,.09);border-color:rgba(80,55,25,.16)}
+.iLeft{min-width:0;flex:1}
+.iTop{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:2px}
+.vegDot{
+  width:12px;height:12px;border-radius:3px;flex:0 0 auto;
+  border:1.5px solid #1B8C5A;background:rgba(27,140,90,.15);
+}
+.iname{font-weight:700;font-size:13.5px;color:var(--text);line-height:1.3}
+.iprice{font-weight:800;font-size:13px;color:var(--brand);margin-top:3px}
+.idesc{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.4}
+.iRight{display:flex;flex-direction:column;gap:8px;align-items:flex-end;flex:0 0 auto}
+
+/* AVAILABILITY BADGE */
+.badge{
+  display:inline-flex;align-items:center;gap:5px;padding:4px 10px;
+  border-radius:99px;font-weight:700;font-size:11px;white-space:nowrap;
+  border:1px solid var(--border);background:#fff;margin-top:6px;
+}
+.badge.av{border-color:rgba(27,140,90,.2);background:rgba(27,140,90,.08);color:#136843}
+.badge.na{border-color:rgba(200,60,60,.18);background:rgba(200,60,60,.07);color:#902020}
+
+/* QTY */
+.qty{
+  display:flex;gap:6px;align-items:center;padding:6px 10px;
+  border-radius:10px;border:1px solid var(--border);background:#fff;
+}
+.qbtn{
+  width:26px;height:26px;border-radius:8px;border:1px solid var(--border);
+  background:#fff;color:var(--text);font-weight:800;font-size:15px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s,border-color .15s;line-height:1;
+}
+.qbtn:hover{background:rgba(27,140,90,.08);border-color:rgba(27,140,90,.2)}
+.qnum{min-width:18px;text-align:center;font-weight:800;font-size:13px}
+.addBtn{
+  padding:8px 14px;border-radius:10px;
+  border:1px solid rgba(27,140,90,.22);background:rgba(27,140,90,.08);
+  color:#136843;font-weight:800;font-size:12px;cursor:pointer;
+  transition:all .18s;white-space:nowrap;
+}
+.addBtn:hover{background:rgba(27,140,90,.14)}
+.addBtn.primary{
+  background:linear-gradient(135deg,var(--brand),#239a6d);
+  border:none;color:#fff;box-shadow:0 4px 12px rgba(27,140,90,.22);
+}
+.addBtn.primary:hover{box-shadow:0 6px 18px rgba(27,140,90,.32);transform:translateY(-1px)}
+.addBtn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── SIDEBAR ── */
+.sidebar{display:flex;flex-direction:column;gap:14px}
+
+/* QUICK CONTACT */
+.sidePanel{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--rLg);box-shadow:var(--shadow);padding:18px;
+}
+.sidePanel .row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.sidePanel .title{font-size:14px;font-weight:700}
+.sidePanel .sub{font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.5}
+
+/* LINK BUTTON */
+.linkBtn{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:13px;border-radius:14px;border:1px solid var(--border);
+  background:rgba(255,255,255,.9);transition:all .18s;margin-bottom:10px;
+}
+.linkBtn:last-child{margin-bottom:0}
+.linkBtn:hover{border-color:rgba(27,140,90,.24);box-shadow:0 4px 14px rgba(60,35,10,.08);transform:translateY(-1px)}
+.lL{display:flex;gap:10px;align-items:center;min-width:0}
+.ic{
+  width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  background:rgba(232,146,10,.10);border:1px solid rgba(232,146,10,.16);flex:0 0 auto;font-size:18px;
+}
+.ic.green-ic{background:rgba(27,140,90,.10);border-color:rgba(27,140,90,.18)}
+.lt .t{font-weight:700;font-size:13px;color:var(--text)}
+.lt .s{font-size:11.5px;color:var(--muted);margin-top:1px}
+.arr{font-size:18px;color:var(--muted);opacity:.6}
+
+/* INFO CARD */
+.infoCard{
+  background:rgba(255,255,255,.8);border:1px solid var(--border);
+  border-radius:14px;padding:14px;margin-top:12px;
+}
+.infoCard h3{font-size:14px;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.miniList{display:grid;gap:5px;font-size:13px;color:var(--muted)}
+.miniList div{display:flex;align-items:flex-start;gap:6px}
+.miniList div::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--brand);flex:0 0 auto;margin-top:5px}
+
+/* FORMS */
+label{font-size:12px;color:var(--muted);font-weight:700;display:block;margin-bottom:5px}
+input,textarea,select{
+  width:100%;background:#fff;border:1px solid var(--border);color:var(--text);
+  border-radius:10px;padding:10px 12px;outline:none;font-size:13.5px;
+  font-family:var(--font);transition:border-color .2s,box-shadow .2s;margin-bottom:8px;
+}
+input:focus,textarea:focus,select:focus{
+  border-color:rgba(27,140,90,.28);box-shadow:0 0 0 3px rgba(27,140,90,.07);
+}
+textarea{min-height:72px;resize:vertical}
+.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.formBtn{
+  width:100%;padding:11px;border-radius:12px;border:none;
+  background:linear-gradient(135deg,var(--brand),#239a6d);
+  color:#fff;font-weight:700;font-size:13px;cursor:pointer;
+  box-shadow:0 4px 14px rgba(27,140,90,.22);transition:all .2s;font-family:var(--font);
+}
+.formBtn:hover{box-shadow:0 6px 20px rgba(27,140,90,.32);transform:translateY(-1px)}
+.formBtn.orange{background:linear-gradient(135deg,#E8920A,#c97200);box-shadow:0 4px 14px rgba(232,146,10,.22)}
+.formBtn.orange:hover{box-shadow:0 6px 20px rgba(232,146,10,.32)}
+
+/* ── CART BAR ── */
+.cartBar{
+  position:fixed;left:0;right:0;bottom:0;z-index:80;
+  background:rgba(251,245,236,.97);backdrop-filter:blur(14px);
+  border-top:1px solid var(--border);display:none;
+  box-shadow:0 -6px 28px rgba(60,35,10,.10);
+}
+.cartInner{
+  max-width:var(--max);margin:0 auto;padding:12px 20px;
+  display:flex;gap:12px;align-items:center;justify-content:space-between;
+}
+.cartSummaryText{font-weight:700;font-size:14px;color:var(--text)}
+.cartSubtext{font-size:12px;color:var(--muted);margin-top:1px}
+.cartBtns{display:flex;gap:10px;align-items:center}
+
+/* BUTTONS */
+.checkoutBtn{
+  padding:11px 20px;border-radius:13px;border:none;
+  background:linear-gradient(135deg,var(--brand),#239a6d);
+  color:#fff;font-weight:700;font-size:13px;cursor:pointer;
+  box-shadow:0 6px 18px rgba(27,140,90,.28);transition:all .2s;font-family:var(--font);
+  white-space:nowrap;
+}
+.checkoutBtn:hover{box-shadow:0 8px 24px rgba(27,140,90,.38);transform:translateY(-1px)}
+.checkoutBtn.amber{background:linear-gradient(135deg,#E8920A,#c97200);box-shadow:0 6px 18px rgba(232,146,10,.28)}
+.ghostBtn{
+  padding:11px 16px;border-radius:13px;border:1px solid var(--border);
+  background:rgba(255,255,255,.9);color:var(--text);font-weight:700;font-size:13px;
+  cursor:pointer;transition:all .18s;font-family:var(--font);white-space:nowrap;
+}
+.ghostBtn:hover{border-color:rgba(80,55,25,.2);background:#fff}
+
+/* ── DRAWER ── */
+body.drawer-open .cartBar{display:none!important}
+.drawerOverlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(20,12,4,.45);backdrop-filter:blur(3px);
+  display:none;align-items:flex-end;justify-content:center;padding:14px;
+}
+.drawer{
+  width:min(820px,100%);background:var(--bg);
+  border:1px solid var(--border);border-radius:24px;
+  box-shadow:0 24px 70px rgba(40,20,5,.22);
+  overflow:hidden;max-height:92vh;display:flex;flex-direction:column;
+}
+.drawerHead{
+  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);background:rgba(255,255,255,.7);
+  position:sticky;top:0;z-index:2;
+}
+.drawerHead h3{font-size:15px;font-weight:700;font-family:var(--display)}
+.closeBtn{
+  width:36px;height:36px;border-radius:11px;border:1px solid var(--border);
+  background:#fff;color:var(--text);font-weight:700;cursor:pointer;font-size:16px;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.closeBtn:hover{background:#f5ede0;border-color:rgba(80,55,25,.2)}
+.drawerBody{padding:14px;overflow:auto;flex:1}
+
+/* CART ITEMS */
+.cartList{display:grid;gap:8px;margin-bottom:4px}
+.cartItem{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px;
+}
+.cartItem .name{font-weight:700;font-size:13px;color:var(--text)}
+.cartItem .meta{font-size:11.5px;color:var(--muted);margin-top:2px}
+.cartTotal{
+  background:linear-gradient(135deg,rgba(27,140,90,.08),rgba(232,146,10,.06));
+  border:1px solid rgba(27,140,90,.14);border-radius:12px;padding:12px;
+  display:flex;align-items:center;justify-content:space-between;margin-top:4px;
+}
+.cartTotal .tLabel{font-size:13px;font-weight:700;color:var(--text)}
+.cartTotal .tAmt{font-size:18px;font-weight:800;color:var(--brand)}
+
+/* CHECKOUT FORM */
+.drawerFoot{padding:16px 14px;border-top:1px solid var(--border);display:grid;gap:12px;background:rgba(255,255,255,.5)}
+.drawerFoot h4{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+
+/* PAY BOX */
+.payBox{border:1px solid var(--border);background:#fff;border-radius:14px;padding:14px;display:grid;gap:10px}
+#upiPaymentBox{display:none}
+.payRow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.payId{font-weight:800;font-family:monospace;font-size:13px;color:var(--text)}
+.qr{width:160px;max-width:100%;border-radius:12px;border:1px solid var(--border);background:#fff;padding:8px;display:grid;place-items:center;flex:0 0 auto}
+.qr img{max-width:100%;height:auto;border-radius:8px}
+.mutedSmall{font-size:12px;color:var(--muted);line-height:1.4}
+
+/* CHECKOUT ACTION ROW */
+.actionRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* TOAST */
+.toast{
+  position:fixed;left:50%;bottom:100px;transform:translateX(-50%);
+  background:#1E1409;border:1px solid rgba(255,255,255,.08);color:#fff;
+  padding:10px 18px;border-radius:12px;display:none;z-index:1400;
+  max-width:92vw;font-size:13px;font-weight:500;font-family:var(--font);
+  box-shadow:0 8px 24px rgba(0,0,0,.2);
 }
 
-/* TITLE */
-h2{
-  margin-top:0;
-  color:#2C1810;
-}
-
-/* MENU */
-.menu-item{
-  display:flex;
-  justify-content:space-between;
-  padding:8px 0;
-  border-bottom:1px dashed #ddd;
-}
-
-.price{
-  color:#E8611A;
-  font-weight:bold;
-}
-
-/* FORM */
-input, select, textarea{
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border-radius:10px;
-  border:1px solid #ccc;
-}
-
-/* BUTTON */
-.btn{
-  background:#E8611A;
-  color:white;
-  padding:12px;
-  border:none;
-  border-radius:25px;
-  width:100%;
-  font-size:16px;
-  cursor:pointer;
-  margin-top:10px;
-  transition:0.2s;
-}
-.btn:hover{opacity:0.9}
-
-/* PLAN */
-.plan{
-  border:1px solid #eee;
-  padding:15px;
-  border-radius:12px;
-  margin-top:10px;
-}
-
-/* NOTE */
-.note{
-  background:#FEF3E8;
-  padding:12px;
-  border-radius:12px;
-  font-size:13px;
-  margin-top:10px;
+/* ── RESPONSIVE ── */
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+@media(max-width:600px){
+  .hero{padding:24px 20px;flex-direction:column;align-items:flex-start}
+  .hero-emoji{display:none}
+  .appbarInner{flex-direction:column;align-items:flex-start;gap:10px}
+  .chipRow{width:100%;justify-content:flex-start}
+  .formGrid{grid-template-columns:1fr}
+  .drawerOverlay{padding:0;align-items:flex-end}
+  .drawer{width:100%;max-width:100%;max-height:100vh;height:100vh;border-radius:22px 22px 0 0}
+  .cartInner{flex-direction:row}
 }
 </style>
 </head>
-
 <body>
 
-<div class="header">🍽 TasteHub</div>
-
-<div class="container">
-
-<!-- PARTY ORDER -->
-<div class="card">
-<h2> Party and Subscription Orders</h2>
-
-<input id="name" placeholder="Your Name">
-<input id="location" placeholder="Apartment / Location (560077 only)">
-<input id="people" type="number" placeholder="People Count">
-
-<select id="category">
-<option>Snacks</option>
-<option>Lunch</option>
-<option>Dinner</option>
-<option>Mixed</option>
-</select>
-
-<textarea id="items" placeholder="Custom requirements (optional)"></textarea>
-
-<button class="btn" onclick="sendOrder()">Send Party Order</button>
-
-<div class="note">
-📍 Service only for <b>Pincode 560077</b><br>
-🚚 Delivery via Porter/Rapido
-</div>
+<!-- ── APPBAR ── -->
+<div class="appbar">
+  <div class="appbarInner">
+    <div class="brandRow">
+      <div class="logoWrap" id="logoWrap">
+        <img src="logo.png" alt="TasteHub" onerror="handleLogoError(this)">
+      </div>
+      <div class="brandText">
+        <h1>TasteHub</h1>
+        <div class="tagline">Discover a new taste</div>
+        <div class="meta">J 1301, Kolte Patil Raaga, Kannuru, Bengaluru 560077 &nbsp;·&nbsp; <b>FSSAI:</b> 21226008000011</div>
+      </div>
+    </div>
+    <div class="chipRow">
+      <span class="chip green" id="dateChip">Today</span>
+      <span class="chip orange">100% Veg 🌿</span>
+    </div>
+  </div>
 </div>
 
-<!-- PARTY MENU -->
-<div class="card">
-<h2>🥗 Snacks & Starters</h2>
-<div class="menu-item"><span>Bread Pakoda (2 pcs)</span><span class="price">₹80</span></div>
-<div class="menu-item"><span>Sabudana Vada (4 pcs)</span><span class="price">₹70</span></div>
-<div class="menu-item"><span>Aloo Bonda (4 pcs)</span><span class="price">₹80</span></div>
-<div class="menu-item"><span>Vada Pav</span><span class="price">₹40</span></div>
-<div class="menu-item"><span>Samosa (2 pcs)</span><span class="price">₹50</span></div>
-<div class="menu-item"><span>Veg Cutlet (4 pcs)</span><span class="price">₹80</span></div>
-<div class="menu-item"><span>Paani Pakoda</span><span class="price">₹70</span></div>
-<div class="menu-item"><span>Gobhi Manchurian</span><span class="price">₹80</span></div>
+<!-- ── WRAP ── -->
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow">🍽 Homemade · Fresh · Daily</div>
+      <h2>Real Home Food,<br><em>Delivered Near You</em></h2>
+      <p>Fresh vegetarian meals made with love. Breakfast, Lunch, Snacks & Dinner — order on WhatsApp, subscribe monthly, or book for your next party.</p>
+      <div class="hero-badges">
+        <div class="hbadge">🛵 Kannuru Delivery</div>
+        <div class="hbadge">💳 UPI & Cash</div>
+        <div class="hbadge">🎉 Party Orders</div>
+      </div>
+    </div>
+    <div class="hero-emoji">🍱</div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="grid">
+
+    <!-- ── MENU PANEL ── -->
+    <div class="panel">
+      <div class="menuHeader">
+        <div class="row">
+          <div class="title">🧾 Menu</div>
+          <div class="chip green">Kannuru Nearby Only</div>
+        </div>
+        <p class="sub">Browse meals by time of day. Add items to cart and checkout via WhatsApp in seconds.</p>
+        <div class="searchWrap">
+          <span class="icon">🔎</span>
+          <input id="searchInput" placeholder="Search dishes…" autocomplete="off"/>
+        </div>
+        <div class="searchHint">Tip: Search shows items from all meal sections with availability.</div>
+      </div>
+
+      <div class="tabs" id="tabs"></div>
+
+      <div class="sectionTitle" id="sectionTitle">ITEMS</div>
+      <div class="sectionInfo" id="sectionInfo"></div>
+
+      <div id="breakfastDateWrap" class="breakfastDateWrap">
+        <label for="breakfastDateSelect">Choose breakfast date</label>
+        <select id="breakfastDateSelect">
+          <option value="today">Today</option>
+          <option value="tomorrow">Tomorrow</option>
+        </select>
+      </div>
+
+      <div class="menuGrid" id="menuGrid"></div>
+    </div>
+
+    <!-- ── SIDEBAR ── -->
+    <div class="sidebar">
+
+      <!-- QUICK CONTACT -->
+      <div class="sidePanel">
+        <div class="row">
+          <div class="title">💬 Quick Contact</div>
+          <div class="chip">Fast Access</div>
+        </div>
+        <p class="sub">Reach us on WhatsApp for orders, menu questions, or payment help.</p>
+        <a class="linkBtn" href="https://wa.me/919632035612" target="_blank">
+          <div class="lL">
+            <div class="ic">💬</div>
+            <div class="lt">
+              <div class="t">Chat on WhatsApp</div>
+              <div class="s">Order · Menu · Payment help</div>
+            </div>
+          </div>
+          <div class="arr">›</div>
+        </a>
+
+        <div class="infoCard">
+          <h3>📋 How to Order</h3>
+          <div class="miniList">
+            <div>Select your food items from the menu</div>
+            <div>Open cart and review your order</div>
+            <div>Choose UPI or Cash on Delivery</div>
+            <div>Submit your order on WhatsApp</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBSCRIPTION -->
+      <div class="sidePanel">
+        <div class="title" style="margin-bottom:6px">📦 Monthly Subscription</div>
+        <p class="sub">Get fresh meals every day. Save more with group plans.</p>
+        <div>
+          <label>Your Name</label>
+          <input id="subName" placeholder="Full name"/>
+          <label>Phone Number</label>
+          <input id="subPhone" placeholder="10-digit mobile number" inputmode="numeric"/>
+          <label>Meal Plan</label>
+          <select id="subPlan">
+            <option>Breakfast</option>
+            <option>Lunch</option>
+            <option>Dinner</option>
+            <option>Lunch + Dinner</option>
+          </select>
+          <label>How many people?</label>
+          <select id="subPeople">
+            <option value="1">1 Person</option>
+            <option value="3">3 People (10% OFF)</option>
+          </select>
+          <button class="formBtn" onclick="sendSubscription()">Subscribe on WhatsApp →</button>
+        </div>
+      </div>
+
+      <!-- PARTY ORDER -->
+      <div class="sidePanel">
+        <div class="title" style="margin-bottom:6px">🎉 Party Order</div>
+        <p class="sub">Planning an event? We handle bulk orders with care.</p>
+        <div>
+          <label>Your Name</label>
+          <input id="partyName" placeholder="Full name"/>
+          <label>Phone Number</label>
+          <input id="partyPhone" placeholder="10-digit mobile number" inputmode="numeric"/>
+          <label>Number of Guests</label>
+          <input id="guestCount" placeholder="e.g. 50" inputmode="numeric"/>
+          <label>Menu Type</label>
+          <select id="partyMenu">
+            <option>Basic Veg</option>
+            <option>Premium Veg</option>
+            <option>Custom Menu</option>
+          </select>
+          <label>Event Date</label>
+          <input id="partyDate" type="date"/>
+          <label>Special Requirements</label>
+          <textarea id="partyNotes" placeholder="Jain food, no onion/garlic, specific dishes…"></textarea>
+          <button class="formBtn orange" onclick="sendPartyOrder()">Send Party Order →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
-<div class="card">
-<h2>🍛 Indian Platters</h2>
-<div class="menu-item"><span>Aloo Paratha (2 pcs)</span><span class="price">₹90</span></div>
-<div class="menu-item"><span>Chapati (4) + Mix Veg</span><span class="price">₹140</span></div>
-<div class="menu-item"><span>Chapati (4) + Chhole</span><span class="price">₹140</span></div>
-<div class="menu-item"><span>Chapati (4) + Bhindi</span><span class="price">₹140</span></div>
+<!-- ── CART BAR ── -->
+<div class="cartBar" id="cartBar">
+  <div class="cartInner">
+    <div>
+      <div class="cartSummaryText" id="cartSummary">0 items</div>
+      <div class="cartSubtext">Review cart and place your order</div>
+    </div>
+    <div class="cartBtns">
+      <button class="ghostBtn" id="viewCartBtn">View Cart</button>
+      <button class="checkoutBtn" id="checkoutBtn">Checkout →</button>
+    </div>
+  </div>
 </div>
 
-<div class="card">
-<h2>🍽 Special Combos</h2>
-<div class="menu-item"><span>Litti Chokha (4 pcs)</span><span class="price">₹160</span></div>
-<div class="menu-item"><span>Puri (4) + Aloo Curry</span><span class="price">₹130</span></div>
-<div class="menu-item"><span>Daal Puri (4)</span><span class="price">₹150</span></div>
+<!-- ── DRAWER ── -->
+<div class="drawerOverlay" id="drawerOverlay">
+  <div class="drawer">
+    <div class="drawerHead">
+      <h3>🛒 Cart & Checkout</h3>
+      <button class="closeBtn" id="closeDrawer">✕</button>
+    </div>
+
+    <div style="overflow:auto;flex:1;display:flex;flex-direction:column;">
+      <div class="drawerBody">
+
+        <div class="cartList" id="cartList"></div>
+
+        <div class="drawerFoot">
+          <h4>Delivery Details</h4>
+          <div class="formGrid">
+            <div><label>Name *</label><input id="custName" placeholder="Your name"/></div>
+            <div><label>Phone *</label><input id="custPhone" placeholder="10-digit number" inputmode="numeric"/></div>
+          </div>
+          <div class="formGrid">
+            <div><label>Apartment / Flat *</label><input id="custFlat" placeholder="J1301 / Block / Flat…"/></div>
+            <div>
+              <label>Preferred Meal</label>
+              <select id="custTime">
+                <option value="Breakfast">Breakfast</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Snacks">Snacks</option>
+                <option value="Dinner">Dinner</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label>Payment Method *</label>
+            <select id="paymentMethod">
+              <option value="UPI">UPI (Online Payment)</option>
+              <option value="Cash on Delivery">Cash on Delivery</option>
+            </select>
+          </div>
+
+          <div><label>Notes (optional)</label><textarea id="custNotes" placeholder="Less spicy, no onion/garlic, extra roti, etc."></textarea></div>
+
+          <div class="payBox" id="upiPaymentBox">
+            <div class="payRow">
+              <div>
+                <div style="font-weight:700;font-size:13px;margin-bottom:4px">Pay via UPI</div>
+                <div class="mutedSmall">UPI ID: <span class="payId" id="upiIdText"></span></div>
+              </div>
+              <button class="ghostBtn" id="copyUpiBtn" type="button">📋 Copy UPI</button>
+            </div>
+            <div class="payRow">
+              <div class="qr">
+                <img id="qrImg" src="upi-qr.png" alt="UPI QR" onerror="handleQrError(this)">
+              </div>
+              <div style="flex:1;min-width:180px;">
+                <div class="mutedSmall" style="margin-bottom:8px">Scan & pay, then enter the UTR/Transaction ID below (optional)</div>
+                <label>UTR / Transaction ID</label>
+                <input id="txnId" placeholder="Optional — paste after payment"/>
+                <div class="actionRow" style="margin-top:8px">
+                  <button class="checkoutBtn amber" id="payNowBtn" type="button">Pay Now</button>
+                  <button class="ghostBtn" id="invoiceBtn" type="button">Invoice</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="actionRow">
+            <button class="checkoutBtn" id="drawerCheckout" type="button">✅ Submit Order on WhatsApp</button>
+            <button class="ghostBtn" id="clearCart" type="button">🗑 Clear</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="card">
-<h2>🍚 Rice & Noodles</h2>
-<div class="menu-item"><span>Jeera Rice + Chhole</span><span class="price">₹150</span></div>
-<div class="menu-item"><span>Paneer Fried Rice</span><span class="price">₹160</span></div>
-<div class="menu-item"><span>Noodles</span><span class="price">₹120</span></div>
-</div>
-
-<!-- SUBSCRIPTION -->
-<div class="card">
-<h2>📦 Subscription Plans</h2>
-
-<div class="plan">
-<h3>Weekly Plan</h3>
-<p>Lunch + Dinner (5 Days)</p>
-<b>₹999</b>
-<button class="btn" onclick="subscribe('Weekly Plan')">Subscribe</button>
-</div>
-
-<div class="plan">
-<h3>Monthly Plan</h3>
-<p>Lunch + Dinner (20 Days)</p>
-<b>₹3499</b>
-<button class="btn" onclick="subscribe('Monthly Plan')">Subscribe</button>
-</div>
-
-<!-- SUBSCRIPTION MENU -->
-<h3 style="margin-top:20px;">🍳 Breakfast Menu</h3>
-<div class="menu-item"><span>Veg Poha</span><span class="price">₹90</span></div>
-<div class="menu-item"><span>Veg Upma</span><span class="price">₹90</span></div>
-<div class="menu-item"><span>Aloo Paratha + Curd</span><span class="price">₹90</span></div>
-<div class="menu-item"><span>Idli + Sambhar</span><span class="price">₹90</span></div>
-
-<h3 style="margin-top:15px;">🍛 Lunch Menu</h3>
-<div class="menu-item"><span>Jeera Rice + Dal</span><span class="price">₹150</span></div>
-<div class="menu-item"><span>Veg Fried Rice</span><span class="price">₹140</span></div>
-<div class="menu-item"><span>Rice + Chole</span><span class="price">₹130</span></div>
-
-<h3 style="margin-top:15px;">🌙 Dinner Menu</h3>
-<div class="menu-item"><span>Chapati + Mix Veg</span><span class="price">₹130</span></div>
-<div class="menu-item"><span>Puri + Aloo Curry</span><span class="price">₹130</span></div>
-
-<div class="note">
-✔ Fresh homemade veg meals<br>
-✔ Rotating menu<br>
-✔ Custom options available<br>
-🎉 10% OFF for 3+ people (monthly)
-</div>
-
-</div>
-
-</div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script>
-function sendOrder(){
-  let location = document.getElementById('location').value;
-  let people = document.getElementById('people').value;
+const WHATSAPP_NUMBER = "919632035612";
+const UPI_ID = "email.vikashpathak-1@okicici";
+const ORDER_API = "https://script.google.com/macros/s/AKfycbwal4w2qwbsN4H6qIhmmAB824dpTswVGzxZ3tJe5wkdUyxRTiW2lH25ldNyXc3svC-c/exec";
 
-  if(!location.includes("560077")){
-    alert("Service only for 560077");
-    return;
-  }
-
-  if(!people){
-    alert("Enter people count");
-    return;
-  }
-
-  let msg = `Hi TasteHub 👋
-Party Order Request
-
-Location: ${location}
-People: ${people}`;
-
-  window.open(`https://wa.me/919632035612?text=${encodeURIComponent(msg)}`);
+function handleLogoError(img){
+  const wrap=document.getElementById('logoWrap');
+  if(img)img.remove();
+  wrap.textContent='TH';
+}
+function handleQrError(img){
+  const qr=img&&img.parentElement;
+  if(!qr)return;
+  img.remove();
+  qr.innerHTML='<span style="font-size:11px;color:#9C8068;text-align:center">Upload<br>upi-qr.png</span>';
 }
 
-function subscribe(plan){
-  let msg = `Hi TasteHub 👋
-I want to subscribe for ${plan}`;
-  window.open(`https://wa.me/919632035612?text=${encodeURIComponent(msg)}`);
+document.getElementById('dateChip').textContent=
+  new Date().toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+document.getElementById('upiIdText').textContent=UPI_ID;
+
+function isBreakfastWindowOpen(now=new Date()){
+  const h=now.getHours();return h>=0&&h<10;
 }
+
+// ── MENU DATA ──
+const BREAKFAST_MENUS={
+  today:[
+    {name:"Idly (3 pieces & 1 Vada) with Sambar, Chutney",price:100,desc:"Fresh homemade breakfast",available:true},
+    {name:"Idly (4 pieces) with Sambar, Chutney",price:90,desc:"Fresh homemade breakfast",available:true},
+    {name:"Extra Idly",price:15,desc:"Add-on",available:false},
+    {name:"Aloo Paratha (2 pieces) with Curd",price:140,desc:"Fresh homemade breakfast",available:false},
+    {name:"Extra Aloo Paratha",price:40,desc:"Add-on",available:false},
+    {name:"Masala Dosa (2 pieces) with Sambar, Chutney",price:130,desc:"Fresh homemade breakfast",available:false},
+    {name:"Extra Dosa",price:50,desc:"Add-on",available:false},
+    {name:"Pav Bhaji (6 slices)",price:120,desc:"Fresh homemade breakfast",available:false},
+    {name:"Aloo Paneer Sandwich (4 slices)",price:130,desc:"Fresh homemade breakfast",available:false}
+  ],
+  tomorrow:[
+    {name:"Idly (3 pieces & 1 Vada) with Sambar, Chutney",price:100,desc:"Fresh homemade breakfast",available:false},
+    {name:"Idly (4 pieces) with Sambar, Chutney",price:90,desc:"Fresh homemade breakfast",available:false},
+    {name:"Extra Idly",price:15,desc:"Add-on",available:false},
+    {name:"Puri (4 pieces) with Aloo Curry",price:130,desc:"Fresh homemade breakfast",available:false},
+    {name:"Extra Puri",price:15,desc:"Add-on",available:false},
+    {name:"Aloo Paratha (2 pieces) with Curd",price:140,desc:"Fresh homemade breakfast",available:false},
+    {name:"Extra Aloo Paratha",price:40,desc:"Add-on",available:false},
+    {name:"Moong Daal Masala Dosa (2 pieces) with Onion Tomato Chutney, Sambar",price:140,desc:"Fresh homemade breakfast",available:false},
+    {name:"Extra Moong Daal Masala Dosa",price:55,desc:"Add-on",available:false},
+    {name:"Aloo Paneer Sandwich (4 slices)",price:120,desc:"Tomorrow breakfast",available:false},
+    {name:"Aloo Cheese Sandwich (4 slices)",price:120,desc:"Tomorrow breakfast",available:false},
+    {name:"Methi Paratha (4 pieces) with Curd",price:100,desc:"Tomorrow breakfast",available:false},
+    {name:"Rajma with Paratha/Chapati (4 pieces)",price:140,desc:"Tomorrow breakfast",available:false},
+    {name:"Veg Poha",price:90,desc:"Fresh homemade breakfast",available:false},
+    {name:"Masala Dosa (2 pieces) with Sambar, Chutney",price:130,desc:"Fresh homemade breakfast",available:false},
+    {name:"Extra Dosa",price:50,desc:"Add-on",available:false},
+    {name:"Pav Bhaji (6 slices)",price:120,desc:"Fresh homemade breakfast",available:false},
+    {name:"Aloo Paneer Sandwich (4 slices)",price:130,desc:"Fresh homemade breakfast",available:false}
+  ]
+};
+
+const MENU={
+  lunch:[
+    {name:"Plain rice with moong daal vadi sabji ,papad",price:160,desc:"Simple homemade lunch",available:true},
+    {name:"Plain Paratha/Chapati (4 pieces) with Mix Veg Curry",price:130,desc:"Simple homemade lunch",available:false},
+    {name:"Jeera Rice with Palak Daal Fry, Papad",price:150,desc:"Comfort meal",available:false},
+    {name:"Veg Fried Rice with Papad",price:140,desc:"Popular lunch option",available:true},
+    {name:"Veg Biryani with Raita",price:160,desc:"Popular lunch option",available:false},
+    {name:"Plain Paratha/Chapati with Kadhai Paneer (200gm)",price:140,desc:"Simple homemade lunch",available:false}
+  ],
+  snacks:[
+    {name:"Bread pakoda (2 pieces) with chatni ",price:80,desc:"Crispy snack",available:true},
+    {name:"hakka veg noodles ",price:70,desc:"Crispy snack",available:true},
+    {name:"Vada Pav",price:40,desc:"Quick evening bite",available:false},
+    {name:"Veg Cutlet (4 pieces)",price:80,desc:"Snack meal",available:false},
+    {name:"Samosa (2 pieces) with Chutney",price:50,desc:"Snack meal",available:false}
+  ],
+  dinner:[
+    {name:"Plain paratha/chapati (4pieces) with aloo soyabean curry ",price:140,desc:"Tonight's dinner",available:true},
+    {name:"Extra Paratha/Chapati",price:15,desc:"Add-on",available:true},
+    {name:"Plain Paratha/Chapati (4 pieces) with Chole (200gm)",price:140,desc:"Tonight's dinner",available:false},
+    {name:"Plain Paratha/Chapati (4 pieces) with Ghugni",price:140,desc:"Tonight's dinner",available:false},
+    {name:"Sattu Puri (4 pieces) with Aloo Curry",price:140,desc:"Tonight's dinner",available:true},
+    {name:"Extra Puri",price:20,desc:"Add-on",available:true}
+  ]
+};
+
+// ── STATE ──
+const sections=[
+  {key:'breakfast',label:'🌅 Breakfast'},
+  {key:'lunch',label:'☀️ Lunch'},
+  {key:'snacks',label:'🍿 Snacks'},
+  {key:'dinner',label:'🌙 Dinner'}
+];
+let activeKey='dinner',searchMode=false,selectedBreakfastDate='today';
+const cart=new Map();
+
+// ── UTILS ──
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.display='block';
+  clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',2400);
+}
+function fmtPrice(p){return(!p||p<=0)?'':'₹'+p}
+function getMenuItems(k){return k==='breakfast'?BREAKFAST_MENUS[selectedBreakfastDate]||[]:MENU[k]||[]}
+function isAvailable(k,item){
+  if(k==='breakfast'&&selectedBreakfastDate==='today')return isBreakfastWindowOpen()&&item.available!==false;
+  return item.available!==false;
+}
+function itemId(k,idx){return k==='breakfast'?`${k}:${selectedBreakfastDate}:${idx}`:`${k}:${idx}`}
+function getQty(id){return cart.has(id)?cart.get(id).qty:0}
+function setQty(id,row,qty){
+  if(qty<=0)cart.delete(id);else cart.set(id,{...row,qty});
+  updateCartUI();
+}
+function totals(){
+  let count=0,total=0;
+  cart.forEach(v=>{count+=v.qty;total+=(v.item.price||0)*v.qty;});
+  return{count,total};
+}
+
+// ── RENDER TABS ──
+function renderTabs(){
+  const el=document.getElementById('tabs');
+  el.innerHTML=sections.map(s=>`
+    <button class="tab${s.key===activeKey?' active':''}" data-key="${s.key}">${s.label}</button>
+  `).join('');
+  el.querySelectorAll('.tab').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      activeKey=btn.dataset.key;searchMode=false;
+      document.getElementById('searchInput').value='';
+      renderTabs();renderMenu();
+    });
+  });
+}
+
+// ── RENDER MENU ──
+function renderMenu(){
+  const gridEl=document.getElementById('menuGrid');
+  const titleEl=document.getElementById('sectionTitle');
+  const infoEl=document.getElementById('sectionInfo');
+  const bfWrap=document.getElementById('breakfastDateWrap');
+
+  titleEl.textContent=searchMode?'SEARCH RESULTS':activeKey.toUpperCase();
+  bfWrap.style.display=(!searchMode&&activeKey==='breakfast')?'block':'none';
+
+  if(!searchMode&&activeKey==='breakfast'){
+    infoEl.textContent=selectedBreakfastDate==='today'
+      ?(isBreakfastWindowOpen()?"Today's breakfast orders are open (closes at 10 AM).":"Today's breakfast window is closed. Try ordering for tomorrow!")
+      :"Showing tomorrow's breakfast menu.";
+  }else{
+    infoEl.textContent=searchMode?'Showing matching dishes from all sections':'Showing available and upcoming items';
+  }
+
+  if(searchMode){
+    const q=document.getElementById('searchInput').value.trim().toLowerCase();
+    const all=[];
+    sections.forEach(s=>{
+      const src=s.key==='breakfast'?[...BREAKFAST_MENUS.today,...BREAKFAST_MENUS.tomorrow]:(MENU[s.key]||[]);
+      src.forEach((it,idx)=>{
+        if(!q||`${it.name} ${it.desc||''} ${s.label}`.toLowerCase().includes(q))
+          all.push({sectionKey:s.key,idx,item:it,label:s.label});
+      });
+    });
+    if(!all.length){gridEl.innerHTML=`<div class="item"><div class="iLeft"><div class="iname">No results found for "${document.getElementById('searchInput').value}"</div></div></div>`;return;}
+    gridEl.innerHTML=all.map(row=>{
+      const id=`search:${row.sectionKey}:${row.idx}:${row.item.name}`;
+      const qty=getQty(id);const ok=row.item.available!==false;
+      return itemHTML(id,row.item,qty,ok,row.label);
+    }).join('');
+    bindSearchButtons(all);return;
+  }
+
+  const items=getMenuItems(activeKey);
+  gridEl.innerHTML=items.map((it,idx)=>{
+    const id=itemId(activeKey,idx);const qty=getQty(id);const ok=isAvailable(activeKey,it);
+    return itemHTML(id,it,qty,ok,'');
+  }).join('');
+  bindNormalButtons(items);
+}
+
+function itemHTML(id,it,qty,ok,sectionLabel){
+  return`<div class="item">
+    <div class="iLeft">
+      <div class="iTop">
+        <span class="vegDot"></span>
+        <div class="iname">${it.name}</div>
+        ${sectionLabel?`<span class="chip" style="font-size:10px;padding:3px 8px">${sectionLabel}</span>`:''}
+      </div>
+      <div class="iprice">${fmtPrice(it.price)}</div>
+      ${it.desc?`<div class="idesc">${it.desc}</div>`:''}
+      <div>${ok?'<span class="badge av">✅ Available</span>':'<span class="badge na">🔴 Not Available</span>'}</div>
+    </div>
+    <div class="iRight">
+      ${ok?(qty>0?`<div class="qty">
+        <button class="qbtn" data-act="dec" data-id="${id}">−</button>
+        <div class="qnum">${qty}</div>
+        <button class="qbtn" data-act="inc" data-id="${id}">+</button>
+      </div>`:`<button class="addBtn primary" data-act="add" data-id="${id}">ADD</button>`)
+      :`<button class="addBtn" disabled>Unavailable</button>`}
+    </div>
+  </div>`;
+}
+
+function bindNormalButtons(items){
+  document.getElementById('menuGrid').querySelectorAll('[data-act]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const parts=btn.dataset.id.split(':');
+      const section=parts[0];
+      const idx=section==='breakfast'?parseInt(parts[2],10):parseInt(parts[1],10);
+      const item=items[idx];if(!item)return;
+      const id=btn.dataset.id,curQty=getQty(id);
+      const row={item,sectionKey:section,breakfastDateMeta:section==='breakfast'?selectedBreakfastDate:null};
+      if(btn.dataset.act==='add')setQty(id,row,1);
+      if(btn.dataset.act==='inc')setQty(id,row,curQty+1);
+      if(btn.dataset.act==='dec')setQty(id,row,curQty-1);
+      renderMenu();
+    });
+  });
+}
+
+function bindSearchButtons(rows){
+  document.getElementById('menuGrid').querySelectorAll('[data-act]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const id=btn.dataset.id;
+      const row=rows.find(r=>`search:${r.sectionKey}:${r.idx}:${r.item.name}`===id);
+      if(!row)return;
+      const curQty=getQty(id);
+      const cartRow={item:row.item,sectionKey:row.sectionKey,breakfastDateMeta:row.sectionKey==='breakfast'?'search':null};
+      if(btn.dataset.act==='add')setQty(id,cartRow,1);
+      if(btn.dataset.act==='inc')setQty(id,cartRow,curQty+1);
+      if(btn.dataset.act==='dec')setQty(id,cartRow,curQty-1);
+      renderMenu();
+    });
+  });
+}
+
+document.getElementById('searchInput').addEventListener('input',()=>{
+  searchMode=document.getElementById('searchInput').value.trim().length>0;
+  renderMenu();
+});
+document.getElementById('breakfastDateSelect').addEventListener('change',e=>{
+  selectedBreakfastDate=e.target.value;renderMenu();
+});
+
+// ── CART UI ──
+function updateCartUI(){
+  const{count,total}=totals();
+  const bar=document.getElementById('cartBar');
+  const summary=document.getElementById('cartSummary');
+  if(!bar||!summary)return;
+  if(document.getElementById('drawerOverlay').style.display==='flex'){bar.style.display='none';return;}
+  if(count<=0){bar.style.display='none';summary.textContent='0 items';return;}
+  bar.style.display='block';
+  summary.textContent=`${count} item${count>1?'s':''} · Total ₹${total}`;
+}
+
+function renderCartDrawer(){
+  const list=document.getElementById('cartList');
+  const{total}=totals();
+  if(cart.size===0){list.innerHTML=`<div style="padding:20px;text-align:center;color:var(--muted);font-size:14px">Your cart is empty 🛒<br><span style="font-size:12px;margin-top:4px;display:block">Add items from the menu to get started</span></div>`;return;}
+  list.innerHTML=Array.from(cart.entries()).map(([id,v])=>{
+    const extra=v.breakfastDateMeta?` · ${v.breakfastDateMeta}`:'';
+    return`<div class="cartItem">
+      <div style="min-width:0;flex:1">
+        <div class="name">${v.item.name}</div>
+        <div class="meta">${fmtPrice(v.item.price)} · Qty: ${v.qty} · ${v.sectionKey}${extra}</div>
+      </div>
+      <div class="qty">
+        <button class="qbtn" data-cart-act="dec" data-id="${id}">−</button>
+        <div class="qnum">${v.qty}</div>
+        <button class="qbtn" data-cart-act="inc" data-id="${id}">+</button>
+      </div>
+    </div>`;
+  }).join('')+`<div class="cartTotal"><span class="tLabel">Order Total</span><span class="tAmt">₹${total}</span></div>`;
+  list.querySelectorAll('[data-cart-act]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const id=btn.dataset.id;const row=cart.get(id);if(!row)return;
+      if(btn.dataset.cartAct==='inc')setQty(id,row,row.qty+1);
+      if(btn.dataset.cartAct==='dec')setQty(id,row,row.qty-1);
+      renderCartDrawer();renderMenu();
+    });
+  });
+}
+
+// ── DRAWER ──
+function openDrawer(){
+  document.body.classList.add('drawer-open');
+  document.getElementById('drawerOverlay').style.display='flex';
+  document.body.style.overflow='hidden';
+  updateCartUI();renderCartDrawer();togglePaymentBox();
+}
+function closeDrawer(){
+  document.body.classList.remove('drawer-open');
+  document.getElementById('drawerOverlay').style.display='none';
+  document.body.style.overflow='';
+  updateCartUI();
+}
+document.getElementById('viewCartBtn').addEventListener('click',openDrawer);
+document.getElementById('checkoutBtn').addEventListener('click',openDrawer);
+document.getElementById('closeDrawer').addEventListener('click',closeDrawer);
+document.getElementById('drawerOverlay').addEventListener('click',e=>{if(e.target.id==='drawerOverlay')closeDrawer();});
+document.getElementById('clearCart').addEventListener('click',()=>{cart.clear();updateCartUI();renderCartDrawer();renderMenu();});
+
+// ── PAYMENT ──
+const paymentMethodEl=document.getElementById('paymentMethod');
+const upiPaymentBox=document.getElementById('upiPaymentBox');
+function togglePaymentBox(){if(!paymentMethodEl||!upiPaymentBox)return;upiPaymentBox.style.display=paymentMethodEl.value==='UPI'?'grid':'none';}
+paymentMethodEl.addEventListener('change',togglePaymentBox);
+
+document.getElementById('copyUpiBtn').addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText(UPI_ID);toast('✅ UPI ID copied to clipboard');}catch(e){toast('Could not copy — please copy manually');}
+});
+document.getElementById('payNowBtn').addEventListener('click',()=>{
+  const{total}=totals();if(total<=0)return alert('Cart is empty.');
+  window.location.href=`upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent('TasteHub')}&am=${encodeURIComponent(String(total))}&cu=INR`;
+});
+document.getElementById('invoiceBtn').addEventListener('click',()=>{
+  if(cart.size===0)return alert('Cart is empty.');
+  const{total}=totals();
+  const lines=[];cart.forEach(v=>{const extra=v.breakfastDateMeta?` (${v.breakfastDateMeta})`:'';lines.push(`${v.item.name}${extra} x${v.qty} = ₹${(v.item.price||0)*v.qty}`);});
+  alert(['TASTEHUB — INVOICE','J 1301, Kolte Patil Raaga, Kannuru, Bengaluru 560077','FSSAI: 21226008000011','--------------------------------',...lines,'--------------------------------',`TOTAL: ₹${total}`,'',`UPI: ${UPI_ID}`].join('\n'));
+});
+
+// ── ORDER ──
+function genOrderId(){const t=new Date();return`TH-${String(t.getFullYear()).slice(-2)}${String(t.getMonth()+1).padStart(2,'0')}${String(t.getDate()).padStart(2,'0')}-${String(t.getHours()).padStart(2,'0')}${String(t.getMinutes()).padStart(2,'0')}`;}
+function buildWhatsAppText(orderId){
+  const name=document.getElementById('custName').value.trim();
+  const phone=document.getElementById('custPhone').value.trim();
+  const flat=document.getElementById('custFlat').value.trim();
+  const time=document.getElementById('custTime').value;
+  const notes=document.getElementById('custNotes').value.trim();
+  const txnId=document.getElementById('txnId').value.trim();
+  const payMethod=document.getElementById('paymentMethod').value;
+  const{total}=totals();
+  const lines=[];
+  cart.forEach(v=>{const extra=v.breakfastDateMeta?` [${v.breakfastDateMeta}]`:'';lines.push(`• ${v.item.name}${extra} × ${v.qty}${v.item.price?` (₹${v.item.price})`:''}`)});
+  let msg=`Hi TasteHub 👋\n\n*New Order Request*\nOrder ID: ${orderId}\nName: ${name}\nPhone: ${phone}\nApartment/Flat: ${flat}\nPreferred Meal: ${time}\n`;
+  if(time==='Breakfast')msg+=`Breakfast Date: ${selectedBreakfastDate}\n`;
+  msg+=`Payment: ${payMethod}\n\n*Items:*\n${lines.join('\n')}\n\n*Total: ₹${total}*\n`;
+  if(payMethod==='UPI'){msg+=`UPI ID: ${UPI_ID}\n`;if(txnId)msg+=`Txn/UTR: ${txnId}\n`;}else{msg+=`Payment: Cash on Delivery\n`;}
+  if(notes)msg+=`\nNotes: ${notes}\n`;
+  msg+=`\nPlease confirm my order. Thanks! 🙏`;
+  return msg;
+}
+async function logOrder(payload){
+  if(!ORDER_API)return{ok:false,msg:'No ORDER_API'};
+  try{const res=await fetch(ORDER_API,{method:'POST',mode:'cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const txt=await res.text();return{ok:true,msg:txt};}
+  catch(e){return{ok:false,msg:String(e)};}
+}
+document.getElementById('drawerCheckout').addEventListener('click',async()=>{
+  const name=document.getElementById('custName').value.trim();
+  const phone=document.getElementById('custPhone').value.trim();
+  const flat=document.getElementById('custFlat').value.trim();
+  if(!name||!phone||!flat)return alert('Please enter your Name, Phone and Apartment/Flat to continue.');
+  if(cart.size===0)return alert('Your cart is empty. Please add items first.');
+  const orderId=genOrderId();
+  const{total,count}=totals();
+  const payload={orderId,createdAt:new Date().toISOString(),customer:{name,phone,flat,preferredMeal:document.getElementById('custTime').value,breakfastDate:selectedBreakfastDate},items:Array.from(cart.values()).map(v=>({section:v.sectionKey,name:v.item.name,price:v.item.price||0,qty:v.qty,lineTotal:(v.item.price||0)*v.qty,breakfastDate:v.breakfastDateMeta||null})),totals:{count,total},payment:{method:document.getElementById('paymentMethod').value,upiId:document.getElementById('paymentMethod').value==='UPI'?UPI_ID:'',txnId:document.getElementById('paymentMethod').value==='UPI'?document.getElementById('txnId').value.trim():''},notes:document.getElementById('custNotes').value.trim(),source:'Website'};
+  const logged=await logOrder(payload);
+  if(!logged.ok)toast('Order submitted (sheet log pending)');else toast('✅ Order submitted!');
+  const url=`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppText(orderId))}`;
+  window.open(url,'_blank');
+});
+
+// ── SUBSCRIPTION ──
+function sendSubscription(){
+  const name=document.getElementById('subName').value.trim();
+  const phone=document.getElementById('subPhone').value.trim();
+  const plan=document.getElementById('subPlan').value;
+  const people=document.getElementById('subPeople').value;
+  if(!name||!phone){alert('Please enter your Name and Phone number.');return;}
+  const msg=`Hi TasteHub 👋\n\n*Subscription Request* 📦\nName: ${name}\nPhone: ${phone}\nPlan: ${plan}\nPeople: ${people}\n\nPlease share subscription details. Thanks!`;
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+// ── PARTY ORDER ──
+function sendPartyOrder(){
+  const name=document.getElementById('partyName').value.trim();
+  const phone=document.getElementById('partyPhone').value.trim();
+  const guests=document.getElementById('guestCount').value.trim();
+  const menu=document.getElementById('partyMenu').value;
+  const date=document.getElementById('partyDate').value;
+  const notes=document.getElementById('partyNotes').value.trim();
+  if(!name||!phone||!guests){alert('Please fill in Name, Phone and Number of Guests.');return;}
+  const msg=`Hi TasteHub 👋\n\n*Party Order Request* 🎉\nName: ${name}\nPhone: ${phone}\nGuests: ${guests}\nMenu: ${menu}\nEvent Date: ${date||'TBD'}\nNotes: ${notes||'None'}\n\nPlease share more details. Thanks!`;
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+// ── INIT ──
+renderTabs();
+renderMenu();
+updateCartUI();
+togglePaymentBox();
 </script>
-
 </body>
 </html>
