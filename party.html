@@ -1,256 +1,342 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-<title>TasteHub | Party Orders & Subscription</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=DM+Sans&display=swap" rel="stylesheet">
-
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>TasteHub 🎉 | Party & Subscription</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-body{
-  margin:0;
-  font-family:'DM Sans',sans-serif;
-  background:#FFF8F0;
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --cream:#FFF8F0;--brown:#2C1810;--orange:#E8611A;
+  --muted:#7A5C4A;--border:rgba(44,24,16,.10);
+  --shadow:0 8px 32px rgba(44,24,16,.10);
+  --r:14px;--rLg:20px;
+  --font:'DM Sans',system-ui,sans-serif;
+  --display:'Playfair Display',Georgia,serif;
+  --max:860px;
 }
+body{font-family:var(--font);background:var(--cream);color:var(--brown);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font);cursor:pointer}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 16px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:rgba(44,24,16,.15);border-radius:99px}
 
 /* HEADER */
-.header{
-  background:#2C1810;
-  color:white;
-  padding:16px;
-  text-align:center;
-  font-family:'Playfair Display';
-  font-size:22px;
-}
+header{background:#fff;border-bottom:1px solid var(--border);padding:0 20px;box-shadow:0 2px 16px rgba(44,24,16,.06);position:sticky;top:0;z-index:80}
+.header-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;height:62px}
+.header-brand{display:flex;align-items:center;gap:10px}
+.logo-wrap{width:40px;height:40px;border-radius:11px;flex:0 0 auto;background:linear-gradient(135deg,var(--orange),#c44a0e);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:15px;font-weight:700;color:#fff;box-shadow:0 4px 12px rgba(232,97,26,.26);overflow:hidden}
+.logo-wrap img{width:100%;height:100%;object-fit:cover}
+.brand-title{font-family:var(--display);font-size:18px;font-weight:700;color:var(--brown)}
+.back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:99px;border:1.5px solid var(--border);background:#fff;font-size:12.5px;font-weight:600;color:var(--muted);transition:all .18s}
+.back-btn:hover{border-color:var(--orange);color:var(--orange)}
 
-/* CONTAINER */
-.container{
-  padding:20px;
-  max-width:900px;
-  margin:auto;
-}
+/* INFO STRIP */
+.info-strip{background:var(--brown);padding:10px 20px;display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
+.info-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:rgba(255,255,255,.75);white-space:nowrap}
+.info-chip span{color:rgba(255,255,255,.4)}
+
+/* SECTION */
+.section{padding:28px 0}
+.section-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+.section-title{font-family:var(--display);font-size:22px;font-weight:700;color:var(--brown);margin-bottom:5px;line-height:1.2}
+.section-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+.divider{height:1px;background:var(--border)}
 
 /* CARD */
-.card{
-  background:white;
-  border-radius:16px;
-  padding:20px;
-  margin-bottom:20px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.08);
-}
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--rLg);padding:20px;box-shadow:var(--shadow)}
 
-/* TITLE */
-h2{
-  margin-top:0;
-  color:#2C1810;
-}
-
-/* MENU */
-.menu-item{
-  display:flex;
-  justify-content:space-between;
-  padding:8px 0;
-  border-bottom:1px dashed #ddd;
-}
-
-.price{
-  color:#E8611A;
-  font-weight:bold;
-}
+/* MEAL TOGGLES */
+.meal-toggle-group{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.meal-toggle{padding:9px 18px;border-radius:99px;border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:600;color:var(--muted);transition:all .18s}
+.meal-toggle.active{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 4px 12px rgba(232,97,26,.28)}
+.meal-toggle:hover:not(.active){border-color:var(--orange);color:var(--orange)}
 
 /* FORM */
-input, select, textarea{
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border-radius:10px;
-  border:1px solid #ccc;
-}
+label{font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:5px}
+input,select,textarea{width:100%;background:#fff;border:1.5px solid var(--border);color:var(--brown);border-radius:11px;padding:10px 12px;outline:none;font-size:13.5px;font-family:var(--font);transition:border-color .2s;margin-bottom:12px}
+input:focus,select:focus,textarea:focus{border-color:rgba(232,97,26,.4)}
+textarea{min-height:72px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
-/* BUTTON */
-.btn{
-  background:#E8611A;
-  color:white;
-  padding:12px;
-  border:none;
-  border-radius:25px;
-  width:100%;
-  font-size:16px;
-  cursor:pointer;
-}
+.btn-wa{width:100%;padding:13px;border-radius:14px;border:none;background:linear-gradient(135deg,#25D366,#1db954);color:#fff;font-weight:700;font-size:14px;font-family:var(--font);box-shadow:0 6px 18px rgba(37,211,102,.24);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-wa:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(37,211,102,.34)}
 
-/* SUBSCRIPTION */
-.plan{
-  border:2px solid #E8611A;
-  border-radius:14px;
-  padding:15px;
-  margin-top:10px;
-  text-align:center;
-}
+/* PLANS */
+.plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.plan-card{border-radius:var(--rLg);padding:22px 18px;background:var(--brown);position:relative;overflow:hidden;transition:transform .2s}
+.plan-card:hover{transform:translateY(-3px)}
+.plan-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:rgba(232,97,26,.22);color:#F07A3A;margin-bottom:10px}
+.plan-badge.pop{background:rgba(37,211,102,.18);color:#6ee79c}
+.plan-name{font-family:var(--display);font-size:16px;font-weight:700;color:#fff;margin-bottom:3px}
+.plan-desc{font-size:12px;color:rgba(255,255,255,.45);margin-bottom:14px}
+.plan-price{font-size:30px;font-weight:700;color:var(--orange);font-family:var(--display);margin-bottom:3px;line-height:1}
+.plan-price sup{font-size:15px;vertical-align:super}
+.plan-period{font-size:11.5px;color:rgba(255,255,255,.4);margin-bottom:16px}
+.plan-btn{width:100%;padding:9px;border-radius:10px;border:1.5px solid rgba(255,255,255,.18);background:transparent;color:#fff;font-weight:700;font-size:13px;font-family:var(--font);transition:all .2s}
+.plan-btn:hover{background:var(--orange);border-color:var(--orange)}
+.plan-note{font-size:12px;color:var(--muted);line-height:1.65;padding:12px 14px;background:#fff;border:1px solid var(--border);border-radius:var(--r);margin-bottom:20px}
+.plan-note b{color:var(--orange)}
 
-.plan h3{
-  margin:0;
-  color:#2C1810;
-}
+/* MENU LIST */
+.menu-list{display:grid;gap:7px}
+.menu-section-label{font-size:10.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);padding:10px 0 3px;border-top:1px solid var(--border);margin-top:4px}
+.menu-section-label:first-child{border-top:none;margin-top:0;padding-top:0}
+.menu-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;background:var(--cream);border:1px solid var(--border);border-radius:var(--r)}
+.mr-left{display:flex;align-items:center;gap:8px}
+.veg-dot{width:11px;height:11px;border-radius:3px;border:1.5px solid #1B8C5A;background:rgba(27,140,90,.18);flex:0 0 auto}
+.mr-name{font-size:13.5px;font-weight:500;color:var(--brown)}
+.mr-price{font-size:13px;font-weight:700;color:var(--orange);white-space:nowrap}
 
-.plan-price{
-  font-size:22px;
-  color:#E8611A;
-  font-weight:bold;
-  margin:10px 0;
-}
+/* FEATURES */
+.feature-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px}
+.feat-icon{font-size:18px;flex:0 0 auto}
+.feat-text{font-size:13px;color:var(--muted);font-weight:500}
+.feat-text b{color:var(--brown)}
 
-/* NOTE */
-.note{
-  background:#FEF3E8;
-  padding:12px;
-  border-radius:12px;
-  font-size:13px;
-  margin-top:10px;
+/* FLOATING WA */
+.wa-fab{position:fixed;bottom:22px;right:20px;z-index:300;width:54px;height:54px;border-radius:50%;border:none;background:linear-gradient(135deg,#25D366,#1db954);box-shadow:0 6px 24px rgba(37,211,102,.45);display:flex;align-items:center;justify-content:center;font-size:26px;transition:all .2s}
+.wa-fab:hover{transform:scale(1.08);box-shadow:0 8px 30px rgba(37,211,102,.55)}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1E0E04;color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:500;z-index:600;display:none;box-shadow:0 8px 24px rgba(0,0,0,.2);white-space:nowrap}
+
+@media(max-width:520px){
+  .plans-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
 }
 </style>
 </head>
-
 <body>
 
-<div class="header">🍽 TasteHub – Party & Subscription</div>
+<header>
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="logo-wrap">
+        <img src="logo.png" alt="TH" onerror="this.parentElement.textContent='TH'">
+      </div>
+      <span class="brand-title">TasteHub 🍽</span>
+    </div>
+    <a class="back-btn" href="index.html">← Menu</a>
+  </div>
+</header>
 
-<div class="container">
-
-<!-- ORDER FORM -->
-<div class="card">
-<h2>🎉 Party / Bulk Order</h2>
-
-<input id="name" placeholder="Your Name">
-<input id="location" placeholder="Apartment / Location (Pincode 560077)">
-<input id="people" type="number" placeholder="People Count">
-
-<select id="category">
-<option>Snacks</option>
-<option>Lunch</option>
-<option>Dinner</option>
-<option>Mixed</option>
-</select>
-
-<textarea id="items" placeholder="Custom requirements (optional)"></textarea>
-
-<button class="btn" onclick="sendOrder()">📲 Send on WhatsApp</button>
-
-<div class="note">
-📍 Service only for <b>Pincode 560077</b><br>
-🚚 Delivery via Porter/Rapido<br>
-🍽 Fresh homemade veg food
-</div>
+<div class="info-strip">
+  <div class="info-chip">📍 <span>Pincode</span> 560077 only</div>
+  <div class="info-chip">🚚 <span>Delivery via</span> Porter / Rapido</div>
+  <div class="info-chip">🌿 Fresh homemade veg food</div>
 </div>
 
-<!-- SUBSCRIPTION PLANS -->
-<div class="card">
-<h2>📦 Subscription Plans</h2>
+<div class="wrap">
 
-<div class="plan">
-<h3>Weekly Plan</h3>
-<p>Lunch + Dinner (5 Days)</p>
-<div class="plan-price">₹1,199</div>
-<button class="btn" onclick="subscribe('Weekly Plan ₹1199')">Subscribe</button>
+  <!-- PARTY ORDER -->
+  <section class="section" id="party">
+    <div class="section-label">Bulk & Event Orders</div>
+    <div class="section-title">🎉 Party / Bulk Order</div>
+    <p class="section-sub">Birthdays, office gatherings, festivals — we cook fresh for any occasion.</p>
+
+    <div class="card">
+      <label style="margin-bottom:10px;display:block">Select Meal Type *</label>
+      <div class="meal-toggle-group" id="mealToggles">
+        <button class="meal-toggle active" data-val="Snacks" onclick="toggleMeal(this)">🍿 Snacks</button>
+        <button class="meal-toggle" data-val="Lunch" onclick="toggleMeal(this)">☀️ Lunch</button>
+        <button class="meal-toggle" data-val="Dinner" onclick="toggleMeal(this)">🌙 Dinner</button>
+        <button class="meal-toggle" data-val="Mixed" onclick="toggleMeal(this)">🍱 Mixed</button>
+      </div>
+      <div class="form-row">
+        <div><label>Your Name *</label><input id="partyName" placeholder="Full name"/></div>
+        <div><label>Phone *</label><input id="partyPhone" placeholder="10-digit number" inputmode="numeric"/></div>
+      </div>
+      <div class="form-row">
+        <div><label>No. of Guests *</label><input id="partyGuests" placeholder="e.g. 30" inputmode="numeric"/></div>
+        <div><label>Event Date *</label><input id="partyDate" type="date"/></div>
+      </div>
+      <div><label>Delivery Address *</label><input id="partyAddr" placeholder="Flat, block, society, area"/></div>
+      <label>Special Requirements (optional)</label>
+      <textarea id="partyNotes" placeholder="Jain food, no onion/garlic, specific items..."></textarea>
+      <button class="btn-wa" onclick="sendPartyOrder()">📲 Send on WhatsApp</button>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SUBSCRIPTION PLANS -->
+  <section class="section" id="subscribe">
+    <div class="section-label">Meal Subscriptions</div>
+    <div class="section-title">📦 Subscription Plans</div>
+    <p class="section-sub">Fresh homemade meals daily — subscribe and save more.</p>
+
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-badge">Weekly Plan</div>
+        <div class="plan-name">Lunch + Dinner</div>
+        <div class="plan-desc">5 Days per week</div>
+        <div class="plan-price"><sup>₹</sup>1,199</div>
+        <div class="plan-period">per week</div>
+        <button class="plan-btn" onclick="subscribePlan('Weekly Plan – Lunch + Dinner (5 Days) ₹1,199')">Subscribe →</button>
+      </div>
+      <div class="plan-card">
+        <div class="plan-badge pop">Monthly Plan</div>
+        <div class="plan-name">Lunch + Dinner</div>
+        <div class="plan-desc">20 Days per month</div>
+        <div class="plan-price"><sup>₹</sup>4,499</div>
+        <div class="plan-period">per month</div>
+        <button class="plan-btn" onclick="subscribePlan('Monthly Plan – Lunch + Dinner (20 Days) ₹4,499')">Subscribe →</button>
+      </div>
+    </div>
+
+    <div class="plan-note">
+      💡 Based on average meal ₹130–₹150 &nbsp;·&nbsp;
+      <b>🎁 Includes rotation menu</b> + fresh cooking daily &nbsp;·&nbsp;
+      🔥 Better margin + sustainable pricing
+    </div>
+
+    <div class="card">
+      <div class="section-label" style="margin-bottom:8px">Quick Subscribe</div>
+      <div class="form-row">
+        <div><label>Your Name *</label><input id="subName" placeholder="Full name"/></div>
+        <div><label>Phone *</label><input id="subPhone" placeholder="10-digit number" inputmode="numeric"/></div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label>Plan *</label>
+          <select id="subPlan">
+            <option>Weekly Plan – Lunch + Dinner (5 Days) ₹1,199</option>
+            <option>Monthly Plan – Lunch + Dinner (20 Days) ₹4,499</option>
+          </select>
+        </div>
+        <div>
+          <label>People</label>
+          <select id="subPeople">
+            <option value="1">1 Person</option>
+            <option value="2">2 People</option>
+            <option value="3">3 People</option>
+          </select>
+        </div>
+      </div>
+      <div><label>Flat / Address *</label><input id="subFlat" placeholder="Block, Flat No., Society"/></div>
+      <label>Requirements (optional)</label>
+      <textarea id="subNotes" placeholder="No onion/garlic, Jain, etc."></textarea>
+      <button class="btn-wa" onclick="sendSubscription()">📲 Subscribe on WhatsApp</button>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SUBSCRIPTION MENU -->
+  <section class="section">
+    <div class="section-label">What You Get</div>
+    <div class="section-title">🍱 Subscription Menu</div>
+    <p class="section-sub">Rotates daily — always fresh, always homemade.</p>
+
+    <div class="feature-row"><span class="feat-icon">🔄</span><span class="feat-text"><b>Menu rotates daily</b> — no repetition</span></div>
+    <div class="feature-row"><span class="feat-icon">🫓</span><span class="feat-text"><b>Custom roti/sabzi</b> available on request</span></div>
+    <div class="feature-row" style="margin-bottom:16px"><span class="feat-icon">🏠</span><span class="feat-text"><b>Healthy homemade food</b> — no preservatives</span></div>
+
+    <div class="card">
+      <div class="menu-list">
+        <div class="menu-section-label">🌅 Breakfast</div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Poha / Upma / Idli</span></div><span class="mr-price">₹90</span></div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Aloo Paratha + Curd</span></div><span class="mr-price">₹90</span></div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Pav Bhaji / Sandwich</span></div><span class="mr-price">₹120</span></div>
+
+        <div class="menu-section-label">☀️ Lunch</div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Rice + Dal + Sabzi</span></div><span class="mr-price">₹150</span></div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Rice + Chole / Rajma</span></div><span class="mr-price">₹130–150</span></div>
+
+        <div class="menu-section-label">🌙 Dinner</div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Chapati + Sabzi</span></div><span class="mr-price">₹130</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PARTY MENU -->
+  <section class="section">
+    <div class="section-label">Bulk & Events</div>
+    <div class="section-title">🥗 Party Menu</div>
+    <p class="section-sub">Order in bulk for your occasion — all fresh, all veg.</p>
+
+    <div class="card">
+      <div class="menu-list">
+        <div class="menu-section-label">🍿 Snacks & Starters</div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Bread Pakoda (2 pcs)</span></div><span class="mr-price">₹80</span></div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Sabudana Vada (4 pcs)</span></div><span class="mr-price">₹70</span></div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Aloo Bonda (4 pcs)</span></div><span class="mr-price">₹80</span></div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Samosa (2 pcs)</span></div><span class="mr-price">₹50</span></div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Gobhi Manchurian</span></div><span class="mr-price">₹80</span></div>
+
+        <div class="menu-section-label">🍽 Mains</div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Chapati (4 pcs) + Chhole</span></div><span class="mr-price">₹140</span></div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Litti Chokha (4 pcs)</span></div><span class="mr-price">₹160</span></div>
+        <div class="menu-row"><div class="mr-left"><span class="veg-dot"></span><span class="mr-name">Puri + Aloo Curry</span></div><span class="mr-price">₹130</span></div>
+      </div>
+    </div>
+  </section>
+
 </div>
 
-<div class="plan">
-<h3>Monthly Plan</h3>
-<p>Lunch + Dinner (20 Days)</p>
-<div class="plan-price">₹4,499</div>
-<button class="btn" onclick="subscribe('Monthly Plan ₹4499')">Subscribe</button>
-</div>
+<footer style="background:var(--brown);color:rgba(255,255,255,.5);text-align:center;padding:20px 16px;font-size:13px;margin-top:8px">
+  <p>© 2026 <strong style="color:rgba(255,255,255,.8)">TasteHub 🍽</strong> · Kannuru, Bengaluru 560077</p>
+</footer>
 
-<div class="note">
-💡 Based on average meal ₹130–₹150<br>
-🎁 Includes rotation menu + fresh cooking daily<br>
-🔥 Better margin + sustainable pricing
-</div>
-</div>
+<!-- FLOATING WA -->
+<a class="wa-fab" href="https://wa.me/919632035612" target="_blank" title="Chat on WhatsApp">💬</a>
 
-<!-- SUBSCRIPTION MENU -->
-<div class="card">
-<h2>🍱 Subscription Menu</h2>
-
-<div class="menu-item"><span>Breakfast – Poha / Upma / Idli</span><span class="price">₹90</span></div>
-<div class="menu-item"><span>Aloo Paratha + Curd</span><span class="price">₹90</span></div>
-<div class="menu-item"><span>Pav Bhaji / Sandwich</span><span class="price">₹120</span></div>
-
-<div class="menu-item"><span>Lunch – Rice + Dal + Sabzi</span><span class="price">₹150</span></div>
-<div class="menu-item"><span>Rice + Chole / Rajma</span><span class="price">₹130–150</span></div>
-
-<div class="menu-item"><span>Dinner – Chapati + Sabzi</span><span class="price">₹130</span></div>
-
-<div class="note">
-✔ Menu rotates daily<br>
-✔ Custom roti/sabzi available<br>
-✔ Healthy homemade food
-</div>
-</div>
-
-<!-- PARTY MENU -->
-<div class="card">
-<h2>🥗 Party Menu</h2>
-
-<div class="menu-item"><span>Bread Pakoda (2 pcs)</span><span class="price">₹80</span></div>
-<div class="menu-item"><span>Sabudana Vada (4 pcs)</span><span class="price">₹70</span></div>
-<div class="menu-item"><span>Aloo Bonda (4 pcs)</span><span class="price">₹80</span></div>
-<div class="menu-item"><span>Samosa (2 pcs)</span><span class="price">₹50</span></div>
-<div class="menu-item"><span>Gobhi Manchurian</span><span class="price">₹80</span></div>
-
-<div class="menu-item"><span>Chapati (4) + Chhole</span><span class="price">₹140</span></div>
-<div class="menu-item"><span>Litti Chokha (4 pcs)</span><span class="price">₹160</span></div>
-<div class="menu-item"><span>Puri + Aloo Curry</span><span class="price">₹130</span></div>
-
-</div>
-
-</div>
+<div class="toast" id="toast"></div>
 
 <script>
-function sendOrder(){
-  let name = document.getElementById('name').value;
-  let location = document.getElementById('location').value;
-  let people = document.getElementById('people').value;
-  let category = document.getElementById('category').value;
-  let items = document.getElementById('items').value;
+const WA = "919632035612";
+let selectedMeal = "Snacks";
 
-  if(!location.includes("560077")){
-    alert("Service only for Pincode 560077");
-    return;
-  }
-
-  if(!location || !people){
-    alert("Enter location & people count");
-    return;
-  }
-
-  let msg = `Hi TasteHub 👋
-Party Order Request
-
-Name: ${name}
-Location: ${location}
-People: ${people}
-Category: ${category}
-
-Requirements:
-${items}`;
-
-  window.open(`https://wa.me/919632035612?text=${encodeURIComponent(msg)}`);
+function toggleMeal(btn) {
+  document.querySelectorAll(".meal-toggle").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  selectedMeal = btn.dataset.val;
 }
 
-function subscribe(plan){
-  let msg = `Hi TasteHub 👋
-I want to subscribe for:
+function sendPartyOrder() {
+  const name = document.getElementById("partyName").value.trim();
+  const phone = document.getElementById("partyPhone").value.trim();
+  const guests = document.getElementById("partyGuests").value.trim();
+  const date = document.getElementById("partyDate").value;
+  const addr = document.getElementById("partyAddr").value.trim();
+  const notes = document.getElementById("partyNotes").value.trim();
+  if (!name || !phone || !guests || !addr) { showToast("⚠️ Please fill all required fields"); return; }
+  let msg = `Hi TasteHub 🍽\n\n*Party / Bulk Order 🎉*\nMeal Type: ${selectedMeal}\nName: ${name}\nPhone: ${phone}\nGuests: ${guests}\nDate: ${date || "TBD"}\nAddress: ${addr}`;
+  if (notes) msg += `\nRequirements: ${notes}`;
+  msg += `\n\nPlease confirm availability and pricing. Thanks! 🙏`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
+}
 
-${plan}
+function subscribePlan(plan) {
+  const msg = `Hi TasteHub 🍽\n\nI'd like to subscribe to:\n*${plan}*\n\nPlease share the details and confirm. Thank you!`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
+}
 
-Please share payment details.`;
+function sendSubscription() {
+  const name = document.getElementById("subName").value.trim();
+  const phone = document.getElementById("subPhone").value.trim();
+  const plan = document.getElementById("subPlan").value;
+  const people = document.getElementById("subPeople").value;
+  const flat = document.getElementById("subFlat").value.trim();
+  const notes = document.getElementById("subNotes").value.trim();
+  if (!name || !phone || !flat) { showToast("⚠️ Please fill Name, Phone & Address"); return; }
+  let msg = `Hi TasteHub 🍽\n\n*Subscription Request 📦*\nName: ${name}\nPhone: ${phone}\nPlan: ${plan}\nPeople: ${people}\nAddress: ${flat}`;
+  if (notes) msg += `\nRequirements: ${notes}`;
+  msg += `\n\nPlease confirm. Thank you! 🙏`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
+}
 
-  window.open(`https://wa.me/919632035612?text=${encodeURIComponent(msg)}`);
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.style.display = "block";
+  clearTimeout(t._t); t._t = setTimeout(() => t.style.display = "none", 2400);
 }
 </script>
-
 </body>
 </html>
