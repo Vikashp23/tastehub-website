@@ -3,328 +3,487 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TasteHub Snacks Corner 🥜</title>
-<meta name="description" content="Fresh homemade snacks — no preservatives, premium quality. Order Masala Peanuts, Sev, Mixture and more from TasteHub."/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<title>TasteHub – Homemade Snacks 🥨</title>
+<meta name="description" content="Fresh homemade snacks from TasteHub — Masala Peanuts, Sev, Mixture & more. Preservative-free, made in pure peanut oil. Order now on WhatsApp."/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-/* ── RESET & VARS ── */
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 :root{
-  --cream:#FFF8F0;
-  --cream2:#FFF1E0;
+  --bg:#FFF8F0;
+  --white:#FFFFFF;
   --brown:#2C1810;
   --brown2:#4a2918;
   --orange:#E8611A;
   --orange2:#F07A3A;
+  --gold:#F0A81C;
+  --green:#1B8C5A;
   --muted:#7A5C4A;
-  --border:rgba(44,24,16,.10);
-  --shadow:0 6px 24px rgba(44,24,16,.09);
-  --shadow-lg:0 12px 40px rgba(44,24,16,.13);
-  --r:16px;
-  --rLg:22px;
+  --border:rgba(44,24,16,.09);
+  --border2:rgba(44,24,16,.14);
+  --shadow:0 4px 20px rgba(44,24,16,.08);
+  --shadow-md:0 8px 32px rgba(44,24,16,.11);
+  --shadow-lg:0 16px 48px rgba(44,24,16,.14);
+  --r:14px;
+  --rLg:20px;
   --font:'DM Sans',system-ui,sans-serif;
   --display:'Playfair Display',Georgia,serif;
-  --max:880px;
+  --max:900px;
 }
-body{font-family:var(--font);background:var(--cream);color:var(--brown);min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:100px}
+body{font-family:var(--font);background:var(--bg);color:var(--brown);min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:96px}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
-button,select{font-family:var(--font);cursor:pointer}
-::-webkit-scrollbar{width:4px}
+button{font-family:var(--font);cursor:pointer}
+::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-thumb{background:rgba(44,24,16,.15);border-radius:99px}
 
-/* ── LAYOUT ── */
-.wrap{max-width:var(--max);margin:0 auto;padding:0 16px}
-
-/* ── BACK BAR ── */
-.back-bar{background:rgba(255,248,240,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 20px;position:sticky;top:0;z-index:80;box-shadow:0 2px 12px rgba(44,24,16,.06)}
-.back-bar-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px}
-.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:#fff;transition:all .18s}
+/* ━━━━━━━━━━━━━━ TOPBAR ━━━━━━━━━━━━━━ */
+.topbar{
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 12px rgba(44,24,16,.06);
+}
+.topbar-inner{
+  max-width:var(--max);margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;gap:12px;
+}
+.back-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:99px;
+  border:1.5px solid var(--border2);background:var(--bg);
+  font-size:13px;font-weight:600;color:var(--muted);transition:all .18s;
+  white-space:nowrap;
+}
 .back-btn:hover{border-color:var(--orange);color:var(--orange)}
-.back-title{font-size:14px;font-weight:700;color:var(--brown);font-family:var(--display)}
-
-/* ── HERO ── */
-.hero{text-align:center;padding:36px 20px 28px}
-.logo-wrap{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,var(--orange),#c44a0e);margin:0 auto 18px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(232,97,26,.3);overflow:hidden;border:2px solid rgba(232,97,26,.2)}
-.logo-wrap img{width:100%;height:100%;object-fit:cover}
-.logo-fallback{font-family:var(--display);font-size:24px;font-weight:700;color:#fff}
-.hero h1{font-family:var(--display);font-size:clamp(24px,6vw,36px);font-weight:700;color:var(--brown);letter-spacing:-.5px;margin-bottom:8px;line-height:1.2}
-.hero-sub{font-size:14px;color:var(--muted);font-weight:400;line-height:1.6;max-width:400px;margin:0 auto 20px}
-.hero-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
-.pill{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:600;background:#fff;border:1px solid var(--border);color:var(--muted)}
-.pill.green{background:rgba(27,140,90,.08);border-color:rgba(27,140,90,.18);color:#136843}
-.pill.orange{background:rgba(232,97,26,.08);border-color:rgba(232,97,26,.18);color:#b84810}
-
-/* ── OFFER BANNER ── */
-.offer-banner{
-  background:linear-gradient(135deg,var(--brown),var(--brown2));
-  border-radius:var(--rLg);padding:16px 20px;
-  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
-  margin:0 0 28px;box-shadow:var(--shadow-lg);
+.topbar-logo{
+  display:flex;align-items:center;gap:9px;
 }
-.ob-left{display:flex;flex-direction:column;gap:6px}
-.ob-tag{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:700;color:#fff}
-.ob-tag .fire{font-size:18px}
-.ob-delivery{font-size:13px;color:rgba(255,255,255,.65);display:flex;align-items:center;gap:5px}
-.ob-badge{background:var(--orange);color:#fff;font-weight:800;font-size:14px;padding:8px 16px;border-radius:10px;white-space:nowrap;box-shadow:0 4px 12px rgba(232,97,26,.3)}
-
-/* ── SECTION HEAD ── */
-.section-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
-.section-title{font-family:var(--display);font-size:22px;font-weight:700;color:var(--brown);margin-bottom:6px;line-height:1.2}
-.section-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.6}
-
-/* ── SNACKS GRID ── */
-.snacks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:32px}
-.snack-card{
-  background:#fff;border:1px solid var(--border);border-radius:var(--rLg);
-  padding:18px 16px;display:flex;flex-direction:column;gap:12px;
-  transition:box-shadow .22s,border-color .22s,transform .18s;
-  position:relative;
+.tl-icon{
+  width:36px;height:36px;border-radius:10px;flex:0 0 auto;
+  background:linear-gradient(135deg,var(--orange),#c44a0e);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;box-shadow:0 3px 10px rgba(232,97,26,.28);
 }
-.snack-card:hover{box-shadow:var(--shadow-lg);border-color:rgba(232,97,26,.2);transform:translateY(-2px)}
-.snack-card.selected{border-color:var(--orange);box-shadow:0 0 0 3px rgba(232,97,26,.12)}
-
-/* CARD EMOJI */
-.sc-emoji{font-size:36px;line-height:1;margin-bottom:2px}
-
-/* CARD TOP */
-.sc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-.sc-name{font-size:15px;font-weight:700;color:var(--brown);line-height:1.3;flex:1}
-.sc-tag{
-  font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;
-  white-space:nowrap;flex:0 0 auto;margin-top:2px;
+.tl-icon img{width:100%;height:100%;object-fit:cover}
+.tl-name{font-family:var(--display);font-size:16px;font-weight:700;color:var(--brown)}
+.cart-pill{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:99px;border:none;
+  background:var(--orange);color:#fff;
+  font-size:13px;font-weight:700;white-space:nowrap;
+  box-shadow:0 4px 12px rgba(232,97,26,.28);transition:all .18s;
 }
-.tag-spicy{background:rgba(232,97,26,.10);border:1px solid rgba(232,97,26,.18);color:#b84810}
-.tag-crunchy{background:rgba(251,188,4,.10);border:1px solid rgba(251,188,4,.22);color:#7a5800}
-.tag-bestseller{background:rgba(27,140,90,.10);border:1px solid rgba(27,140,90,.2);color:#136843}
-.tag-sweet{background:rgba(200,80,140,.09);border:1px solid rgba(200,80,140,.18);color:#8a2060}
-.tag-protein{background:rgba(80,120,200,.09);border:1px solid rgba(80,120,200,.18);color:#1a3a7a}
-.tag-tangy{background:rgba(240,140,10,.10);border:1px solid rgba(240,140,10,.2);color:#8a5000}
+.cart-pill:hover{background:#c44a0e;transform:scale(1.03)}
+.cart-pill .cp-count{background:rgba(255,255,255,.3);border-radius:99px;padding:1px 7px;font-size:11px;font-weight:800}
+
+/* ━━━━━━━━━━━━━━ HERO ━━━━━━━━━━━━━━ */
+.hero{
+  background:linear-gradient(135deg,#2C1810 0%,#5a3020 60%,#8a4828 100%);
+  padding:32px 20px 28px;text-align:center;position:relative;overflow:hidden;
+}
+.hero::before{content:'';position:absolute;top:-60px;left:-60px;width:220px;height:220px;border-radius:50%;background:rgba(232,97,26,.12);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(240,168,28,.08);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(232,97,26,.18);border:1px solid rgba(232,97,26,.28);color:rgba(255,165,80,.95);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:99px;margin-bottom:14px}
+.hero h1{font-family:var(--display);font-size:clamp(22px,6vw,34px);font-weight:700;color:#fff;line-height:1.2;margin-bottom:8px;position:relative;z-index:1}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:20px;position:relative;z-index:1}
+.hero-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;position:relative;z-index:1}
+.hb{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:99px;font-size:12px;font-weight:600;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.85)}
+
+/* ━━━━━━━━━━━━━━ INFO BANNER ━━━━━━━━━━━━━━ */
+.info-banner{background:var(--white);border-bottom:1px solid var(--border)}
+.info-banner-inner{
+  max-width:var(--max);margin:0 auto;
+  display:flex;align-items:center;justify-content:center;
+  gap:0;padding:0;overflow:auto;scrollbar-width:none;
+}
+.info-banner-inner::-webkit-scrollbar{display:none}
+.ib-item{
+  display:flex;align-items:center;gap:7px;
+  padding:11px 18px;font-size:12.5px;font-weight:600;color:var(--muted);
+  white-space:nowrap;border-right:1px solid var(--border);flex:0 0 auto;
+}
+.ib-item:last-child{border-right:none}
+.ib-item .ib-icon{font-size:15px}
+
+/* ━━━━━━━━━━━━━━ OFFER STRIP ━━━━━━━━━━━━━━ */
+.offer-strip{
+  background:linear-gradient(135deg,#E8611A,#c44a0e);
+  padding:11px 16px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+}
+.os-tag{font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px}
+.os-divider{width:1px;height:16px;background:rgba(255,255,255,.3)}
+.os-delivery{font-size:13px;color:rgba(255,255,255,.85);display:flex;align-items:center;gap:5px}
+
+/* ━━━━━━━━━━━━━━ LAYOUT ━━━━━━━━━━━━━━ */
+.wrap{max-width:var(--max);margin:0 auto;padding:0 14px}
+.section{padding:28px 0 8px}
+.sec-label{font-size:10.5px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:var(--orange);margin-bottom:5px}
+.sec-title{font-family:var(--display);font-size:20px;font-weight:700;color:var(--brown);margin-bottom:4px}
+.sec-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+
+/* ━━━━━━━━━━━━━━ PRODUCT GRID ━━━━━━━━━━━━━━ */
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:14px;
+  margin-bottom:8px;
+}
+
+/* ━━━━━━━━━━━━━━ PRODUCT CARD ━━━━━━━━━━━━━━ */
+.pcard{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--rLg);overflow:hidden;
+  box-shadow:var(--shadow);transition:all .22s;
+  display:flex;flex-direction:column;position:relative;
+}
+.pcard:hover{box-shadow:var(--shadow-lg);border-color:rgba(232,97,26,.18);transform:translateY(-3px)}
+.pcard.in-cart{border-color:var(--orange);box-shadow:0 0 0 2px rgba(232,97,26,.15),var(--shadow-md)}
+
+/* IMAGE AREA */
+.pc-img-wrap{
+  position:relative;height:150px;overflow:hidden;
+  background:linear-gradient(135deg,#FFF0DC,#FFE4C0);
+  display:flex;align-items:center;justify-content:center;
+}
+.pc-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.pcard:hover .pc-img-wrap img{transform:scale(1.06)}
+.pc-emoji-fallback{font-size:64px;line-height:1;user-select:none}
+.pc-badge{
+  position:absolute;top:10px;left:10px;
+  font-size:10px;font-weight:800;padding:3px 9px;border-radius:99px;
+  letter-spacing:.3px;
+}
+.badge-best{background:#E8611A;color:#fff}
+.badge-spicy{background:#c0392b;color:#fff}
+.badge-new{background:#1B8C5A;color:#fff}
+.badge-popular{background:#F0A81C;color:#2C1810}
+
+/* WISHLIST */
+.pc-wish{
+  position:absolute;top:10px;right:10px;
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(255,255,255,.9);border:none;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+.pc-wish:hover{background:#fff;transform:scale(1.1)}
+
+/* BODY */
+.pc-body{padding:13px 13px 0;flex:1;display:flex;flex-direction:column;gap:6px}
+.pc-name{font-family:var(--display);font-size:14.5px;font-weight:700;color:var(--brown);line-height:1.3}
+.pc-desc{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* TAGS */
+.pc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
+.pc-tag{
+  font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:99px;
+}
+.tag-veg{background:rgba(27,140,90,.09);border:1px solid rgba(27,140,90,.18);color:#136843}
+.tag-oil{background:rgba(232,97,26,.08);border:1px solid rgba(232,97,26,.16);color:#b84810}
+.tag-fresh{background:rgba(80,160,220,.09);border:1px solid rgba(80,160,220,.18);color:#1a5a8a}
+.tag-gift{background:rgba(200,80,160,.08);border:1px solid rgba(200,80,160,.16);color:#8a2060}
+.tag-crispy{background:rgba(240,168,28,.09);border:1px solid rgba(240,168,28,.2);color:#7a5800}
+.tag-protein{background:rgba(100,80,200,.09);border:1px solid rgba(100,80,200,.18);color:#2a1a7a}
 
 /* NO PRICE */
-.sc-noprice{font-size:11.5px;color:var(--muted);font-style:italic}
+.pc-noprice{font-size:11px;color:var(--muted);font-style:italic;margin-top:2px}
 
-/* QTY SELECT */
-.sc-qty-row{display:flex;align-items:center;gap:10px}
-.sc-qty-label{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
-.qty-select{
-  flex:1;padding:9px 12px;border-radius:10px;
-  border:1.5px solid var(--border);background:var(--cream);
-  color:var(--brown);font-size:13.5px;font-weight:600;
-  outline:none;transition:border-color .2s;appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237A5C4A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;
+/* QTY + ADD */
+.pc-footer{padding:10px 13px 13px;margin-top:auto}
+.pc-add-btn{
+  width:100%;padding:9px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,var(--orange),#c44a0e);
+  color:#fff;font-weight:700;font-size:13px;
+  box-shadow:0 4px 12px rgba(232,97,26,.22);transition:all .18s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
 }
-.qty-select:focus{border-color:rgba(232,97,26,.4);background-color:#fff}
-.qty-select option[value="0"]{color:var(--muted)}
-
-/* ADD INDICATOR */
-.sc-added{
-  position:absolute;top:14px;right:14px;
-  width:22px;height:22px;border-radius:50%;
-  background:var(--orange);display:none;align-items:center;justify-content:center;
-  font-size:12px;color:#fff;font-weight:800;
+.pc-add-btn:hover{box-shadow:0 6px 18px rgba(232,97,26,.34);transform:translateY(-1px)}
+.pc-qty-ctrl{
+  display:flex;align-items:center;border:1.5px solid var(--orange);
+  border-radius:10px;overflow:hidden;
 }
-.snack-card.selected .sc-added{display:flex}
-
-/* ── HIGHLIGHTS ── */
-.highlights-section{background:var(--brown);padding:32px 0;margin:0 -16px}
-.highlights-section .wrap{padding:0 16px}
-.highlights-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
-.highlight-card{
-  display:flex;align-items:center;gap:12px;padding:14px 16px;
-  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10);
-  border-radius:var(--r);
+.pq-btn{
+  width:36px;height:36px;border:none;background:var(--orange);color:#fff;
+  font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  transition:background .15s;line-height:1;
 }
-.hi-icon{font-size:22px;flex:0 0 auto}
-.hi-text{font-size:13.5px;font-weight:600;color:#fff;line-height:1.3}
-.hi-text span{font-size:11.5px;color:rgba(255,255,255,.5);font-weight:400;display:block;margin-top:2px}
-
-/* ── INFO SECTION ── */
-.info-section{padding:28px 0 0}
-.info-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.info-card{
-  background:#fff;border:1px solid var(--border);border-radius:var(--r);
-  padding:16px;display:flex;align-items:flex-start;gap:10px;
+.pq-btn:hover{background:#c44a0e}
+.pq-num{
+  flex:1;text-align:center;font-weight:800;font-size:14px;
+  color:var(--orange);background:#fff;padding:0 8px;
 }
-.info-icon{font-size:22px;flex:0 0 auto;margin-top:1px}
-.info-text{font-size:13px;color:var(--muted);line-height:1.55;font-weight:500}
-.info-text b{color:var(--brown);font-weight:700;display:block;margin-bottom:2px}
 
-/* ── PRICE NOTE ── */
-.price-note{
-  background:linear-gradient(135deg,rgba(232,97,26,.06),rgba(44,24,16,.04));
-  border:1px solid rgba(232,97,26,.14);border-radius:var(--r);
-  padding:14px 16px;margin-top:16px;
-  display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);
+/* ━━━━━━━━━━━━━━ HIGHLIGHTS ━━━━━━━━━━━━━━ */
+.highlights{background:var(--brown);padding:28px 0;margin-top:12px}
+.hl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.hl-card{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09);
+  border-radius:var(--r);padding:16px 14px;
+  display:flex;flex-direction:column;align-items:flex-start;gap:8px;
 }
-.price-note b{color:var(--brown)}
+.hl-icon{font-size:24px;line-height:1}
+.hl-title{font-size:13.5px;font-weight:700;color:#fff}
+.hl-sub{font-size:11.5px;color:rgba(255,255,255,.48);line-height:1.4;margin-top:-4px}
 
-/* ── FIXED ORDER BTN ── */
-.order-bar{
+/* ━━━━━━━━━━━━━━ NOTES ━━━━━━━━━━━━━━ */
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0 0}
+.note-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--r);
+  padding:14px 14px;display:flex;align-items:flex-start;gap:10px;
+}
+.nc-icon{font-size:20px;flex:0 0 auto;margin-top:1px}
+.nc-title{font-size:13px;font-weight:700;color:var(--brown);margin-bottom:2px}
+.nc-sub{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* ━━━━━━━━━━━━━━ PRICE NOTE ━━━━━━━━━━━━━━ */
+.price-note-banner{
+  background:linear-gradient(135deg,rgba(232,97,26,.07),rgba(44,24,16,.04));
+  border:1px solid rgba(232,97,26,.16);border-radius:var(--r);
+  padding:14px 16px;display:flex;align-items:center;gap:12px;
+  margin:16px 0 0;font-size:13px;color:var(--muted);line-height:1.55;
+}
+.price-note-banner .pn-icon{font-size:22px;flex:0 0 auto}
+.price-note-banner b{color:var(--brown);display:block;margin-bottom:2px}
+
+/* ━━━━━━━━━━━━━━ CART DRAWER ━━━━━━━━━━━━━━ */
+.drawer-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(20,10,4,.45);backdrop-filter:blur(4px);
+  display:none;align-items:flex-end;justify-content:center;padding:14px;
+}
+.drawer-overlay.open{display:flex}
+.drawer{
+  width:min(640px,100%);background:var(--white);
+  border-radius:24px 24px 18px 18px;
+  box-shadow:0 24px 80px rgba(44,24,16,.22);
+  overflow:hidden;max-height:90vh;display:flex;flex-direction:column;
+}
+.dh{
+  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+.dh h3{font-family:var(--display);font-size:17px;font-weight:700}
+.dh-close{
+  width:34px;height:34px;border-radius:10px;border:1px solid var(--border);
+  background:#fff;font-size:17px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  transition:background .15s;
+}
+.dh-close:hover{background:#f7ede4}
+.db{padding:14px;overflow:auto;flex:1}
+.cart-list{display:grid;gap:8px;margin-bottom:12px}
+.cart-row{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:11px 13px;
+}
+.cr-name{font-size:13.5px;font-weight:700;color:var(--brown)}
+.cr-qty{font-size:12px;color:var(--muted);margin-top:2px}
+.cr-ctrl{display:flex;align-items:center;gap:6px;border:1.5px solid var(--border);border-radius:9px;overflow:hidden;background:#fff}
+.cr-btn{
+  width:30px;height:30px;border:none;background:transparent;
+  font-size:16px;font-weight:800;color:var(--orange);
+  display:flex;align-items:center;justify-content:center;
+}
+.cr-btn:hover{background:rgba(232,97,26,.07)}
+.cr-num{min-width:22px;text-align:center;font-weight:800;font-size:13px;color:var(--brown)}
+.cart-empty{text-align:center;padding:32px 16px;color:var(--muted)}
+.ce-icon{font-size:48px;margin-bottom:10px}
+.cart-footer{padding:14px;border-top:1px solid var(--border);display:grid;gap:10px;background:rgba(255,255,255,.7)}
+
+/* ORDER FORM */
+.of-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.of-group label{font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:4px}
+.of-group input,.of-group textarea,.of-group select{
+  width:100%;background:#fff;border:1.5px solid var(--border);color:var(--brown);
+  border-radius:10px;padding:10px 12px;outline:none;font-size:13.5px;
+  font-family:var(--font);transition:border-color .2s;margin-bottom:0;
+}
+.of-group input:focus,.of-group select:focus{border-color:rgba(232,97,26,.36)}
+.wa-order-btn{
+  width:100%;padding:14px;border-radius:14px;border:none;
+  background:linear-gradient(135deg,#25D366,#1db954);
+  color:#fff;font-weight:700;font-size:15px;font-family:var(--font);
+  box-shadow:0 6px 18px rgba(37,211,102,.24);transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.wa-order-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(37,211,102,.34)}
+
+/* ━━━━━━━━━━━━━━ FIXED BAR ━━━━━━━━━━━━━━ */
+.fixed-bar{
   position:fixed;bottom:0;left:0;right:0;z-index:200;
   background:rgba(255,248,240,.97);backdrop-filter:blur(12px);
-  border-top:1px solid var(--border);padding:12px 20px;
-  box-shadow:0 -6px 24px rgba(44,24,16,.10);
+  border-top:1px solid var(--border);
+  box-shadow:0 -6px 24px rgba(44,24,16,.09);
 }
-.order-bar-inner{max-width:var(--max);margin:0 auto;display:flex;gap:12px;align-items:center}
-.order-summary{min-width:0;flex:1}
-.os-count{font-size:14px;font-weight:700;color:var(--brown)}
-.os-sub{font-size:12px;color:var(--muted);margin-top:1px}
-.order-now-btn{
-  padding:13px 28px;border-radius:14px;border:none;
+.fb-inner{
+  max-width:var(--max);margin:0 auto;
+  display:flex;gap:12px;align-items:center;padding:11px 14px;
+}
+.fb-text{flex:1;min-width:0}
+.fb-count{font-size:14px;font-weight:700;color:var(--brown)}
+.fb-sub{font-size:12px;color:var(--muted);margin-top:1px}
+.fb-btn{
+  padding:12px 24px;border-radius:14px;border:none;
   background:linear-gradient(135deg,var(--orange),#c44a0e);
-  color:#fff;font-weight:700;font-size:15px;
-  box-shadow:0 6px 18px rgba(232,97,26,.3);transition:all .2s;
-  display:flex;align-items:center;gap:8px;white-space:nowrap;
+  color:#fff;font-weight:700;font-size:14px;
+  box-shadow:0 5px 16px rgba(232,97,26,.28);transition:all .2s;
+  white-space:nowrap;
 }
-.order-now-btn:hover{box-shadow:0 8px 24px rgba(232,97,26,.4);transform:translateY(-1px)}
-.order-now-btn:active{transform:scale(.97)}
-.order-now-btn:disabled{opacity:.5;transform:none;box-shadow:none;cursor:not-allowed}
+.fb-btn:hover{box-shadow:0 8px 22px rgba(232,97,26,.38);transform:translateY(-1px)}
+.fb-btn:disabled{opacity:.4;transform:none;box-shadow:none;cursor:not-allowed}
 
-/* ── FOOTER ── */
-footer{background:var(--brown);color:rgba(255,255,255,.55);text-align:center;padding:22px 16px;font-size:13px}
-footer strong{color:rgba(255,255,255,.8)}
+/* ━━━━━━━━━━━━━━ FOOTER ━━━━━━━━━━━━━━ */
+footer{background:var(--brown);color:rgba(255,255,255,.5);text-align:center;padding:22px 16px;font-size:13px}
+footer strong{color:rgba(255,255,255,.82)}
+footer a{color:rgba(255,255,255,.68);font-weight:600}
 
-/* ── TOAST ── */
+/* ━━━━━━━━━━━━━━ TOAST ━━━━━━━━━━━━━━ */
 .toast{
   position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
   background:#1E0E04;color:#fff;padding:10px 18px;border-radius:12px;
-  font-size:13px;font-weight:500;z-index:600;display:none;
+  font-size:13px;font-weight:500;z-index:700;display:none;
   box-shadow:0 8px 24px rgba(0,0,0,.2);white-space:nowrap;
 }
 
-/* ── RESPONSIVE ── */
-@media(max-width:480px){
-  .snacks-grid{grid-template-columns:1fr 1fr}
-  .info-cards{grid-template-columns:1fr}
-  .offer-banner{flex-direction:column;align-items:flex-start}
-  .back-title{display:none}
+/* ━━━━━━━━━━━━━━ RESPONSIVE ━━━━━━━━━━━━━━ */
+@media(max-width:560px){
+  .products-grid{grid-template-columns:1fr 1fr}
+  .of-row{grid-template-columns:1fr}
+  .notes-grid{grid-template-columns:1fr}
+  .ib-item{padding:10px 12px;font-size:12px}
+  .drawer-overlay{padding:0}
+  .drawer{width:100%;max-height:100vh;border-radius:22px 22px 0 0}
 }
-@media(max-width:340px){
-  .snacks-grid{grid-template-columns:1fr}
+@media(max-width:360px){
+  .products-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<!-- ── BACK BAR ── -->
-<div class="back-bar">
-  <div class="back-bar-inner">
-    <a class="back-btn" href="index.html">← Main Menu</a>
-    <div class="back-title">Snacks Corner 🥜</div>
-    <div style="width:90px"></div>
+<!-- ━━━━━━━━ TOPBAR ━━━━━━━━ -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="index.html">← Back to Home</a>
+    <div class="topbar-logo">
+      <div class="tl-icon" id="tlIcon">
+        <img src="logo.png" alt="TH" onerror="this.parentElement.textContent='TH';this.parentElement.style.cssText+='color:#fff;font-family:var(--display);font-weight:700;font-size:14px'">
+      </div>
+      <span class="tl-name">TasteHub</span>
+    </div>
+    <button class="cart-pill" id="cartPill" onclick="openCart()">
+      🛒 Cart <span class="cp-count" id="cartCount">0</span>
+    </button>
   </div>
 </div>
 
-<!-- ── HERO ── -->
+<!-- ━━━━━━━━ HERO ━━━━━━━━ -->
+<div class="hero">
+  <div class="hero-eyebrow">🥨 Snacks Corner</div>
+  <h1>TasteHub Homemade Snacks</h1>
+  <p class="hero-sub">Fresh &nbsp;·&nbsp; Preservative-Free &nbsp;·&nbsp; Made to Order</p>
+  <div class="hero-badges">
+    <span class="hb">🥜 Peanut Oil</span>
+    <span class="hb">🌿 No Preservatives</span>
+    <span class="hb">🎁 Gift Packs</span>
+    <span class="hb">🔥 10% OFF</span>
+  </div>
+</div>
+
+<!-- ━━━━━━━━ INFO BANNER ━━━━━━━━ -->
+<div class="info-banner">
+  <div class="info-banner-inner">
+    <div class="ib-item"><span class="ib-icon">📍</span>Available in Kannuru (560077)</div>
+    <div class="ib-item"><span class="ib-icon">📦</span>Order 1 day in advance</div>
+    <div class="ib-item"><span class="ib-icon">🚚</span>Delivery via Porter/Rapido</div>
+  </div>
+</div>
+
+<!-- ━━━━━━━━ OFFER STRIP ━━━━━━━━ -->
+<div class="offer-strip">
+  <div class="os-tag"><span>🔥</span> Flat 10% OFF — Limited Time</div>
+  <div class="os-divider"></div>
+  <div class="os-delivery"><span>🚚</span> Free delivery above ₹800</div>
+</div>
+
+<!-- ━━━━━━━━ PRODUCTS ━━━━━━━━ -->
 <div class="wrap">
-  <div class="hero">
-    <div class="logo-wrap" id="logoWrap">
-      <img src="logo.png" alt="TasteHub" onerror="this.remove();document.getElementById('logoWrap').innerHTML='<div class=logo-fallback>TH</div>'">
-    </div>
-    <h1>TasteHub Snacks Corner</h1>
-    <p class="hero-sub">Fresh homemade snacks &nbsp;·&nbsp; No preservatives &nbsp;·&nbsp; Premium quality</p>
-    <div class="hero-pills">
-      <span class="pill green">🌿 No Preservatives</span>
-      <span class="pill orange">🥜 100% Peanut Oil</span>
-      <span class="pill">🎁 Perfect for Gifting</span>
-    </div>
-  </div>
+  <div class="section">
+    <div class="sec-label">Our Collection</div>
+    <div class="sec-title">Homemade Snacks 🥨</div>
+    <p class="sec-sub">Pick your favourites — price confirmed on WhatsApp before you pay.</p>
+    <div class="products-grid" id="productsGrid"></div>
 
-  <!-- OFFER BANNER -->
-  <div class="offer-banner">
-    <div class="ob-left">
-      <div class="ob-tag"><span class="fire">🔥</span> Flat 10% OFF — Limited Time Offer!</div>
-      <div class="ob-delivery">🚚 Free delivery above ₹800</div>
-    </div>
-    <div class="ob-badge">10% OFF</div>
-  </div>
-
-  <!-- SNACKS SECTION -->
-  <div class="section-label">Our Collection</div>
-  <div class="section-title">Pick Your Snacks</div>
-  <p class="section-sub">Select items & quantities — we'll confirm price on WhatsApp.</p>
-
-  <div class="snacks-grid" id="snacksGrid"></div>
-
-  <!-- PRICE NOTE -->
-  <div class="price-note">
-    <span style="font-size:20px">💬</span>
-    <div><b>Price shared after confirmation</b>Select your items and we'll send you the final price + availability on WhatsApp before you pay.</div>
-  </div>
-
-  <!-- INFO SECTION -->
-  <div class="info-section">
-    <div style="margin:24px 0 16px">
-      <div class="section-label">Good to Know</div>
-    </div>
-    <div class="info-cards">
-      <div class="info-card">
-        <div class="info-icon">📦</div>
-        <div class="info-text"><b>Stock Updates</b>Available stock updates posted regularly on WhatsApp & Instagram.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-icon">🎁</div>
-        <div class="info-text"><b>Gifting Packs</b>Special combo packs available for festivals & occasions.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-icon">🚚</div>
-        <div class="info-text"><b>Home Delivery</b>Delivery near Kannuru, Bengaluru. Porter/Rapido for orders above ₹800.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-icon">⏰</div>
-        <div class="info-text"><b>Fresh Batches</b>Made fresh in small batches to ensure maximum taste & freshness.</div>
-      </div>
+    <div class="price-note-banner">
+      <span class="pn-icon">💬</span>
+      <div><b>Price shared on WhatsApp after order</b>Select items, tap "Order on WhatsApp" — we'll confirm price & availability before you pay. No hidden charges.</div>
     </div>
   </div>
 
-</div><!-- /wrap -->
+  <!-- NOTES -->
+  <div class="notes-grid">
+    <div class="note-card">
+      <div class="nc-icon">📦</div>
+      <div><div class="nc-title">Stock Updates</div><div class="nc-sub">Available items updated regularly on WhatsApp & Instagram.</div></div>
+    </div>
+    <div class="note-card">
+      <div class="nc-icon">🎁</div>
+      <div><div class="nc-title">Gift Combos</div><div class="nc-sub">Special combo packs for festivals & occasions on request.</div></div>
+    </div>
+    <div class="note-card">
+      <div class="nc-icon">⏰</div>
+      <div><div class="nc-title">Made Fresh</div><div class="nc-sub">Small batches made fresh daily for maximum flavour.</div></div>
+    </div>
+    <div class="note-card">
+      <div class="nc-icon">💰</div>
+      <div><div class="nc-title">Bulk Orders</div><div class="nc-sub">Special pricing for 10+ packs. Contact us on WhatsApp.</div></div>
+    </div>
+  </div>
+  <div style="padding-bottom:20px"></div>
+</div>
 
-<!-- ── HIGHLIGHTS ── -->
-<div class="highlights-section" style="margin-top:28px">
+<!-- ━━━━━━━━ HIGHLIGHTS ━━━━━━━━ -->
+<div class="highlights">
   <div class="wrap">
-    <div style="margin-bottom:16px">
-      <div class="section-label" style="color:rgba(232,97,26,.85)">Why TasteHub Snacks</div>
+    <div style="margin-bottom:18px">
+      <div class="sec-label" style="color:rgba(232,97,26,.85)">Why TasteHub</div>
+      <div class="sec-title" style="color:#fff;margin-bottom:0">Quality You Can Taste</div>
     </div>
-    <div class="highlights-grid">
-      <div class="highlight-card">
-        <div class="hi-icon">🥜</div>
-        <div class="hi-text">100% Peanut Oil<span>Healthier, richer flavor</span></div>
-      </div>
-      <div class="highlight-card">
-        <div class="hi-icon">🌿</div>
-        <div class="hi-text">No Preservatives<span>Pure & natural ingredients</span></div>
-      </div>
-      <div class="highlight-card">
-        <div class="hi-icon">✨</div>
-        <div class="hi-text">Fresh & Hygienic<span>Made in a clean kitchen</span></div>
-      </div>
-      <div class="highlight-card">
-        <div class="hi-icon">🎁</div>
-        <div class="hi-text">Snacks & Gifting<span>Perfect for any occasion</span></div>
-      </div>
+    <div class="hl-grid">
+      <div class="hl-card"><div class="hl-icon">🥜</div><div class="hl-title">100% Peanut Oil</div><div class="hl-sub">Healthier, authentic flavour</div></div>
+      <div class="hl-card"><div class="hl-icon">🌿</div><div class="hl-title">No Preservatives</div><div class="hl-sub">Pure & natural ingredients</div></div>
+      <div class="hl-card"><div class="hl-icon">✨</div><div class="hl-title">Fresh & Hygienic</div><div class="hl-sub">Clean kitchen, daily batches</div></div>
+      <div class="hl-card"><div class="hl-icon">🎁</div><div class="hl-title">Perfect for Gifting</div><div class="hl-sub">Festivals, events & more</div></div>
     </div>
   </div>
 </div>
 
 <!-- FOOTER -->
-<footer style="margin-top:0">
-  <p>© 2026 <strong>TasteHub 🍽</strong> | Fresh Homemade Food</p>
-  <p style="margin-top:6px;font-size:12px">Kannuru, Bengaluru · <a href="https://wa.me/917899111308" style="color:rgba(255,255,255,.7);font-weight:600">💬 Contact Us</a></p>
+<footer>
+  <p>© 2026 <strong>TasteHub 🍽</strong> | Fresh Homemade Food · Kannuru, Bengaluru</p>
+  <p style="margin-top:6px"><a href="https://wa.me/917899111308" target="_blank">💬 +91 78991 11308</a>&nbsp;·&nbsp;<a href="index.html">🏠 Main Menu</a></p>
 </footer>
 
-<!-- ── FIXED ORDER BAR ── -->
-<div class="order-bar">
-  <div class="order-bar-inner">
-    <div class="order-summary">
-      <div class="os-count" id="orderCount">No items selected</div>
-      <div class="os-sub">Select snacks above to order</div>
+<!-- ━━━━━━━━ FIXED BAR ━━━━━━━━ -->
+<div class="fixed-bar">
+  <div class="fb-inner">
+    <div class="fb-text">
+      <div class="fb-count" id="fbCount">No items selected</div>
+      <div class="fb-sub" id="fbSub">Add snacks to place order</div>
     </div>
-    <button class="order-now-btn" id="orderBtn" onclick="placeOrder()" disabled>
-      📲 Order on WhatsApp
-    </button>
+    <button class="fb-btn" id="fbBtn" onclick="openCart()" disabled>View Cart</button>
+  </div>
+</div>
+
+<!-- ━━━━━━━━ CART DRAWER ━━━━━━━━ -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="if(event.target===this)closeCart()">
+  <div class="drawer">
+    <div class="dh">
+      <h3>🛒 Your Snacks Cart</h3>
+      <button class="dh-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="db" id="drawerBody"></div>
   </div>
 </div>
 
@@ -334,101 +493,237 @@ footer strong{color:rgba(255,255,255,.8)}
 <script>
 const WA = "917899111308";
 
-const SNACKS = [
-  { id:"peanuts",   name:"Masala Peanuts",       tag:"Bestseller", tagClass:"tag-bestseller", emoji:"🥜", desc:"Crunchy peanuts with bold masala" },
-  { id:"longsev",   name:"Long Sev",              tag:"Crunchy",    tagClass:"tag-crunchy",    emoji:"🌾", desc:"Classic crispy thin sev" },
-  { id:"ratlami",   name:"Ratlami Sev",           tag:"Spicy",      tagClass:"tag-spicy",      emoji:"🌶", desc:"Authentic Ratlami style, bold spice" },
-  { id:"lahsun",    name:"Lahsun Sev",            tag:"Tangy",      tagClass:"tag-tangy",      emoji:"🧄", desc:"Garlic-infused flavourful sev" },
-  { id:"ujjaini",   name:"Ujjaini Sev",           tag:"Crunchy",    tagClass:"tag-crunchy",    emoji:"⭐", desc:"Traditional Ujjaini recipe" },
-  { id:"sweetmix",  name:"Sweet & Spicy Mixture", tag:"Bestseller", tagClass:"tag-bestseller", emoji:"🍬", desc:"Perfect balance of sweet & heat" },
-  { id:"charkha",   name:"Charkha Mixture",       tag:"Crunchy",    tagClass:"tag-crunchy",    emoji:"🎡", desc:"Signature TasteHub house blend" },
-  { id:"boondi",    name:"Masala Boondi",         tag:"Spicy",      tagClass:"tag-spicy",      emoji:"🔮", desc:"Crispy golden masala boondi" },
-  { id:"sattu",     name:"Sattu",                 tag:"Protein",    tagClass:"tag-protein",    emoji:"💪", desc:"Nutritious roasted gram flour" },
+const PRODUCTS = [
+  {
+    id:"peanuts", name:"Masala Peanuts",
+    desc:"Crunchy roasted peanuts tossed in bold house masala",
+    emoji:"🥜", badge:"Bestseller", badgeClass:"badge-best",
+    tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-crispy ✔ Crunchy"]
+  },
+  {
+    id:"longsev", name:"Long Sev",
+    desc:"Classic crispy thin sev made fresh with besan",
+    emoji:"🌾", badge:"Popular", badgeClass:"badge-popular",
+    tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-crispy ✔ Crispy"]
+  },
+  {
+    id:"ratlami", name:"Ratlami Sev",
+    desc:"Authentic Ratlami-style sev with bold spice blend",
+    emoji:"🌶", badge:"Spicy", badgeClass:"badge-spicy",
+    tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-crispy ✔ Spicy Hot"]
+  },
+  {
+    id:"lahsun", name:"Lahsun Sev",
+    desc:"Flavour-rich garlic sev — a TasteHub favourite",
+    emoji:"🧄", badge:"New", badgeClass:"badge-new",
+    tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-crispy ✔ Garlicky"]
+  },
+  {
+    id:"ujjaini", name:"Ujjaini Sev",
+    desc:"Traditional Ujjaini recipe, thick & perfectly seasoned",
+    emoji:"⭐", badge:"Popular", badgeClass:"badge-popular",
+    tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-fresh ✔ Traditional"]
+  },
+  {
+    id:"sweetmix", name:"Sweet & Spicy Mixture",
+    desc:"Perfect balance of sweet and heat — great for snacking",
+    emoji:"🍬", badge:"Bestseller", badgeClass:"badge-best",
+    tags:["tag-veg ✔ Veg","tag-fresh ✔ Sweet & Hot","tag-gift ✔ Gift Ready"]
+  },
+  {
+    id:"charkha", name:"Charkha Mixture",
+    desc:"TasteHub's signature crunchy house blend mixture",
+    emoji:"🎡", badge:"New", badgeClass:"badge-new",
+    tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-crispy ✔ Crunchy"]
+  },
+  {
+    id:"boondi", name:"Masala Boondi",
+    desc:"Golden crispy boondi with tangy masala seasoning",
+    emoji:"🔮", badge:"Spicy", badgeClass:"badge-spicy",
+    tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-crispy ✔ Crispy"]
+  },
+  {
+    id:"sattu", name:"Sattu",
+    desc:"Roasted gram flour — nutritious, protein-rich, versatile",
+    emoji:"💪", badge:"Healthy", badgeClass:"badge-new",
+    tags:["tag-veg ✔ Veg","tag-protein ✔ High Protein","tag-fresh ✔ Nutritious"]
+  },
 ];
+
+const cart = new Map(); // id → qty
 
 // ── RENDER CARDS ──
 function renderCards() {
-  const grid = document.getElementById("snacksGrid");
-  grid.innerHTML = SNACKS.map(s => `
-    <div class="snack-card" id="card-${s.id}">
-      <div class="sc-added" id="badge-${s.id}">✓</div>
-      <div class="sc-emoji">${s.emoji}</div>
-      <div class="sc-top">
-        <div class="sc-name">${s.name}</div>
-        <div class="sc-tag ${s.tagClass}">${s.tag}</div>
+  const grid = document.getElementById("productsGrid");
+  grid.innerHTML = PRODUCTS.map(p => {
+    const tagHTML = p.tags.map(t => {
+      const [cls, ...label] = t.split(" ");
+      return `<span class="pc-tag ${cls}">${label.join(" ")}</span>`;
+    }).join("");
+    return `
+    <div class="pcard" id="pcard-${p.id}">
+      <div class="pc-img-wrap">
+        <img src="snacks/${p.id}.jpg" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pc-emoji-fallback" style="display:none">${p.emoji}</div>
+        <div class="pc-badge ${p.badgeClass}">${p.badge}</div>
       </div>
-      <div class="sc-noprice">Price on confirmation</div>
-      <div class="sc-qty-row">
-        <span class="sc-qty-label">Qty:</span>
-        <select class="qty-select" id="qty-${s.id}" onchange="onQtyChange('${s.id}')">
-          <option value="0">— Select —</option>
-          <option value="1">1 pack</option>
-          <option value="2">2 packs</option>
-          <option value="3">3 packs</option>
-          <option value="5">5 packs</option>
-          <option value="10">10 packs</option>
-        </select>
+      <div class="pc-body">
+        <div class="pc-name">${p.name}</div>
+        <div class="pc-desc">${p.desc}</div>
+        <div class="pc-tags">${tagHTML}</div>
+        <div class="pc-noprice">💬 Price on WhatsApp</div>
       </div>
-    </div>
-  `).join("");
+      <div class="pc-footer" id="pcf-${p.id}">
+        <button class="pc-add-btn" onclick="addToCart('${p.id}')">+ Add to Cart</button>
+      </div>
+    </div>`;
+  }).join("");
 }
 
-// ── QTY CHANGE ──
-function onQtyChange(id) {
-  const val = document.getElementById(`qty-${id}`).value;
-  const card = document.getElementById(`card-${id}`);
-  if (val !== "0") {
-    card.classList.add("selected");
+// ── CART OPS ──
+function addToCart(id) {
+  cart.set(id, (cart.get(id) || 0) + 1);
+  updateUI(id);
+  updateBar();
+  const p = PRODUCTS.find(x => x.id === id);
+  showToast(`✅ ${p.name} added`);
+}
+function incCart(id) { cart.set(id, (cart.get(id) || 0) + 1); updateUI(id); updateBar(); }
+function decCart(id) {
+  const v = (cart.get(id) || 0) - 1;
+  if (v <= 0) { cart.delete(id); updateUI(id); }
+  else { cart.set(id, v); updateUI(id); }
+  updateBar();
+}
+
+function updateUI(id) {
+  const qty = cart.get(id) || 0;
+  const footer = document.getElementById(`pcf-${id}`);
+  const card = document.getElementById(`pcard-${id}`);
+  if (!footer) return;
+  if (qty > 0) {
+    card.classList.add("in-cart");
+    footer.innerHTML = `
+      <div class="pc-qty-ctrl">
+        <button class="pq-btn" onclick="decCart('${id}')">−</button>
+        <div class="pq-num">${qty}</div>
+        <button class="pq-btn" onclick="incCart('${id}')">+</button>
+      </div>`;
   } else {
-    card.classList.remove("selected");
+    card.classList.remove("in-cart");
+    footer.innerHTML = `<button class="pc-add-btn" onclick="addToCart('${id}')">+ Add to Cart</button>`;
   }
-  updateOrderBar();
 }
 
-// ── UPDATE ORDER BAR ──
-function updateOrderBar() {
-  const selected = getSelected();
-  const btn = document.getElementById("orderBtn");
-  const countEl = document.getElementById("orderCount");
+function cartTotals() {
+  let items = 0, packs = 0;
+  cart.forEach(v => { items++; packs += v; });
+  return { items, packs };
+}
 
-  if (selected.length === 0) {
-    countEl.textContent = "No items selected";
-    document.querySelector(".os-sub").textContent = "Select snacks above to order";
+function updateBar() {
+  const { items, packs } = cartTotals();
+  const btn = document.getElementById("fbBtn");
+  const count = document.getElementById("fbCount");
+  const sub = document.getElementById("fbSub");
+  const pill = document.getElementById("cartCount");
+  if (pill) pill.textContent = packs;
+
+  if (items === 0) {
+    count.textContent = "No items selected";
+    sub.textContent = "Add snacks to place order";
     btn.disabled = true;
+    btn.textContent = "View Cart";
   } else {
-    const totalPacks = selected.reduce((sum, i) => sum + i.qty, 0);
-    countEl.textContent = `${selected.length} item${selected.length > 1 ? "s" : ""} · ${totalPacks} pack${totalPacks > 1 ? "s" : ""}`;
-    document.querySelector(".os-sub").textContent = "Price will be confirmed on WhatsApp";
+    count.textContent = `${items} item${items > 1 ? "s" : ""} · ${packs} pack${packs > 1 ? "s" : ""}`;
+    sub.textContent = "Price confirmed on WhatsApp";
     btn.disabled = false;
+    btn.textContent = `View Cart (${packs})`;
   }
 }
 
-// ── GET SELECTED ──
-function getSelected() {
-  return SNACKS.map(s => {
-    const qty = parseInt(document.getElementById(`qty-${s.id}`)?.value || "0");
-    return qty > 0 ? { name: s.name, qty } : null;
-  }).filter(Boolean);
+// ── CART DRAWER ──
+function openCart() {
+  document.getElementById("drawerOverlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+  renderDrawer();
+}
+function closeCart() {
+  document.getElementById("drawerOverlay").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function renderDrawer() {
+  const body = document.getElementById("drawerBody");
+  const { items, packs } = cartTotals();
+
+  if (items === 0) {
+    body.innerHTML = `
+      <div class="cart-empty">
+        <div class="ce-icon">🛒</div>
+        <p style="font-weight:700;font-size:14px;color:var(--brown)">Cart is empty</p>
+        <p style="font-size:13px;color:var(--muted);margin-top:4px">Add some snacks to get started!</p>
+      </div>`;
+    return;
+  }
+
+  const rows = Array.from(cart.entries()).map(([id, qty]) => {
+    const p = PRODUCTS.find(x => x.id === id);
+    return `
+      <div class="cart-row">
+        <div>
+          <div class="cr-name">${p.emoji} ${p.name}</div>
+          <div class="cr-qty">${qty} pack${qty > 1 ? "s" : ""} · Price on confirmation</div>
+        </div>
+        <div class="cr-ctrl">
+          <button class="cr-btn" onclick="decCart('${id}');renderDrawer();updateBar()">−</button>
+          <div class="cr-num">${qty}</div>
+          <button class="cr-btn" onclick="incCart('${id}');renderDrawer();updateBar()">+</button>
+        </div>
+      </div>`;
+  }).join("");
+
+  body.innerHTML = `
+    <div class="cart-list">${rows}</div>
+    <div style="font-size:11.5px;color:var(--muted);padding:0 2px;margin-bottom:12px;line-height:1.5">
+      💬 We'll confirm the final price on WhatsApp before any payment.
+    </div>
+    <div class="cart-footer">
+      <div style="font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">Your Details</div>
+      <div class="of-row">
+        <div class="of-group"><label>Name *</label><input id="cName" placeholder="Your name"/></div>
+        <div class="of-group"><label>Phone *</label><input id="cPhone" placeholder="10-digit number" inputmode="numeric"/></div>
+      </div>
+      <div class="of-group" style="margin-top:8px"><label>Address (optional)</label><input id="cAddr" placeholder="Flat / Block / Society"/></div>
+      <div class="of-group" style="margin-top:8px"><label>Notes (optional)</label><input id="cNotes" placeholder="Gift packing, bulk requirement..."/></div>
+      <button class="wa-order-btn" style="margin-top:12px" onclick="placeOrder()">
+        📲 Order on WhatsApp
+      </button>
+    </div>`;
 }
 
 // ── PLACE ORDER ──
 function placeOrder() {
-  const selected = getSelected();
-  if (selected.length === 0) { showToast("⚠️ Please select at least one item"); return; }
+  const name = document.getElementById("cName")?.value.trim();
+  const phone = document.getElementById("cPhone")?.value.trim();
+  const addr = document.getElementById("cAddr")?.value.trim();
+  const notes = document.getElementById("cNotes")?.value.trim();
+  if (!name || !phone) { showToast("⚠️ Please enter Name & Phone"); return; }
 
-  const lines = selected.map(i => `• ${i.name} × ${i.qty} pack${i.qty > 1 ? "s" : ""}`).join("\n");
-  const totalPacks = selected.reduce((sum, i) => sum + i.qty, 0);
+  const { packs } = cartTotals();
+  const lines = Array.from(cart.entries())
+    .map(([id, qty]) => {
+      const p = PRODUCTS.find(x => x.id === id);
+      return `• ${p.name} × ${qty} pack${qty > 1 ? "s" : ""}`;
+    }).join("\n");
 
-  const msg =
-`Hi TasteHub 🥜
-
-I want to order the following snacks:
-
-${lines}
-
-Total: ${totalPacks} pack${totalPacks > 1 ? "s" : ""}
-
-Please share the price and confirm availability. Thank you! 🙏`;
+  let msg = `Hi TasteHub 🥨\n\n*Snacks Order Request*\n`;
+  msg += `Name: ${name}\nPhone: ${phone}`;
+  if (addr) msg += `\nAddress: ${addr}`;
+  msg += `\n\n*Items:*\n${lines}\n`;
+  msg += `\nTotal packs: ${packs}`;
+  if (notes) msg += `\nNotes: ${notes}`;
+  msg += `\n\nPlease share the price and confirm availability. Thank you! 🙏`;
 
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
   showToast("✅ Opening WhatsApp...");
@@ -438,11 +733,12 @@ Please share the price and confirm availability. Thank you! 🙏`;
 function showToast(msg) {
   const t = document.getElementById("toast");
   t.textContent = msg; t.style.display = "block";
-  clearTimeout(t._t); t._t = setTimeout(() => t.style.display = "none", 2400);
+  clearTimeout(t._t); t._t = setTimeout(() => t.style.display = "none", 2200);
 }
 
 // ── INIT ──
 renderCards();
+updateBar();
 </script>
 </body>
 </html>
