@@ -317,6 +317,19 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
   box-shadow:0 8px 24px rgba(0,0,0,.2);white-space:nowrap;
 }
 
+.menu-card--off{opacity:.55;background:rgba(255,255,255,.6)}
+.menu-card--off .mc-name{color:var(--muted)}
+.mc-price--off{color:var(--muted)!important}
+.avail-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;margin-top:6px}
+.avail-on{background:rgba(27,140,90,.09);border:1px solid rgba(27,140,90,.18);color:#136843}
+.avail-off{background:rgba(120,100,80,.07);border:1px solid rgba(120,100,80,.14);color:var(--muted)}
+.closed-tag{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+.off-tag{font-size:18px;color:rgba(120,100,80,.3);font-weight:300}
+
+/* ── FLOATING WA ── */
+.wa-fab{position:fixed;bottom:22px;right:20px;z-index:300;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#25D366,#1db954);box-shadow:0 6px 24px rgba(37,211,102,.45);display:flex;align-items:center;justify-content:center;font-size:26px;transition:all .2s;text-decoration:none}
+.wa-fab:hover{transform:scale(1.08);box-shadow:0 8px 30px rgba(37,211,102,.55)}
+
 /* ── RESPONSIVE ── */
 @media(max-width:640px){
   .header-text .subtitle{display:none}
@@ -455,7 +468,10 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
   </div>
 </div>
 
-<!-- ── TOAST ── -->
+<!-- FLOATING WA -->
+<a class="wa-fab" href="https://wa.me/919632035612" target="_blank" title="Chat on WhatsApp">💬</a>
+
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
@@ -464,46 +480,45 @@ const WA = "919632035612";
 const UPI_ID = "email.vikashpathak-1@okicici";
 
 // ── MENU DATA ──
+// Set available:true for today's item, false for the rest.
+// Change these daily to update what's being served.
 const MENU = {
   breakfast: {
     label: "🌅 Breakfast",
     cutoff: 7,
     items: [
-      { name: "Veg Poha", price: 90 },
-      { name: "Veg Upma", price: 90 },
-      { name: "Aloo Paratha (2 pcs) with Curd", price: 90 },
-      { name: "Idli (4 pcs) with Sambhar & Chutney", price: 90 },
-      { name: "Palak chilla  (2 pieces) with Aloo curry", price: 110 },
-      { name: "Aloo Paneer Sandwich", price: 120 },
-      { name: "Pav Bhaji", price: 120 },
-      { name: "Masala Dosa", price: 130 },
-      { name: "Puri (4 pcs) with Aloo Sabji", price: 130 },
-      { name: "Dhuska (4 pieces) with aloo curry ", price: 140  },
-      { name: "Extra dhuska", price: 25 },
-      { name: "Extra chilla ", price: 35 }
+      { name: "Veg Poha",                              price: 90,  available: false  },
+      { name: "Veg Upma",                              price: 90,  available: false },
+      { name: "Aloo Paratha (2 pcs) with Curd",        price: 90,  available: false },
+      { name: "Idli (4 pcs) with Sambhar & Chutney",   price: 90,  available: false },
+      { name: "Palak Chilla (3 pcs)",                  price: 90,  available: false },
+      { name: "Aloo Paneer Sandwich",                  price: 120, available: false },
+      { name: "Pav Bhaji",                             price: 120, available: false },
+      { name: "Masala Dosa",                           price: 130, available: false },
+      { name: "Puri (4 pcs) with Aloo Sabji",          price: 130, available: false },
     ]
   },
   lunch: {
     label: "☀️ Lunch",
     cutoff: 12,
     items: [
-      { name: "Veg paneer fried rice, papad with butter milk (home made) ", price: 160 },
-      { name: "Chapati (per piece)", price: 15 }
+      { name: "Plain Rice + Dal Tadka + Aloo Palak + Salad", price: 160, available: false  },
+      { name: "Chapati (per piece)",                         price: 15,  available: false  },
     ]
   },
   snacks: {
     label: "🍿 Snacks",
     cutoff: 16,
     items: [
-      { name: "Vada pav", price: 40 }
+      { name: "Onion Kachori (2 pcs)", price: 70, available: false },
     ]
   },
   dinner: {
     label: "🌙 Dinner",
     cutoff: 19,
     items: [
-      { name: "Plain paratha/chapati (4pieces) with brown chana ghugni", price: 140 },
-      { name: "Extra paratha /chapati", price: 15 }
+      { name: "4 Chapati/Paratha + Chhole", price: 140, available: false  },
+      { name: "Extra Chapati",              price: 15,  available: false  },
     ]
   }
 };
@@ -564,13 +579,13 @@ function switchTab(key) {
 // ── MENU ──
 function renderMenu() {
   const section = MENU[activeTab];
-  const open = isOpen(section.cutoff);
+  const windowOpen = isOpen(section.cutoff);
   const banner = document.getElementById("statusBanner");
   const statusText = document.getElementById("statusText");
 
-  if (!open) {
+  if (!windowOpen) {
     banner.classList.add("show");
-    statusText.textContent = `❌ ${section.label.replace(/[^\w ]/g, "").trim()} ordering is closed. Orders open before ${cutoffLabel(section.cutoff)}.`;
+    statusText.textContent = `Ordering is closed. ${section.label.replace(/[^\w\s]/g, "").trim()} orders open before ${cutoffLabel(section.cutoff)}.`;
   } else {
     banner.classList.remove("show");
   }
@@ -579,25 +594,34 @@ function renderMenu() {
   grid.innerHTML = section.items.map((item, idx) => {
     const id = `${activeTab}:${idx}`;
     const qty = cart.has(id) ? cart.get(id).qty : 0;
+    const isAvailable = item.available === true;
+    const canOrder = windowOpen && isAvailable;
+
     return `
-      <div class="menu-card">
+      <div class="menu-card ${!isAvailable ? 'menu-card--off' : ''}">
         <div class="mc-left">
           <div class="mc-top">
             <span class="veg-dot"></span>
             <div class="mc-name">${item.name}</div>
           </div>
-          <div class="mc-price">₹${item.price}</div>
+          <div class="mc-price ${!isAvailable ? 'mc-price--off' : ''}">₹${item.price}</div>
+          ${isAvailable
+            ? `<span class="avail-badge avail-on">✅ Today's item</span>`
+            : `<span class="avail-badge avail-off">Not available today</span>`
+          }
         </div>
         <div class="mc-right">
-          ${open
+          ${canOrder
             ? (qty > 0
               ? `<div class="qty-ctrl">
-                  <button class="q-btn" onclick="changeQty('${id}','${item.name}',${item.price},-1)">−</button>
+                  <button class="q-btn" onclick="changeQty('${id}','${item.name.replace(/'/g,"\\'")}',${item.price},-1)">−</button>
                   <div class="q-num">${qty}</div>
-                  <button class="q-btn" onclick="changeQty('${id}','${item.name}',${item.price},1)">+</button>
+                  <button class="q-btn" onclick="changeQty('${id}','${item.name.replace(/'/g,"\\'")}',${item.price},1)">+</button>
                 </div>`
-              : `<button class="add-btn" onclick="changeQty('${id}','${item.name}',${item.price},1)">ADD</button>`)
-            : `<span style="font-size:12px;color:var(--muted);font-weight:600">❌ Closed</span>`
+              : `<button class="add-btn" onclick="changeQty('${id}','${item.name.replace(/'/g,"\\'")}',${item.price},1)">ADD</button>`)
+            : isAvailable
+              ? `<span class="closed-tag">⏰ Closed</span>`
+              : `<span class="off-tag">—</span>`
           }
         </div>
       </div>`;
