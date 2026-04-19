@@ -262,34 +262,27 @@ header{
 }
 .sub-btn:hover{background:var(--orange);border-color:var(--orange);box-shadow:0 4px 14px rgba(232,97,26,.3)}
 
-/* ── PAYMENT ── */
-.payment-section{background:#fff;padding:40px 0}
-.payment-card{
-  background:var(--cream);border:1px solid var(--border);border-radius:var(--rLg);
-  padding:28px 24px;text-align:center;max-width:400px;margin:0 auto;
-  box-shadow:var(--shadow);
+/* ── GOOGLE REVIEW STRIP ── */
+.review-strip{
+  background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:14px 20px;
 }
-.qr-wrap{
-  width:180px;height:180px;background:#fff;border-radius:16px;
-  border:1px solid var(--border);margin:16px auto;padding:12px;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 14px rgba(44,24,16,.08);
+.review-strip-inner{
+  max-width:var(--max);margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
 }
-.qr-wrap img{width:100%;height:100%;object-fit:contain;border-radius:8px}
-.qr-placeholder{font-size:12px;color:var(--muted);text-align:center;line-height:1.5}
-.upi-id{
-  font-family:monospace;font-size:13px;font-weight:700;
-  background:rgba(232,97,26,.07);border:1px solid rgba(232,97,26,.16);
-  color:var(--orange);padding:8px 16px;border-radius:99px;
-  display:inline-block;margin-bottom:16px;
+.review-left{display:flex;align-items:center;gap:10px}
+.review-stars{font-size:18px;letter-spacing:1px;color:#FBBC04}
+.review-text{font-size:13.5px;font-weight:600;color:var(--brown)}
+.review-text span{color:var(--muted);font-weight:400;font-size:12px;display:block;margin-top:1px}
+.review-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 18px;border-radius:99px;border:1.5px solid #FBBC04;
+  background:rgba(251,188,4,.08);color:#7a5c00;
+  font-size:13px;font-weight:700;font-family:var(--font);
+  text-decoration:none;transition:all .18s;white-space:nowrap;
 }
-.paid-btn{
-  width:100%;padding:13px;border-radius:14px;border:none;
-  background:linear-gradient(135deg,#25D366,#1ead52);
-  color:#fff;font-weight:700;font-size:14px;font-family:var(--font);
-  box-shadow:0 6px 18px rgba(37,211,102,.28);transition:all .2s;
-}
-.paid-btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(37,211,102,.36)}
+.review-btn:hover{background:#FBBC04;color:#2C1810;transform:translateY(-1px)}
 
 /* ── PARTY SECTION ── */
 .party-card{
@@ -325,6 +318,59 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
 .avail-off{background:rgba(120,100,80,.07);border:1px solid rgba(120,100,80,.14);color:var(--muted)}
 .closed-tag{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
 .off-tag{font-size:18px;color:rgba(120,100,80,.3);font-weight:300}
+
+/* ── CLOSED BANNER ── */
+.closed-banner{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:18px 20px;border-radius:var(--rLg);
+  background:linear-gradient(135deg,#2C1810,#4a2316);
+  border:1px solid rgba(232,97,26,.25);
+  margin-bottom:24px;
+}
+.cb-icon{font-size:32px;line-height:1;flex:0 0 auto;margin-top:2px}
+.cb-title{font-family:var(--display);font-size:18px;font-weight:700;color:#fff;margin-bottom:4px}
+.cb-sub{font-size:13px;color:rgba(255,255,255,.6);line-height:1.6}
+.cb-wa{
+  display:inline-flex;align-items:center;gap:6px;margin-top:12px;
+  padding:9px 18px;border-radius:99px;border:none;
+  background:#25D366;color:#fff;font-size:13px;font-weight:700;
+  font-family:var(--font);cursor:pointer;text-decoration:none;
+  box-shadow:0 4px 14px rgba(37,211,102,.28);transition:all .18s;
+}
+.cb-wa:hover{background:#1db954;transform:translateY(-1px)}
+
+/* ── PAYMENT STEP (inside cart modal after order) ── */
+.pay-step{padding:4px 0}
+.pay-step-title{font-family:var(--display);font-size:17px;font-weight:700;color:var(--brown);margin-bottom:4px}
+.pay-step-sub{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5}
+.pay-qr-wrap{
+  width:160px;height:160px;background:#fff;border-radius:14px;
+  border:1px solid var(--border);padding:10px;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;box-shadow:0 4px 14px rgba(44,24,16,.08);
+}
+.pay-qr-wrap img{width:100%;height:100%;object-fit:contain;border-radius:8px}
+.pay-upi{
+  font-family:monospace;font-size:13px;font-weight:700;
+  background:rgba(232,97,26,.07);border:1px solid rgba(232,97,26,.16);
+  color:var(--orange);padding:7px 16px;border-radius:99px;
+  display:inline-block;margin-bottom:16px;cursor:pointer;
+  transition:background .15s;
+}
+.pay-upi:hover{background:rgba(232,97,26,.12)}
+.pay-actions{display:grid;gap:10px}
+.pay-done-btn{
+  width:100%;padding:13px;border-radius:14px;border:none;
+  background:linear-gradient(135deg,#25D366,#1db954);
+  color:#fff;font-weight:700;font-size:14px;font-family:var(--font);
+  box-shadow:0 6px 18px rgba(37,211,102,.24);transition:all .2s;
+}
+.pay-done-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(37,211,102,.34)}
+.pay-cod-note{
+  text-align:center;padding:12px;border-radius:var(--r);
+  background:rgba(44,24,16,.04);border:1px solid var(--border);
+  font-size:13px;color:var(--muted);line-height:1.5;
+}
 
 /* ── FLOATING WA ── */
 .wa-fab{position:fixed;bottom:22px;right:20px;z-index:300;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#25D366,#1db954);box-shadow:0 6px 24px rgba(37,211,102,.45);display:flex;align-items:center;justify-content:center;font-size:26px;transition:all .2s;text-decoration:none}
@@ -383,6 +429,16 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
     <div class="section-title">What would you like?</div>
     <p class="section-sub">100% vegetarian · Made fresh daily · Delivered nearby</p>
 
+    <!-- CLOSED TODAY BANNER — shown when SHOP_CLOSED = true -->
+    <div class="closed-banner" id="closedBanner" style="display:none">
+      <div class="cb-icon">🔒</div>
+      <div>
+        <div class="cb-title">We're closed today</div>
+        <div class="cb-sub">No orders are being taken today. We'll be back soon with fresh food! You can still browse our full menu below.<br>For urgent enquiries, reach us on WhatsApp.</div>
+        <a class="cb-wa" href="https://wa.me/919632035612" target="_blank">💬 Contact on WhatsApp</a>
+      </div>
+    </div>
+
     <div class="tabs-wrap" id="tabs"></div>
 
     <!-- ORDER TIMINGS under tabs -->
@@ -406,7 +462,7 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
     <div class="party-card">
       <div class="party-text">
         <h3>Planning a Party? 🎊</h3>
-        <p>Bulk orders, event catering, and monthly subscriptions available. We serve 10 to 50 guests with fresh homemade food.</p>
+        <p>Bulk orders, event catering, and monthly subscriptions available. We serve 10 to 500+ guests with fresh homemade food.</p>
         <div style="margin-top:16px">
           <a class="btn btn-primary" href="party.html" style="display:inline-flex">View Party & Plans →</a>
         </div>
@@ -427,28 +483,29 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
   </div>
 </section>
 
-<!-- ── PAYMENT ── -->
-<section class="payment-section" id="payment">
-  <div class="wrap">
-    <div style="text-align:center;margin-bottom:6px"><div class="section-label" style="display:inline-block">Payment</div></div>
-    <div class="section-title" style="text-align:center;margin-bottom:4px">Pay via UPI</div>
-    <p class="section-sub" style="text-align:center">Scan the QR or use the UPI ID below</p>
-    <div class="payment-card">
-      <div class="qr-wrap">
-        <img src="upi-qr.png" alt="UPI QR" onerror="this.parentElement.innerHTML='<div class=qr-placeholder>Upload <b>upi-qr.png</b><br>to show QR here</div>'">
+<!-- ── GOOGLE REVIEW STRIP ── -->
+<div class="review-strip">
+  <div class="review-strip-inner">
+    <div class="review-left">
+      <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      <div class="review-text">
+        Loved our food?
+        <span>Your review helps us reach more families 🙏</span>
       </div>
-      <div class="upi-id" id="upiDisplay">email.vikashpathak-1@okicici</div>
-      <br/>
-      <button class="paid-btn" onclick="paidOnWhatsApp()">✅ I Have Paid — Notify on WhatsApp</button>
-      <p style="font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.5">After payment, tap above to send confirmation on WhatsApp</p>
     </div>
+    <a class="review-btn" href="https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review" target="_blank" id="googleReviewBtn">
+      ⭐ Rate us on Google
+    </a>
   </div>
-</section>
+</div>
 
 <!-- ── FOOTER ── -->
 <footer>
   <p>© 2026 <strong style="color:rgba(255,255,255,.8)">TasteHub 🍽</strong> · Kannuru, Bengaluru</p>
-  <p style="margin-top:6px">Made with ❤️ for food lovers · <a href="https://wa.me/919632035612" target="_blank">Contact Us</a></p>
+  <p style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap">
+    <a href="https://wa.me/919632035612" target="_blank">💬 Contact Us</a>
+    <a href="https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review" target="_blank" id="footerReviewLink">⭐ Google Review</a>
+  </p>
 </footer>
 
 <!-- ── FLOATING CART ── -->
@@ -479,6 +536,9 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
 const WA = "919632035612";
 const UPI_ID = "email.vikashpathak-1@okicici";
 
+// ── SET THIS TO true ON HOLIDAYS / CLOSED DAYS ──
+const SHOP_CLOSED = true;
+
 // ── MENU DATA ──
 // Set available:true for today's item, false for the rest.
 // Change these daily to update what's being served.
@@ -487,7 +547,7 @@ const MENU = {
     label: "🌅 Breakfast",
     cutoff: 7,
     items: [
-      { name: "Veg Poha",                              price: 90,  available: false  },
+      { name: "Veg Poha",                              price: 90,  available: true  },
       { name: "Veg Upma",                              price: 90,  available: false },
       { name: "Aloo Paratha (2 pcs) with Curd",        price: 90,  available: false },
       { name: "Idli (4 pcs) with Sambhar & Chutney",   price: 90,  available: false },
@@ -502,23 +562,23 @@ const MENU = {
     label: "☀️ Lunch",
     cutoff: 12,
     items: [
-      { name: "Plain Rice + Dal Tadka + Aloo Palak + Salad", price: 160, available: false  },
-      { name: "Chapati (per piece)",                         price: 15,  available: false  },
+      { name: "Plain Rice + Dal Tadka + Aloo Palak + Salad", price: 160, available: true  },
+      { name: "Chapati (per piece)",                         price: 15,  available: true  },
     ]
   },
   snacks: {
     label: "🍿 Snacks",
     cutoff: 16,
     items: [
-      { name: "Onion Kachori (2 pcs)", price: 70, available: false },
+      { name: "Onion Kachori (2 pcs)", price: 70, available: true },
     ]
   },
   dinner: {
     label: "🌙 Dinner",
     cutoff: 19,
     items: [
-      { name: "4 Chapati/Paratha + Chhole", price: 140, available: false  },
-      { name: "Extra Chapati",              price: 15,  available: false  },
+      { name: "4 Chapati/Paratha + Chhole", price: 140, available: true  },
+      { name: "Extra Chapati",              price: 15,  available: true  },
     ]
   }
 };
@@ -582,8 +642,12 @@ function renderMenu() {
   const windowOpen = isOpen(section.cutoff);
   const banner = document.getElementById("statusBanner");
   const statusText = document.getElementById("statusText");
+  const closedBanner = document.getElementById("closedBanner");
 
-  if (!windowOpen) {
+  // show/hide shop-closed banner
+  closedBanner.style.display = SHOP_CLOSED ? "flex" : "none";
+
+  if (!SHOP_CLOSED && !windowOpen) {
     banner.classList.add("show");
     statusText.textContent = `Ordering is closed. ${section.label.replace(/[^\w\s]/g, "").trim()} orders open before ${cutoffLabel(section.cutoff)}.`;
   } else {
@@ -595,7 +659,8 @@ function renderMenu() {
     const id = `${activeTab}:${idx}`;
     const qty = cart.has(id) ? cart.get(id).qty : 0;
     const isAvailable = item.available === true;
-    const canOrder = windowOpen && isAvailable;
+    // can only order if shop is open, time window is open, and item is available today
+    const canOrder = !SHOP_CLOSED && windowOpen && isAvailable;
 
     return `
       <div class="menu-card ${!isAvailable ? 'menu-card--off' : ''}">
@@ -620,7 +685,7 @@ function renderMenu() {
                 </div>`
               : `<button class="add-btn" onclick="changeQty('${id}','${item.name.replace(/'/g,"\\'")}',${item.price},1)">ADD</button>`)
             : isAvailable
-              ? `<span class="closed-tag">⏰ Closed</span>`
+              ? `<span class="closed-tag">${SHOP_CLOSED ? '🔒 Closed' : '⏰ Closed'}</span>`
               : `<span class="off-tag">—</span>`
           }
         </div>
@@ -773,6 +838,52 @@ function placeOrder() {
   msg += `\n\nPlease confirm my order. Thank you! 🙏`;
 
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
+
+  // Show payment step inside the modal
+  showPaymentStep(pay, total, orderId);
+}
+
+function showPaymentStep(payMethod, total, orderId) {
+  const body = document.getElementById("cartModalBody");
+  const isUPI = payMethod === "UPI";
+
+  body.innerHTML = `
+    <div class="pay-step">
+      <div style="text-align:center;margin-bottom:18px">
+        <div style="font-size:40px;margin-bottom:8px">🎉</div>
+        <div class="pay-step-title">Order sent on WhatsApp!</div>
+        <div class="pay-step-sub">Order ID: <b>${orderId}</b> · Total: <b>₹${total}</b><br>
+        ${isUPI ? "Now complete your payment below." : "Pay cash at delivery. You're all set!"}</div>
+      </div>
+
+      ${isUPI ? `
+        <div style="text-align:center">
+          <div class="pay-qr-wrap">
+            <img src="upi-qr.png" alt="UPI QR" onerror="this.parentElement.innerHTML='<div style=font-size:12px;color:#7A5C4A;text-align:center;line-height:1.5>Upload<br><b>upi-qr.png</b></div>'">
+          </div>
+          <div class="pay-upi" onclick="copyUPI()">📋 ${UPI_ID}</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Tap to copy · Scan QR to pay ₹${total}</div>
+        </div>
+        <div class="pay-actions">
+          <button class="pay-done-btn" onclick="paidOnWhatsApp()">✅ I Have Paid — Notify on WhatsApp</button>
+        </div>
+      ` : `
+        <div class="pay-cod-note">
+          💵 <b>Cash on Delivery</b><br>
+          Keep ₹${total} ready at the time of delivery.<br>
+          Your order has been sent to TasteHub for confirmation.
+        </div>
+      `}
+
+      <button onclick="closeCart();cart.clear();updateCartFab();renderMenu();"
+        style="width:100%;margin-top:12px;padding:11px;border-radius:12px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-weight:600;font-size:13px;font-family:var(--font)">
+        Done — Back to Menu
+      </button>
+    </div>`;
+}
+
+function copyUPI() {
+  navigator.clipboard.writeText(UPI_ID).then(() => toast("✅ UPI ID copied!")).catch(() => toast("Copy failed"));
 }
 
 // ── SUBSCRIPTIONS ──
@@ -804,7 +915,8 @@ function subscribeWA(planName) {
 
 // ── PAYMENT ──
 function paidOnWhatsApp() {
-  const msg = `Hi TasteHub 🍽\n\nI have completed the UPI payment. 💳\nUPI ID: ${UPI_ID}\n\nKindly confirm my order. Thank you!`;
+  const { total } = cartTotal();
+  const msg = `Hi TasteHub 🍽\n\nI have completed the UPI payment of *₹${total}*. 💳\nUPI ID: ${UPI_ID}\n\nKindly confirm my order. Thank you!`;
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
 }
 
