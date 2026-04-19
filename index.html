@@ -262,27 +262,25 @@ header{
 }
 .sub-btn:hover{background:var(--orange);border-color:var(--orange);box-shadow:0 4px 14px rgba(232,97,26,.3)}
 
-/* ── GOOGLE REVIEW STRIP ── */
-.review-strip{
-  background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  padding:14px 20px;
-}
-.review-strip-inner{
-  max-width:var(--max);margin:0 auto;
-  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
-}
-.review-left{display:flex;align-items:center;gap:10px}
-.review-stars{font-size:18px;letter-spacing:1px;color:#FBBC04}
-.review-text{font-size:13.5px;font-weight:600;color:var(--brown)}
-.review-text span{color:var(--muted);font-weight:400;font-size:12px;display:block;margin-top:1px}
-.review-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:9px 18px;border-radius:99px;border:1.5px solid #FBBC04;
-  background:rgba(251,188,4,.08);color:#7a5c00;
-  font-size:13px;font-weight:700;font-family:var(--font);
-  text-decoration:none;transition:all .18s;white-space:nowrap;
-}
-.review-btn:hover{background:#FBBC04;color:#2C1810;transform:translateY(-1px)}
+/* ── REVIEWS SECTION ── */
+.reviews-section{background:#fff;padding:40px 0}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:32px}
+.review-card{background:var(--cream);border:1px solid var(--border);border-radius:var(--rLg);padding:18px;transition:box-shadow .2s}
+.review-card:hover{box-shadow:var(--shadow)}
+.rc-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.rc-avatar{width:38px;height:38px;border-radius:50%;flex:0 0 auto;background:linear-gradient(135deg,var(--orange),#c44a0e);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#fff}
+.rc-name{font-size:13.5px;font-weight:700;color:var(--brown)}
+.rc-time{font-size:11px;color:var(--muted);margin-top:1px}
+.rc-stars{color:#FBBC04;font-size:14px;letter-spacing:1px;margin-bottom:8px}
+.rc-text{font-size:13px;color:var(--muted);line-height:1.65;font-style:italic}
+.rc-tag{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:11px;font-weight:600;color:#136843;background:rgba(27,140,90,.08);border:1px solid rgba(27,140,90,.14);padding:3px 9px;border-radius:99px}
+.review-cta{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;padding:24px;background:linear-gradient(135deg,rgba(44,24,16,.04),rgba(232,97,26,.05));border:1px solid var(--border);border-radius:var(--rLg)}
+.review-qr-wrap{width:120px;height:120px;background:#fff;border-radius:14px;border:1px solid var(--border);padding:8px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 4px 14px rgba(44,24,16,.08)}
+.review-qr-wrap img{width:100%;height:100%;object-fit:contain;border-radius:8px}
+.review-cta-text h4{font-family:var(--display);font-size:18px;font-weight:700;color:var(--brown);margin-bottom:4px}
+.review-cta-text p{font-size:13px;color:var(--muted);line-height:1.6;max-width:320px;margin-bottom:14px}
+.google-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:99px;border:1.5px solid #FBBC04;background:rgba(251,188,4,.09);color:#7a5800;font-size:13.5px;font-weight:700;font-family:var(--font);text-decoration:none;transition:all .18s}
+.google-btn:hover{background:#FBBC04;color:#2C1810;transform:translateY(-1px);box-shadow:0 4px 14px rgba(251,188,4,.28)}
 
 /* ── PARTY SECTION ── */
 .party-card{
@@ -483,28 +481,103 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
   </div>
 </section>
 
-<!-- ── GOOGLE REVIEW STRIP ── -->
-<div class="review-strip">
-  <div class="review-strip-inner">
-    <div class="review-left">
-      <div class="review-stars">⭐⭐⭐⭐⭐</div>
-      <div class="review-text">
-        Loved our food?
-        <span>Your review helps us reach more families 🙏</span>
+<!-- ── REVIEWS SECTION ── -->
+<section class="reviews-section">
+  <div class="wrap">
+    <div class="section-label">Customer Love</div>
+    <div class="section-title">What Our Customers Say ⭐</div>
+    <p class="section-sub">Real reviews from our happy customers on Google Business</p>
+
+    <div class="reviews-grid">
+
+      <div class="review-card">
+        <div class="rc-top">
+          <div class="rc-avatar">S</div>
+          <div><div class="rc-name">Sanket Kumar</div><div class="rc-time">27 weeks ago</div></div>
+        </div>
+        <div class="rc-stars">★★★★★</div>
+        <div class="rc-text">"Absolutely amazing home-cooked vegetarian food! Each dish tasted fresh, authentic, and full of flavor. You can truly feel the love and care put into the cooking — it reminded me of a warm, comforting homemade meal. Healthy, hygienic, and perfectly balanced!"</div>
+        <div style="margin-top:10px;font-size:11.5px;color:var(--muted)">🍽 Food 5/5 · Service 5/5 · Ambience 5/5</div>
+        <span class="rc-tag">✅ Verified Purchase</span>
+      </div>
+
+      <div class="review-card">
+        <div class="rc-top">
+          <div class="rc-avatar">A</div>
+          <div><div class="rc-name">Ashok Sekharan</div><div class="rc-time">43 weeks ago</div></div>
+        </div>
+        <div class="rc-stars">★★★★★</div>
+        <div class="rc-text">"Amazing food quantity and quality management.. very cool packing.. tasty paneer kadhai and chapatis.. best food ever one can hope for!"</div>
+        <div style="margin-top:10px;font-size:11.5px;color:var(--muted)">🍽 Food 5/5 · Service 4/5 · Ambience 4/5</div>
+        <span class="rc-tag">✅ Verified Purchase</span>
+      </div>
+
+      <div class="review-card">
+        <div class="rc-top">
+          <div class="rc-avatar">O</div>
+          <div><div class="rc-name">Oli Gupta</div><div class="rc-time">43 weeks ago · Local Guide</div></div>
+        </div>
+        <div class="rc-stars">★★★★★</div>
+        <div class="rc-text">"Neha is a wonderful person. She adds that flavor of simplicity and warmth to her cuisines as well."</div>
+        <div style="margin-top:10px;font-size:11.5px;color:var(--muted)">🍽 Food 5/5 · Service 5/5 · Ambience 5/5</div>
+        <span class="rc-tag">✅ Local Guide</span>
+      </div>
+
+      <div class="review-card">
+        <div class="rc-top">
+          <div class="rc-avatar">P</div>
+          <div><div class="rc-name">Pratiyush Mishra</div><div class="rc-time">14 weeks ago</div></div>
+        </div>
+        <div class="rc-stars">★★★★★</div>
+        <div class="rc-text">"Very hygienic and food tastes good."</div>
+        <span class="rc-tag">✅ Verified Purchase</span>
+      </div>
+
+      <div class="review-card">
+        <div class="rc-top">
+          <div class="rc-avatar">M</div>
+          <div><div class="rc-name">Meena Pathak</div><div class="rc-time">43 weeks ago</div></div>
+        </div>
+        <div class="rc-stars">★★★★★</div>
+        <div class="rc-text">"Fresh, wholesome and tasty homemade vegetarian meals. Truly made with love and care every day!"</div>
+        <span class="rc-tag">✅ Verified Purchase</span>
+      </div>
+
+      <div class="review-card">
+        <div class="rc-top">
+          <div class="rc-avatar">J</div>
+          <div><div class="rc-name">Jyoti Jha</div><div class="rc-time">44 weeks ago</div></div>
+        </div>
+        <div class="rc-stars">★★★★★</div>
+        <div class="rc-text">"Delighted with the fresh homemade vegetarian meals from TasteHub. Highly recommended for anyone who loves real, soulful food!"</div>
+        <span class="rc-tag">✅ Verified Purchase</span>
+      </div>
+
+    </div>
+
+    <!-- QR + CTA -->
+    <div class="review-cta">
+      <div class="review-qr-wrap">
+        <img src="google-review-qr.png" alt="Google Review QR" onerror="this.parentElement.style.display='none'">
+      </div>
+      <div class="review-cta-text">
+        <h4>Enjoyed our food? 🙏</h4>
+        <p>Scan the QR or tap below to leave us a Google review. It takes just 30 seconds and means the world to us!</p>
+        <a class="google-btn" href="https://g.page/r/CdP5HqjumrJHEBM/review" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Rate us on Google
+        </a>
       </div>
     </div>
-    <a class="review-btn" href="https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review" target="_blank" id="googleReviewBtn">
-      ⭐ Rate us on Google
-    </a>
   </div>
-</div>
+</section>
 
 <!-- ── FOOTER ── -->
 <footer>
   <p>© 2026 <strong style="color:rgba(255,255,255,.8)">TasteHub 🍽</strong> · Kannuru, Bengaluru</p>
-  <p style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap">
+  <p style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap">
     <a href="https://wa.me/919632035612" target="_blank">💬 Contact Us</a>
-    <a href="https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review" target="_blank" id="footerReviewLink">⭐ Google Review</a>
+    <a href="https://g.page/r/CdP5HqjumrJHEBM/review" target="_blank">⭐ Leave a Review</a>
   </p>
 </footer>
 
@@ -547,7 +620,7 @@ const MENU = {
     label: "🌅 Breakfast",
     cutoff: 7,
     items: [
-      { name: "Veg Poha",                              price: 90,  available: true  },
+      { name: "Veg Poha",                              price: 90,  available: false  },
       { name: "Veg Upma",                              price: 90,  available: false },
       { name: "Aloo Paratha (2 pcs) with Curd",        price: 90,  available: false },
       { name: "Idli (4 pcs) with Sambhar & Chutney",   price: 90,  available: false },
@@ -562,23 +635,23 @@ const MENU = {
     label: "☀️ Lunch",
     cutoff: 12,
     items: [
-      { name: "Plain Rice + Dal Tadka + Aloo Palak + Salad", price: 160, available: true  },
-      { name: "Chapati (per piece)",                         price: 15,  available: true  },
+      { name: "Plain Rice + Dal Tadka + Aloo Palak + Salad", price: 160, available: false  },
+      { name: "Chapati (per piece)",                         price: 15,  available: false  },
     ]
   },
   snacks: {
     label: "🍿 Snacks",
     cutoff: 16,
     items: [
-      { name: "Onion Kachori (2 pcs)", price: 70, available: true },
+      { name: "Onion Kachori (2 pcs)", price: 70, available: false },
     ]
   },
   dinner: {
     label: "🌙 Dinner",
     cutoff: 19,
     items: [
-      { name: "4 Chapati/Paratha + Chhole", price: 140, available: true  },
-      { name: "Extra Chapati",              price: 15,  available: true  },
+      { name: "4 Chapati/Paratha + Chhole", price: 140, available: false  },
+      { name: "Extra Chapati",              price: 15,  available: false  },
     ]
   }
 };
