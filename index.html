@@ -610,7 +610,7 @@ const WA = "919632035612";
 const UPI_ID = "email.vikashpathak-1@okicici";
 
 // ── SET THIS TO true ON HOLIDAYS / CLOSED DAYS ──
-const SHOP_CLOSED = true;
+const SHOP_CLOSED = false;
 
 // ── MENU DATA ──
 // Set available:true for today's item, false for the rest.
@@ -620,15 +620,16 @@ const MENU = {
     label: "🌅 Breakfast",
     cutoff: 7,
     items: [
-      { name: "Veg Poha",                              price: 90,  available: false  },
-      { name: "Veg Upma",                              price: 90,  available: false },
-      { name: "Aloo Paratha (2 pcs) with Curd",        price: 90,  available: false },
-      { name: "Idli (4 pcs) with Sambhar & Chutney",   price: 90,  available: false },
-      { name: "Palak Chilla (3 pcs)",                  price: 90,  available: false },
-      { name: "Aloo Paneer Sandwich",                  price: 120, available: false },
-      { name: "Pav Bhaji",                             price: 120, available: false },
-      { name: "Masala Dosa",                           price: 130, available: false },
-      { name: "Puri (4 pcs) with Aloo Sabji",          price: 130, available: false },
+      { name: "Veg Poha",                                                     price: 90,  available: false },
+      { name: "Veg Upma",                                                     price: 90,  available: false },
+      { name: "Aloo Paratha (2 pcs) with Curd",                               price: 90,  available: false },
+      { name: "Idli (4 pcs) with Sambhar & Chutney",                          price: 90,  available: false },
+      { name: "Palak Chilla (3 pcs)",                                         price: 90,  available: false },
+      { name: "Veg Paneer Sandwich",                                          price: 120, available: true },
+      { name: "Pav Bhaji",                                                    price: 120, available: false },
+      { name: "Masala Dosa",                                                  price: 130, available: false },
+      { name: "Puri (4 pcs) with Aloo Sabji",                                 price: 130, available: false },
+      { name: "Handvo(4pieces) (High Protein and fiber)with chatni",          price: 100, available: true },
     ]
   },
   lunch: {
