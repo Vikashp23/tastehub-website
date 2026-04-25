@@ -491,64 +491,16 @@ footer a{color:rgba(255,255,255,.68);font-weight:600}
 <div class="toast" id="toast"></div>
 
 <script>
-const WA = "917899111308";
+const WA = "919632035612";
 
 const PRODUCTS = [
-  {
-    id:"peanuts", name:"Masala Peanuts",
-    desc:"Crunchy roasted peanuts tossed in bold house masala",
-    emoji:"🥜", badge:"Bestseller", badgeClass:"badge-best",
-    tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-crispy ✔ Crunchy"]
-  },
-  {
-    id:"longsev", name:"Long Sev",
-    desc:"Classic crispy thin sev made fresh with besan",
-    emoji:"🌾", badge:"Popular", badgeClass:"badge-popular",
-    tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-crispy ✔ Crispy"]
-  },
-  {
-    id:"ratlami", name:"Ratlami Sev",
-    desc:"Authentic Ratlami-style sev with bold spice blend",
-    emoji:"🌶", badge:"Spicy", badgeClass:"badge-spicy",
-    tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-crispy ✔ Spicy Hot"]
-  },
-  {
-    id:"lahsun", name:"Lahsun Sev",
-    desc:"Flavour-rich garlic sev — a TasteHub favourite",
-    emoji:"🧄", badge:"New", badgeClass:"badge-new",
-    tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-crispy ✔ Garlicky"]
-  },
-  {
-    id:"ujjaini", name:"Ujjaini Sev",
-    desc:"Traditional Ujjaini recipe, thick & perfectly seasoned",
-    emoji:"⭐", badge:"Popular", badgeClass:"badge-popular",
-    tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-fresh ✔ Traditional"]
-  },
-  {
-    id:"sweetmix", name:"Sweet & Spicy Mixture",
-    desc:"Perfect balance of sweet and heat — great for snacking",
-    emoji:"🍬", badge:"Bestseller", badgeClass:"badge-best",
-    tags:["tag-veg ✔ Veg","tag-fresh ✔ Sweet & Hot","tag-gift ✔ Gift Ready"]
-  },
-  {
+    {
     id:"charkha", name:"Charkha Mixture",
     desc:"TasteHub's signature crunchy house blend mixture",
     emoji:"🎡", badge:"New", badgeClass:"badge-new",
     tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-crispy ✔ Crunchy"]
   },
   {
-    id:"boondi", name:"Masala Boondi",
-    desc:"Golden crispy boondi with tangy masala seasoning",
-    emoji:"🔮", badge:"Spicy", badgeClass:"badge-spicy",
-    tags:["tag-veg ✔ Veg","tag-oil ✔ Peanut Oil","tag-crispy ✔ Crispy"]
-  },
-  {
-    id:"sattu", name:"Sattu",
-    desc:"Roasted gram flour — nutritious, protein-rich, versatile",
-    emoji:"💪", badge:"Healthy", badgeClass:"badge-new",
-    tags:["tag-veg ✔ Veg","tag-protein ✔ High Protein","tag-fresh ✔ Nutritious"]
-  },
-{
   id:"gujiya", name:"Gujiya (Thin-Crust)",
   desc:"Freshly prepared with rich mawa & premium dry fruits",
   emoji:"🥟", badge:"Festive", badgeClass:"badge-new",
@@ -753,13 +705,21 @@ function placeOrder() {
       return `• ${p.name} × ${qty} pack${qty > 1 ? "s" : ""}`;
     }).join("\n");
 
-  let msg = `Hi TasteHub 🥨\n\n*Snacks Order Request*\n`;
-  msg += `Name: ${name}\nPhone: ${phone}`;
-  if (addr) msg += `\nAddress: ${addr}`;
-  msg += `\n\n*Items:*\n${lines}\n`;
-  msg += `\nTotal packs: ${packs}`;
-  if (notes) msg += `\nNotes: ${notes}`;
-  msg += `\n\nPlease share the price and confirm availability. Thank you! 🙏`;
+   let msg = `Hi TasteHub\n\n`;
+   msg += `Snacks Order Request\n\n`;
+
+   msg += `Customer Details\n`;
+   msg += `Name: ${name}\n`;
+   msg += `Phone: ${phone}`;
+   if (addr) msg += `\nAddress: ${addr}`;
+
+   msg += `\n\nOrder Items\n${lines}\n`;
+
+   msg += `\nTotal Packs: ${packs}`;
+
+   if (notes) msg += `\nNotes: ${notes}`;
+
+   msg += `\n\nPlease share the price and confirm availability.\nThank you.`;
 
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
   showToast("✅ Opening WhatsApp...");
