@@ -546,7 +546,7 @@ function renderCards() {
     return `
     <div class="pcard" id="pcard-${p.id}">
       <div class="pc-img-wrap">
-        <img src="snacks/${p.id}.jpg" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="${p.id}.jpg" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="pc-emoji-fallback" style="display:none">${p.emoji}</div>
         <div class="pc-badge ${p.badgeClass}">${p.badge}</div>
       </div>
