@@ -293,6 +293,41 @@ header{
 .party-text p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.6;max-width:400px}
 .party-emoji{font-size:64px;line-height:1}
 
+/* ── SNACKS CTA CARD ── */
+.snacks-cta-card{
+  background:linear-gradient(135deg,#FFF0DC,#FFE4C0);
+  border:1.5px solid rgba(232,97,26,.2);border-radius:var(--rLg);
+  padding:28px 24px;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;flex-wrap:wrap;
+  box-shadow:0 8px 32px rgba(232,97,26,.12);position:relative;overflow:hidden;
+}
+.snacks-cta-card::before{
+  content:'';position:absolute;top:-40px;right:-40px;
+  width:160px;height:160px;border-radius:50%;
+  background:rgba(232,97,26,.07);pointer-events:none;
+}
+.snacks-cta-label{
+  display:inline-block;font-size:10px;font-weight:800;letter-spacing:1.5px;
+  text-transform:uppercase;background:var(--orange);color:#fff;
+  padding:3px 10px;border-radius:99px;margin-bottom:8px;
+}
+.snacks-cta-card h3{font-family:var(--display);font-size:21px;font-weight:700;color:var(--brown);margin-bottom:7px;line-height:1.2}
+.snacks-cta-card p{font-size:13.5px;color:var(--muted);line-height:1.65;max-width:400px}
+.snacks-pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.snacks-pills span{
+  font-size:11.5px;font-weight:600;padding:4px 11px;border-radius:99px;
+  background:rgba(44,24,16,.07);border:1px solid rgba(44,24,16,.12);color:var(--brown);
+}
+.snacks-wa-btn{border-color:rgba(44,24,16,.15)!important;color:var(--brown)!important}
+.snacks-wa-btn:hover{border-color:#25D366!important;color:#136843!important;background:rgba(37,211,102,.06)!important}
+.snacks-emojis{display:flex;flex-direction:column;gap:10px;flex:0 0 auto}
+.se-row{display:flex;gap:10px}
+.se-row span{
+  width:52px;height:52px;border-radius:14px;background:#fff;
+  border:1px solid rgba(44,24,16,.10);display:flex;align-items:center;
+  justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(44,24,16,.08);
+}
+
 /* ── FOOTER ── */
 footer{
   background:var(--brown);color:rgba(255,255,255,.55);
@@ -469,6 +504,32 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
     </div>
   </section>
 
+  <!-- SNACKS CTA -->
+  <section class="section" style="padding-top:0">
+    <div class="snacks-cta-card">
+      <div class="snacks-cta-left">
+        <div class="snacks-cta-label">🏠 Made In Our Kitchen</div>
+        <h3>TasteHub Homemade Snacks 🥨</h3>
+        <p>Our very own recipe — Masala Peanuts, Ratlami Sev, Charkha Mixture & more. Every batch made fresh by us with pure peanut oil and zero preservatives.</p>
+        <div class="snacks-pills">
+          <span>👩‍🍳 Our Own Recipe</span>
+          <span>🌿 No Preservatives</span>
+          <span>🥜 Pure Peanut Oil</span>
+          <span>🔥 10% OFF Now</span>
+          <span>🎁 Gift Packs Available</span>
+        </div>
+        <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn btn-primary" href="snacks.html" style="display:inline-flex">🥨 Order Our Snacks →</a>
+          <a class="btn btn-outline snacks-wa-btn" href="https://wa.me/917899111308" target="_blank" style="display:inline-flex">💬 Ask on WhatsApp</a>
+        </div>
+      </div>
+      <div class="snacks-emojis">
+        <div class="se-row"><span>🥜</span><span>🌾</span></div>
+        <div class="se-row"><span>🌶</span><span>🎡</span></div>
+      </div>
+    </div>
+  </section>
+
 </div><!-- /wrap -->
 
 <!-- ── SUBSCRIPTION ── -->
@@ -620,39 +681,45 @@ const MENU = {
     label: "🌅 Breakfast",
     cutoff: 7,
     items: [
-      { name: "Veg Poha",                                                     price: 90,  available: false },
-      { name: "Veg Upma",                                                     price: 90,  available: false },
-      { name: "Aloo Paratha (2 pcs) with Curd",                               price: 90,  available: false },
-      { name: "Idli (4 pcs) with Sambhar & Chutney",                          price: 90,  available: false },
-      { name: "Palak Chilla (3 pcs)",                                         price: 90,  available: false },
-      { name: "Veg Paneer Sandwich",                                          price: 120, available: true },
-      { name: "Pav Bhaji",                                                    price: 120, available: false },
-      { name: "Masala Dosa",                                                  price: 130, available: false },
-      { name: "Puri (4 pcs) with Aloo Sabji",                                 price: 130, available: false },
-      { name: "Handvo(4pieces) (High Protein and fiber)with chatni",          price: 100, available: true },
+      { name: "Veg Poha",                                                            price: 90,  available: false },
+      { name: "Veg Upma",                                                            price: 90,  available: false },
+      { name: "Aloo Paratha (2 pcs) with Curd",                                      price: 90,  available: false },
+      { name: "Idli (4 pcs) with Sambhar & Chutney",                                 price: 90,  available: false },
+      { name: "Palak Chilla (3 pcs)",                                                price: 90,  available: false },
+      { name: "Aloo Paneer Sandwich",                                                price: 120, available: false },
+      { name: "Pav Bhaji",                                                           price: 120, available: false },
+      { name: "Masala Dosa",                                                         price: 130, available: false },
+      { name: "Puri (4 pcs) with Aloo Sabji",                                        price: 130, available: false },
+      { name: "Multigrain Masala Dosa (High Protein & Fiber) with Sambar & Chutney", price: 130, available: false },
+      { name: "Extra Dosa", price: 50, available: true },
+      { name: "Sabudana Khichdi", price: 100, available: true }, 
     ]
   },
   lunch: {
     label: "☀️ Lunch",
     cutoff: 12,
     items: [
-      { name: "Plain Rice + Dal Tadka + Aloo Palak + Salad", price: 160, available: false  },
-      { name: "Chapati (per piece)",                         price: 15,  available: false  },
+      { name: "Plain Rice + Dal Tadka + Aloo Palak + Salad",              price: 160, available: true },
+      { name: "Chapati (per piece)",                                      price: 15,  available: true },
+      { name: "Plain Paratha/Chapati (4 pcs) with Kadhai Paneer (200gm)", price: 140, available: true },
+      { name: "Extra Paratha", price: 15, available: true },
     ]
+
   },
   snacks: {
     label: "🍿 Snacks",
     cutoff: 16,
     items: [
-      { name: "Onion Kachori (2 pcs)", price: 70, available: false },
+      { name: "Onion Kachori (2 pcs)",       price: 70, available: true },
+      { name: "Samosa (2 pcs) with Chutney", price: 50, available: true },
     ]
   },
   dinner: {
     label: "🌙 Dinner",
     cutoff: 19,
     items: [
-      { name: "4 Chapati/Paratha + Chhole", price: 140, available: false  },
-      { name: " Chapati/Paratha",           price: 15,  available: false  },
+      { name: "4 Chapati/Paratha + Chhole", price: 140, available: true  },
+      { name: "Extra Chapati",              price: 15,  available: true  },
     ]
   }
 };
