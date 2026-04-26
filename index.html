@@ -742,10 +742,10 @@ function cutoffLabel(cutoff) {
 function renderTimingChips() {
   const el = document.getElementById("timingChips");
   const entries = [
-    { label: "Breakfast", cutoff: 10 },
-    { label: "Lunch", cutoff: 14 },
-    { label: "Snacks", cutoff: 18 },
-    { label: "Dinner", cutoff: 21 },
+    { label: "Breakfast", cutoff: 11 },
+    { label: "Lunch", cutoff: 15 },
+    { label: "Snacks", cutoff: 19 },
+    { label: "Dinner", cutoff: 22 },
   ];
   el.innerHTML = entries.map(e => {
     const open = isOpen(e.cutoff);
