@@ -462,16 +462,6 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
     <div class="section-title">What would you like?</div>
     <p class="section-sub">100% vegetarian · Made fresh daily · Delivered nearby</p>
 
-    <!-- CLOSED TODAY BANNER — shown when SHOP_CLOSED = true -->
-    <div class="closed-banner" id="closedBanner" style="display:none">
-      <div class="cb-icon">🔒</div>
-      <div>
-        <div class="cb-title">We're closed today</div>
-        <div class="cb-sub">No orders are being taken today. We'll be back soon with fresh food! You can still browse our full menu below.<br>For urgent enquiries, reach us on WhatsApp.</div>
-        <a class="cb-wa" href="https://wa.me/919632035612" target="_blank">💬 Contact on WhatsApp</a>
-      </div>
-    </div>
-
     <div class="tabs-wrap" id="tabs"></div>
 
     <!-- ORDER TIMINGS under tabs -->
@@ -671,7 +661,7 @@ const WA = "919632035612";
 const UPI_ID = "email.vikashpathak-1@okicici";
 
 // ── SET THIS TO true ON HOLIDAYS / CLOSED DAYS ──
-const SHOP_CLOSED = false;
+const SHOP_CLOSED = true;
 
 // ── MENU DATA ──
 // Set available:true for today's item, false for the rest.
@@ -679,45 +669,43 @@ const SHOP_CLOSED = false;
 const MENU = {
   breakfast: {
     label: "🌅 Breakfast",
-    cutoff: 7,
+    cutoff: 10,  // Order by 10 AM
     items: [
       { name: "Veg Poha",                                                            price: 90,  available: false },
       { name: "Veg Upma",                                                            price: 90,  available: false },
       { name: "Aloo Paratha (2 pcs) with Curd",                                      price: 90,  available: false },
       { name: "Idli (4 pcs) with Sambhar & Chutney",                                 price: 90,  available: false },
       { name: "Palak Chilla (3 pcs)",                                                price: 90,  available: false },
-      { name: "Aloo Paneer Sandwich((4 slices)",                                     price: 120, available: true },
+      { name: "Aloo Paneer Sandwich (4 slices)",                                     price: 120, available: true },
       { name: "Pav Bhaji",                                                           price: 120, available: false },
       { name: "Masala Dosa",                                                         price: 130, available: false },
       { name: "Puri (4 pcs) with Aloo Sabji",                                        price: 130, available: false },
       { name: "Multigrain Masala Dosa (High Protein & Fiber) with Sambar & Chutney", price: 130, available: false },
       { name: "Extra Dosa",                                                          price: 50, available:  false },
       { name: "Sabudana Khichdi",                                                    price: 100, available: false }, 
-      { name: "Roti base taco (paneer cheese veggie stuffed) (1 pieces)",            price: 80,  available: true  }, 
+      { name: "Roti Base Taco (Paneer Cheese Veggie Stuffed) (1 pieces)",            price: 100, available: true  }, 
+
+
     ]
   },
   lunch: {
     label: "☀️ Lunch",
-    cutoff: 12,
+    cutoff: 14,  // Order by 2 PM
     items: [
-      { name: "Plain Rice + Dal Tadka + Aloo Palak + Salad",              price: 160, available: false },
-      { name: "Chapati (per piece)",                                      price: 15,  available: false },
-      { name: "Plain Paratha/Chapati (4 pcs) with Kadhai Paneer (200gm)", price: 140, available: false },
-      { name: "Extra Paratha", price: 15, available: true },
+      { name: "Plain Rice + Dal Tadka + Aloo Palak + Salad", price: 160, available: true  },
+      { name: "Chapati (per piece)",                         price: 15,  available: true  },
     ]
-
   },
   snacks: {
     label: "🍿 Snacks",
-    cutoff: 16,
+    cutoff: 18,  // Order by 6 PM
     items: [
-      { name: "Onion Kachori (2 pcs)",       price: 70, available: false },
-      { name: "Samosa (2 pcs) with Chutney", price: 50, available: false },
+      { name: "Onion Kachori (2 pcs)", price: 70, available: true },
     ]
   },
   dinner: {
     label: "🌙 Dinner",
-    cutoff: 19,
+    cutoff: 21,  // Order by 9 PM
     items: [
       { name: "4 Chapati/Paratha + Chhole", price: 140, available: true  },
       { name: "Extra Chapati",              price: 15,  available: true  },
@@ -749,15 +737,15 @@ function cutoffLabel(cutoff) {
 function renderTimingChips() {
   const el = document.getElementById("timingChips");
   const entries = [
-    { label: "Breakfast", cutoff: 7 },
-    { label: "Lunch", cutoff: 12 },
-    { label: "Snacks", cutoff: 16 },
-    { label: "Dinner", cutoff: 19 },
+    { label: "Breakfast", cutoff: 10 },
+    { label: "Lunch", cutoff: 14 },
+    { label: "Snacks", cutoff: 18 },
+    { label: "Dinner", cutoff: 21 },
   ];
   el.innerHTML = entries.map(e => {
     const open = isOpen(e.cutoff);
     return `<span class="timing-chip ${open ? "open" : "closed"}">
-      ${open ? "✅" : "❌"} ${e.label} ${open ? `by ${cutoffLabel(e.cutoff)}` : "Closed"}
+      ${open ? "✅" : "⏰"} ${e.label} ${cutoffLabel(e.cutoff)}
     </span>`;
   }).join("");
 }
@@ -784,10 +772,6 @@ function renderMenu() {
   const windowOpen = isOpen(section.cutoff);
   const banner = document.getElementById("statusBanner");
   const statusText = document.getElementById("statusText");
-  const closedBanner = document.getElementById("closedBanner");
-
-  // show/hide shop-closed banner
-  closedBanner.style.display = SHOP_CLOSED ? "flex" : "none";
 
   if (!SHOP_CLOSED && !windowOpen) {
     banner.classList.add("show");
@@ -813,7 +797,7 @@ function renderMenu() {
           </div>
           <div class="mc-price ${!isAvailable ? 'mc-price--off' : ''}">₹${item.price}</div>
           ${isAvailable
-            ? `<span class="avail-badge avail-on">✅ Today's item</span>`
+            ? `<span class="avail-badge avail-on"> Available Today</span>`
             : `<span class="avail-badge avail-off">Not available today</span>`
           }
         </div>
@@ -1095,9 +1079,9 @@ renderSubscriptions();
 
 // auto-select open tab
 const hour = getHour();
-if (hour >= 7 && hour < 12) switchTab("lunch");
-else if (hour >= 12 && hour < 16) switchTab("snacks");
-else if (hour >= 16) switchTab("dinner");
+if (hour >= 10 && hour < 14) switchTab("lunch");
+else if (hour >= 14 && hour < 18) switchTab("snacks");
+else if (hour >= 18) switchTab("dinner");
 
 // refresh chips every minute
 setInterval(renderTimingChips, 60000);
