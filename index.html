@@ -693,10 +693,11 @@ const MENU = {
     label: "☀️ Lunch",
     cutoff: 14,  // Order by 2 PM
     items: [
-      { name: "Plain Rice + Dal Tadka + Aloo Palak + Salad",                              price: 160,  available: true },
-      { name: "Chapati (per piece)",                                                      price: 15,   available: true },
-      { name: "Veg Fried Rice with papad,Raita ",                                         price: 140,  available: true },
-      { name: "Chhole Bhature (2 pieces) served with fresh salads & pickles ",            price: 150 ,  available: true },
+      { name: "Plain Rice + Dal Tadka + Aloo Palak + Salad",                              price: 160,  available: false },
+      { name: "Chapati (per piece)",                                                      price: 15,   available: false },
+      { name: "Veg Fried Rice with papad,Raita ",                                         price: 140,  available: false },
+      { name: "Chhole Bhature (2 pieces) served with fresh salads & pickles ",            price: 150 ,  available: false },
+      { name: "Jeera rice with Daal fry, Aloo jeera ",                                    price: 160 ,  available: true },
     ]
   },
   snacks: {
@@ -704,7 +705,7 @@ const MENU = {
     cutoff: 18,  // Order by 6 PM
     items: [
       { name: "Onion Kachori (2 pcs)",                price: 70, available: true },
-      { name: "Paani Puri Mint Flavour (10pieces ) ", price: 70, available: true },
+      { name: "Paani Puri Mint Flavour (10pieces ) ", price: 70, available: false },
     ]
   },
   dinner: {
@@ -713,7 +714,7 @@ const MENU = {
     items: [
       { name: "4 Chapati/Paratha + Chhole",                                             price: 140, available: true   },
       { name: "Extra Chapati",                                                          price: 15,  available: true   },
-      { name: "Momos Paratha (2 pieces) served with spicy tomato chutney",              price: 130,  available: true  },
+      { name: "Momos Paratha (2 pieces) served with spicy tomato chutney",              price: 130,  available: false  },
     ]
   }
 };
