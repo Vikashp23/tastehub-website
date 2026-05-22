@@ -1085,9 +1085,9 @@ renderSubscriptions();
 
 // auto-select open tab
 const hour = getHour();
-if (hour >= 10 && hour < 14) switchTab("lunch");
-else if (hour >= 14 && hour < 18) switchTab("snacks");
-else if (hour >= 18) switchTab("dinner");
+if (hour >= 09 && hour < 14) switchTab("lunch");
+else if (hour >= 13 && hour < 18) switchTab("snacks");
+else if (hour >= 15) switchTab("dinner");
 
 // refresh chips every minute
 setInterval(renderTimingChips, 60000);
