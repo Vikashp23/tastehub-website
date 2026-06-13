@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>TasteHub Admin</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+font-family:'DM Sans',sans-serif;
+background:#FFF8F0;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+}
+
+h1{
+font-family:'Playfair Display';
+color:#2C1810;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:16px;
+margin-bottom:20px;
+box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+
+input,select{
+width:100%;
+padding:12px;
+margin-top:8px;
+margin-bottom:15px;
+border:1px solid #ddd;
+border-radius:10px;
+}
+
+button{
+background:#E8611A;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:10px;
+cursor:pointer;
+font-weight:700;
+}
+
+button:hover{
+opacity:.9;
+}
+
+.menu-item{
+padding:12px;
+border:1px solid #eee;
+border-radius:10px;
+margin-top:10px;
+}
+
+.available{
+color:green;
+font-weight:bold;
+}
+
+.notavailable{
+color:red;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🍽 TasteHub Admin Portal</h1>
+
+<div class="card">
+
+<h3>Add Menu Item</h3>
+
+<select id="category">
+<option value="breakfast">Breakfast</option>
+<option value="lunch">Lunch</option>
+<option value="snacks">Snacks</option>
+<option value="dinner">Dinner</option>
+</select>
+
+<input id="itemName" placeholder="Menu Item">
+
+<input id="itemPrice" type="number" placeholder="Price">
+
+<label>
+<input type="checkbox" id="available">
+ Available Today
+</label>
+
+<br><br>
+
+<button onclick="addItem()">Add Item</button>
+
+</div>
+
+<div class="card">
+
+<h3>Current Menu</h3>
+
+<div id="menuList"></div>
+
+</div>
+
+<button onclick="saveMenu()">💾 Save Menu</button>
+
+</div>
+
+<script>
+
+let menuData =
+JSON.parse(localStorage.getItem("tastehubMenu")) || {
+breakfast:[],
+lunch:[],
+snacks:[],
+dinner:[]
+};
+
+function renderMenu(){
+
+let html="";
+
+Object.keys(menuData).forEach(cat=>{
+
+html+=`<h3>${cat.toUpperCase()}</h3>`;
+
+menuData[cat].forEach((item,index)=>{
+
+html+=`
+<div class="menu-item">
+
+<b>${item.name}</b>
+
+₹${item.price}
+
+<br>
+
+<span class="${
+item.available ?
+'available' :
+'notavailable'
+}">
+${item.available ?
+'Available Today' :
+'Not Available'}
+</span>
+
+<br><br>
+
+<button onclick="deleteItem('${cat}',${index})">
+Delete
+</button>
+
+</div>
+`;
+
+});
+
+});
+
+document.getElementById("menuList").innerHTML=html;
+}
+
+function addItem(){
+
+let cat =
+document.getElementById("category").value;
+
+let name =
+document.getElementById("itemName").value;
+
+let price =
+document.getElementById("itemPrice").value;
+
+let available =
+document.getElementById("available").checked;
+
+if(!name || !price){
+alert("Enter Name & Price");
+return;
+}
+
+menuData[cat].push({
+name,
+price,
+available
+});
+
+renderMenu();
+
+document.getElementById("itemName").value="";
+document.getElementById("itemPrice").value="";
+}
+
+function deleteItem(cat,index){
+
+menuData[cat].splice(index,1);
+
+renderMenu();
+
+}
+
+function saveMenu(){
+
+localStorage.setItem(
+"tastehubMenu",
+JSON.stringify(menuData)
+);
+
+alert("Menu Saved Successfully");
+
+}
+
+renderMenu();
+
+</script>
+
+</body>
+</html>
