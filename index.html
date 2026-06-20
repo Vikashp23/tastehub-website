@@ -666,63 +666,26 @@ const UPI_ID = "email.vikashpathak-1@okicici";
 // ── SET THIS TO true ON HOLIDAYS / CLOSED DAYS ──
 const SHOP_CLOSED = false;
 
-// ── MENU DATA ──
-// Set available:true for today's item, false for the rest.
-// Change these daily to update what's being served.
-const MENU = {
-  breakfast: {
-    label: "🌅 Breakfast",
-    cutoff: 10,  // Order by 10 AM
-    items: [
-      { name: "Veg Poha",                                                            price: 90,  available: false },
-      { name: "Veg Upma",                                                            price: 90,  available: true },
-      { name: "Aloo Paratha (2 pcs) with Curd",                                      price: 90,  available: false },
-      { name: "Idli (4 pcs) with Sambhar & Chutney",                                 price: 90,  available: false  },
-      { name: "Idli",                                                                price: 15,  available: false  },
-      { name: "Palak Chilla (3 pcs)",                                                price: 90,  available: false  },
-      { name: "Aloo Paneer Sandwich (4 slices)",                                     price: 120, available: false  },
-      { name: "Pav Bhaji",                                                           price: 120, available: false  },
-      { name: "Masala Dosa",                                                         price: 130, available: false  },
-      { name: "Puri (4 pcs) with Aloo Sabji",                                        price: 130, available: false  },
-      { name: "Multigrain Masala Dosa (High Protein & Fiber) with Sambar & Chutney", price: 130, available: false  },
-      { name: "Extra Dosa",                                                          price: 50, available:  false  },
-      { name: "Sabudana Khichdi",                                                    price: 100, available: false  }, 
-      { name: "Roti Base Taco (Paneer Cheese Veggie Stuffed) (1 pieces)",            price: 100, available: false  }, 
-      { name: "Plain Puri (4pieces) with Aloo Curry",                                price: 130, available: false  },
-      { name: "Extra Puri",                                                          price: 15, available:  false  },
+// ── MENU DATA — now loaded live from Google Sheets ──
+// Edit items anytime from admin.html — this page fetches the latest menu automatically.
+const SHEET_API = "https://script.google.com/macros/s/AKfycbyOFJ2Om_4EtBuYnWqmtUEFaDiZIGFQWlssXGYZ-B_MSJESygHr4JAXbjuhTYPKMqkf/exec";
 
-
-    ]
-  },
-  lunch: {
-    label: "☀️ Lunch",
-    cutoff: 14,  // Order by 2 PM
-    items: [
-      { name: "Plain Rice + Dal Tadka + Aloo Palak + Salad",                              price: 160,  available: false },
-      { name: "Chapati (per piece)",                                                      price: 15,   available: false },
-      { name: "Veg Fried Rice with papad,Raita ",                                         price: 140,  available: false },
-      { name: "Chhole Bhature (2 pieces) served with fresh salads & pickles ",            price: 150 ,  available: false },
-      { name: "Jeera rice with Daal fry, Aloo jeera ",                                    price: 160 ,  available: true },
-    ]
-  },
-  snacks: {
-    label: "🍿 Snacks",
-    cutoff: 18,  // Order by 6 PM
-    items: [
-      { name: "Onion Kachori (2 pcs)",                price: 70, available: true },
-      { name: "Paani Puri Mint Flavour (10pieces ) ", price: 70, available: false },
-    ]
-  },
-  dinner: {
-    label: "🌙 Dinner",
-    cutoff: 21,  // Order by 9 PM
-    items: [
-      { name: "4 Chapati/Paratha + Chhole",                                             price: 140, available: true   },
-      { name: "Extra Chapati",                                                          price: 15,  available: true   },
-      { name: "Momos Paratha (2 pieces) served with spicy tomato chutney",              price: 130,  available: false  },
-    ]
-  }
+let MENU = {
+  breakfast: { label: "🌅 Breakfast", cutoff: 10, items: [] },
+  lunch: { label: "☀️ Lunch", cutoff: 14, items: [] },
+  snacks: { label: "🍿 Snacks", cutoff: 18, items: [] },
+  dinner: { label: "🌙 Dinner", cutoff: 21, items: [] }
 };
+
+async function loadMenuFromSheet() {
+  try {
+    const res = await fetch(SHEET_API);
+    const data = await res.json();
+    MENU = data;
+  } catch (err) {
+    console.error("Menu fetch failed, showing empty menu:", err);
+  }
+}
 
 const SUBSCRIPTIONS = [
   { icon: "🌅", name: "Breakfast Plan", weekly: 399, monthly: 1499, key: "Breakfast" },
@@ -1083,19 +1046,31 @@ function updateCartFabLabel() {
 function updateCartFab() { updateCartFabLabel(); }
 
 // ── INIT ──
-renderTimingChips();
-renderTabs();
-renderMenu();
-renderSubscriptions();
+async function init() {
+  await loadMenuFromSheet();
+  renderTimingChips();
+  renderTabs();
+  renderMenu();
+  renderSubscriptions();
 
-// auto-select open tab
-const hour = getHour();
-if (hour >= 09 && hour < 14) switchTab("lunch");
-else if (hour >= 13 && hour < 18) switchTab("snacks");
-else if (hour >= 15) switchTab("dinner");
+  // auto-select open tab
+  const hour = getHour();
+  if (hour >= 9 && hour < 14) switchTab("lunch");
+  else if (hour >= 13 && hour < 18) switchTab("snacks");
+  else if (hour >= 15) switchTab("dinner");
 
-// refresh chips every minute
-setInterval(renderTimingChips, 60000);
+  // refresh chips every minute
+  setInterval(renderTimingChips, 60000);
+
+  // refresh menu from sheet every 2 minutes so admin changes show up without reload
+  setInterval(async () => {
+    await loadMenuFromSheet();
+    renderTabs();
+    renderMenu();
+  }, 120000);
+}
+
+init();
 </script>
 </body>
 </html>
