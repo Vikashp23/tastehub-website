@@ -1,1076 +1,558 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TasteHub 🍽 | Fresh Homemade Food · Kannuru</title>
-<meta name="description" content="TasteHub – Fresh homemade veg meals near Kannuru. Order breakfast, lunch, snacks & dinner. Subscribe for monthly plans."/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<style>
-/* ── RESET & VARS ── */
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-:root{
-  --cream:#FFF8F0;
-  --brown:#2C1810;
-  --orange:#E8611A;
-  --orange2:#F07A3A;
-  --brown-light:#5C3D2E;
-  --muted:#7A5C4A;
-  --border:rgba(44,24,16,.10);
-  --shadow:0 8px 32px rgba(44,24,16,.10);
-  --shadow-lg:0 16px 56px rgba(44,24,16,.14);
-  --r:14px;
-  --rLg:20px;
-  --font:'DM Sans',system-ui,sans-serif;
-  --display:'Playfair Display',Georgia,serif;
-  --max:960px;
-}
-body{font-family:var(--font);background:var(--cream);color:var(--brown);min-height:100vh;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}
-img{max-width:100%;display:block}
-button{font-family:var(--font);cursor:pointer}
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-thumb{background:rgba(44,24,16,.15);border-radius:99px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DigiCafe – Our Service, Your Solution</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+  <style>
+    :root {
+      --bg: #0a0e27;
+      --bg2: #0f1535;
+      --bg3: #141d3f;
+      --bg4: #0d1228;
+      --surf: rgba(59,130,246,0.05);
+      --bdr: rgba(59,130,246,0.15);
+      --bdr2: rgba(59,130,246,0.25);
+      --blue: #3b82f6;
+      --blue2: #60a5fa;
+      --teal: #06d6a0;
+      --gold: #f59e0b;
+      --red: #ef4444;
+      --green: #10b981;
+      --txt: #f8fafc;
+      --txt2: #cbd5e1;
+      --txt3: #94a3b8;
+      --txt4: #64748b;
+      --r: 12px;
+      --r2: 18px;
+      --shadow: 0 10px 40px rgba(0,0,0,0.4);
+    }
 
-/* ── LAYOUT ── */
-.wrap{max-width:var(--max);margin:0 auto;padding:0 16px}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--txt); line-height: 1.6; }
+    
+    .page { display: none; width: 100%; }
+    .page.active { display: block; animation: fadeIn .5s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* ── HEADER ── */
-header{
-  background:#fff;border-bottom:1px solid var(--border);
-  padding:0 20px;position:relative;
-  box-shadow:0 2px 20px rgba(44,24,16,.06);
-}
-.header-inner{
-  max-width:var(--max);margin:0 auto;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:14px;height:68px;
-}
-.header-brand{display:flex;align-items:center;gap:12px}
-.logo-wrap{
-  width:44px;height:44px;border-radius:12px;flex:0 0 auto;
-  background:linear-gradient(135deg,var(--orange),#c44a0e);
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 14px rgba(232,97,26,.28);overflow:hidden;
-  border:2px solid rgba(232,97,26,.2);
-}
-.logo-wrap img{width:100%;height:100%;object-fit:cover}
-.logo-fallback{font-family:var(--display);font-size:18px;font-weight:700;color:#fff}
-.header-text h1{font-family:var(--display);font-size:20px;font-weight:700;color:var(--brown);letter-spacing:-.3px;line-height:1.2}
-.header-text .subtitle{font-size:12px;color:var(--muted);font-weight:400}
-.header-btns{display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
-.btn{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:11px 20px;border-radius:99px;font-size:13.5px;font-weight:600;
-  border:none;transition:all .2s;white-space:nowrap;
-}
-.btn-primary{background:var(--orange);color:#fff;box-shadow:0 6px 18px rgba(232,97,26,.28)}
-.btn-primary:hover{background:#d4551a;transform:translateY(-1px);box-shadow:0 8px 22px rgba(232,97,26,.36)}
-.btn-outline{background:#fff;color:var(--brown);border:1.5px solid var(--border)}
-.btn-outline:hover{border-color:var(--orange);color:var(--orange);background:rgba(232,97,26,.04)}
-.btn-wa{background:#25D366;color:#fff;box-shadow:0 6px 18px rgba(37,211,102,.28)}
-.btn-wa:hover{background:#1eb85a;transform:translateY(-1px)}
+    /* NAVBAR */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 68px;
+      backdrop-filter: blur(30px);
+      background: rgba(15,21,53,0.6);
+      border-bottom: 1px solid var(--bdr);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+      z-index: 1000;
+    }
 
-/* ── TIMING ROW (under tabs) ── */
-.timing-row{
-  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-  padding:12px 14px;border-radius:var(--r);
-  background:#fff;border:1px solid var(--border);
-  margin-bottom:20px;
-}
-.timing-row-label{font-size:11.5px;font-weight:700;color:var(--muted);white-space:nowrap;letter-spacing:.3px}
-.timing-items{display:flex;flex-wrap:wrap;gap:7px}
-.timing-chip{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:5px 11px;border-radius:99px;font-size:12px;font-weight:600;
-  white-space:nowrap;
-}
-.timing-chip.open{background:rgba(27,140,90,.09);border:1px solid rgba(27,140,90,.2);color:#136843}
-.timing-chip.closed{background:rgba(232,97,26,.09);border:1px solid rgba(232,97,26,.2);color:#b84810}
+    nav .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; }
+    nav ul { display: flex; list-style: none; gap: 2rem; }
+    nav a { color: var(--txt2); text-decoration: none; font-weight: 600; transition: color .3s; cursor: pointer; }
+    nav a:hover, nav a.active { color: var(--blue); }
 
-/* ── SECTION ── */
-.section{padding:36px 0}
-.section-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
-.section-title{font-family:var(--display);font-size:26px;font-weight:700;color:var(--brown);margin-bottom:6px;line-height:1.2}
-.section-sub{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6}
-.divider{height:1px;background:var(--border);margin:0}
+    /* CONTAINER */
+    .c { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .sh { text-align: center; margin-bottom: 3rem; }
+    .sh h2 { font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem; }
+    .g-text { background: linear-gradient(135deg, #60a5fa, #06d6a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-/* ── TABS ── */
-.tabs-wrap{display:flex;gap:8px;overflow:auto;padding-bottom:4px;margin-bottom:24px;scrollbar-width:none}
-.tabs-wrap::-webkit-scrollbar{display:none}
-.tab-btn{
-  flex:0 0 auto;padding:9px 20px;border-radius:99px;
-  border:1.5px solid var(--border);background:#fff;
-  color:var(--muted);font-weight:600;font-size:13px;
-  transition:all .2s;white-space:nowrap;
-}
-.tab-btn:hover{border-color:var(--orange);color:var(--orange)}
-.tab-btn.active{
-  background:var(--orange);border-color:var(--orange);color:#fff;
-  box-shadow:0 4px 14px rgba(232,97,26,.3);
-}
+    /* HERO */
+    .hero { padding: 150px 20px 50px; text-align: center; }
+    .hero-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 1rem; line-height: 1.2; }
+    .hero-subtitle { font-size: 1.2rem; color: var(--txt2); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem; }
 
-/* ── MENU STATUS BANNER ── */
-.status-banner{
-  display:none;align-items:center;gap:10px;
-  padding:12px 16px;border-radius:var(--r);
-  background:rgba(232,97,26,.07);border:1px solid rgba(232,97,26,.18);
-  color:var(--brown);font-size:13.5px;font-weight:500;margin-bottom:20px;
-}
-.status-banner.show{display:flex}
-.status-banner .sb-icon{font-size:18px}
+    /* BUTTONS */
+    .btn { padding: .75rem 1.5rem; border-radius: var(--r); border: none; cursor: pointer; font-weight: 600; transition: all .3s; }
+    .btn-primary { background: linear-gradient(135deg, #3b82f6, #60a5fa); color: white; box-shadow: 0 8px 24px rgba(59,130,246,0.4); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(59,130,246,0.5); }
+    .btn-secondary { background: var(--surf); border: 1px solid var(--bdr); color: var(--txt); }
+    .btn-secondary:hover { background: var(--bg3); border-color: var(--bdr2); }
 
-/* ── MENU GRID ── */
-.menu-grid{display:grid;gap:12px}
-.menu-card{
-  background:#fff;border:1px solid var(--border);border-radius:var(--rLg);
-  padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;
-  transition:box-shadow .2s,border-color .2s;
-}
-.menu-card:hover{box-shadow:var(--shadow);border-color:rgba(44,24,16,.15)}
-.mc-left{min-width:0;flex:1}
-.mc-top{display:flex;align-items:center;gap:8px;margin-bottom:2px}
-.veg-dot{
-  width:12px;height:12px;border-radius:3px;flex:0 0 auto;
-  border:1.5px solid #1B8C5A;background:rgba(27,140,90,.18);
-}
-.mc-name{font-size:14px;font-weight:600;color:var(--brown);line-height:1.3}
-.mc-price{font-size:13.5px;font-weight:700;color:var(--orange);margin-top:2px}
-.mc-right{display:flex;align-items:center;gap:8px;flex:0 0 auto}
-.add-btn{
-  padding:8px 16px;border-radius:10px;border:none;
-  background:rgba(232,97,26,.10);color:var(--orange);
-  font-weight:700;font-size:13px;transition:all .18s;
-}
-.add-btn:hover{background:var(--orange);color:#fff;box-shadow:0 4px 12px rgba(232,97,26,.28)}
-.qty-ctrl{
-  display:flex;align-items:center;gap:6px;
-  background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:5px 8px;
-}
-.q-btn{
-  width:26px;height:26px;border-radius:8px;border:1px solid var(--border);
-  background:#fff;color:var(--brown);font-weight:800;font-size:16px;
-  display:flex;align-items:center;justify-content:center;line-height:1;
-  transition:all .15s;
-}
-.q-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
-.q-num{min-width:20px;text-align:center;font-weight:700;font-size:14px}
+    /* SERVICES GRID */
+    .svc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+    .svc-card { background: var(--surf); border: 1px solid var(--bdr); border-radius: var(--r2); padding: 2rem; transition: all .3s; cursor: pointer; }
+    .svc-card:hover { transform: translateY(-8px); border-color: var(--bdr2); box-shadow: var(--shadow); }
+    .svc-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .svc-name { font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; }
+    .svc-price { color: var(--gold); font-weight: 600; }
 
-/* ── FLOATING CART ── */
-.cart-fab{
-  position:fixed;bottom:24px;right:20px;z-index:200;
-  display:none;align-items:center;gap:8px;
-  padding:13px 20px;border-radius:99px;border:none;
-  background:var(--brown);color:#fff;font-weight:700;font-size:14px;
-  box-shadow:0 8px 28px rgba(44,24,16,.35);transition:all .2s;
-}
-.cart-fab:hover{background:#1a0c06;transform:scale(1.03)}
-.cart-fab.show{display:flex}
-.cart-fab .badge{
-  background:var(--orange);color:#fff;border-radius:99px;
-  width:22px;height:22px;display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:800;
-}
+    /* NEWS */
+    .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
+    .news-card { background: var(--surf); border: 1px solid var(--bdr); border-radius: var(--r2); padding: 2rem; transition: all .4s cubic-bezier(0.34,1.56,0.64,1); cursor: pointer; }
+    .news-card:hover { transform: translateY(-8px); border-color: var(--bdr2); box-shadow: var(--shadow); }
+    .n-cat { display: inline-block; background: linear-gradient(135deg,#3b82f6,#06d6a0); color: white; padding: .25rem .75rem; border-radius: 20px; font-size: .75rem; font-weight: 700; margin-bottom: .75rem; }
+    .n-title { font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; color: var(--txt); }
+    .n-desc { color: var(--txt2); font-size: .9rem; line-height: 1.5; margin-bottom: .75rem; }
+    .n-date { color: var(--txt3); font-size: .8rem; }
 
-/* ── CART MODAL ── */
-.modal-overlay{
-  position:fixed;inset:0;z-index:500;
-  background:rgba(20,10,4,.45);backdrop-filter:blur(4px);
-  display:none;align-items:flex-end;justify-content:center;padding:16px;
-}
-.modal-overlay.open{display:flex}
-.modal{
-  width:min(640px,100%);background:#fff;
-  border-radius:24px 24px 20px 20px;
-  box-shadow:0 24px 80px rgba(44,24,16,.22);
-  overflow:hidden;max-height:90vh;display:flex;flex-direction:column;
-}
-.modal-head{
-  padding:16px 20px;display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid var(--border);background:#fff;
-}
-.modal-head h3{font-family:var(--display);font-size:18px;font-weight:700}
-.close-btn{
-  width:36px;height:36px;border-radius:10px;border:1px solid var(--border);
-  background:#fff;color:var(--brown);font-size:18px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;
-}
-.close-btn:hover{background:#f7ede4}
-.modal-body{padding:16px;overflow:auto;flex:1}
-.cart-list{display:grid;gap:8px;margin-bottom:16px}
-.cart-item{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:12px;
-}
-.ci-name{font-size:13.5px;font-weight:600;color:var(--brown)}
-.ci-price{font-size:12.5px;color:var(--muted);margin-top:2px}
-.cart-total{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px;background:linear-gradient(135deg,rgba(232,97,26,.07),rgba(44,24,16,.04));
-  border:1px solid rgba(232,97,26,.14);border-radius:var(--r);margin-bottom:16px;
-}
-.ct-label{font-size:14px;font-weight:600;color:var(--brown)}
-.ct-amt{font-size:22px;font-weight:700;color:var(--orange);font-family:var(--display)}
-.order-form{display:grid;gap:10px;margin-bottom:14px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.form-group label{font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;letter-spacing:.2px}
-.form-group input,
-.form-group select,
-.form-group textarea{
-  width:100%;background:#fff;border:1.5px solid var(--border);
-  color:var(--brown);border-radius:11px;padding:10px 12px;outline:none;
-  font-size:13.5px;font-family:var(--font);transition:border-color .2s;
-}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:rgba(232,97,26,.4)}
-.order-btn{
-  width:100%;padding:14px;border-radius:14px;border:none;
-  background:linear-gradient(135deg,var(--orange),#c44a0e);
-  color:#fff;font-weight:700;font-size:15px;
-  box-shadow:0 6px 20px rgba(232,97,26,.3);transition:all .2s;
-}
-.order-btn:hover{box-shadow:0 10px 28px rgba(232,97,26,.4);transform:translateY(-1px)}
-.empty-cart{text-align:center;padding:32px 16px;color:var(--muted)}
-.empty-cart .ec-icon{font-size:48px;margin-bottom:12px}
-.empty-cart p{font-size:14px;font-weight:500}
+    /* DASHBOARD */
+    .dashboard { padding: 100px 20px 50px; }
+    .dashboard-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; }
+    .sidebar { background: var(--surf); border: 1px solid var(--bdr); border-radius: var(--r2); padding: 2rem; height: fit-content; }
+    .sidebar-item { padding: 1rem; cursor: pointer; border-radius: var(--r); transition: all .3s; }
+    .sidebar-item:hover, .sidebar-item.active { background: var(--bg3); color: var(--blue); }
+    .main-content { background: var(--surf); border: 1px solid var(--bdr); border-radius: var(--r2); padding: 2rem; }
 
-/* ── SUBSCRIPTION ── */
-.sub-section{background:var(--brown);padding:40px 0}
-.sub-section .section-label{color:rgba(232,97,26,.9)}
-.sub-section .section-title{color:#fff}
-.sub-section .section-sub{color:rgba(255,255,255,.55)}
-.sub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
-.sub-card{
-  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10);
-  border-radius:var(--rLg);padding:20px;transition:all .22s;cursor:default;
-}
-.sub-card:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);transform:translateY(-3px)}
-.sub-icon{font-size:28px;margin-bottom:10px}
-.sub-name{font-family:var(--display);font-size:17px;font-weight:700;color:#fff;margin-bottom:12px}
-.sub-prices{display:grid;gap:10px;margin-bottom:16px}
-.sub-price-row{
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
-  border-radius:10px;padding:10px 12px;
-  display:flex;align-items:center;justify-content:space-between;gap:8px;
-}
-.sp-label{font-size:12px;color:rgba(255,255,255,.6);font-weight:500}
-.sp-price{font-size:16px;font-weight:700;color:var(--orange2)}
-.sub-btn{
-  width:100%;padding:10px;border-radius:11px;border:1.5px solid rgba(255,255,255,.2);
-  background:transparent;color:#fff;font-weight:700;font-size:13px;
-  font-family:var(--font);transition:all .2s;
-}
-.sub-btn:hover{background:var(--orange);border-color:var(--orange);box-shadow:0 4px 14px rgba(232,97,26,.3)}
+    /* CLIENT INFO */
+    .client-info { display: flex; gap: 1rem; margin-bottom: 2rem; align-items: center; }
+    .avatar { width: 60px; height: 60px; background: linear-gradient(135deg,#3b82f6,#06d6a0); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; color: white; font-size: 1.5rem; }
 
-/* ── REVIEWS SECTION ── */
-.reviews-section{background:#fff;padding:40px 0}
-.reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:32px}
-.review-card{background:var(--cream);border:1px solid var(--border);border-radius:var(--rLg);padding:18px;transition:box-shadow .2s}
-.review-card:hover{box-shadow:var(--shadow)}
-.rc-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.rc-avatar{width:38px;height:38px;border-radius:50%;flex:0 0 auto;background:linear-gradient(135deg,var(--orange),#c44a0e);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#fff}
-.rc-name{font-size:13.5px;font-weight:700;color:var(--brown)}
-.rc-time{font-size:11px;color:var(--muted);margin-top:1px}
-.rc-stars{color:#FBBC04;font-size:14px;letter-spacing:1px;margin-bottom:8px}
-.rc-text{font-size:13px;color:var(--muted);line-height:1.65;font-style:italic}
-.rc-tag{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:11px;font-weight:600;color:#136843;background:rgba(27,140,90,.08);border:1px solid rgba(27,140,90,.14);padding:3px 9px;border-radius:99px}
-.review-cta{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;padding:24px;background:linear-gradient(135deg,rgba(44,24,16,.04),rgba(232,97,26,.05));border:1px solid var(--border);border-radius:var(--rLg)}
-.review-qr-wrap{width:120px;height:120px;background:#fff;border-radius:14px;border:1px solid var(--border);padding:8px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 4px 14px rgba(44,24,16,.08)}
-.review-qr-wrap img{width:100%;height:100%;object-fit:contain;border-radius:8px}
-.review-cta-text h4{font-family:var(--display);font-size:18px;font-weight:700;color:var(--brown);margin-bottom:4px}
-.review-cta-text p{font-size:13px;color:var(--muted);line-height:1.6;max-width:320px;margin-bottom:14px}
-.google-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:99px;border:1.5px solid #FBBC04;background:rgba(251,188,4,.09);color:#7a5800;font-size:13.5px;font-weight:700;font-family:var(--font);text-decoration:none;transition:all .18s}
-.google-btn:hover{background:#FBBC04;color:#2C1810;transform:translateY(-1px);box-shadow:0 4px 14px rgba(251,188,4,.28)}
+    /* FILE UPLOAD */
+    .upload-card { background: linear-gradient(135deg,rgba(59,130,246,0.1),rgba(6,214,160,0.1)); border: 2px dashed var(--bdr2); border-radius: var(--r2); padding: 2rem; text-align: center; cursor: pointer; transition: all .3s; margin-bottom: 2rem; }
+    .upload-card:hover { border-color: var(--blue); background: rgba(59,130,246,0.15); }
 
-/* ── PARTY SECTION ── */
-.party-card{
-  background:linear-gradient(135deg,#2C1810 0%,#4a2918 100%);
-  border-radius:var(--rLg);padding:28px 24px;display:flex;
-  align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
-  box-shadow:var(--shadow-lg);
-}
-.party-text h3{font-family:var(--display);font-size:22px;font-weight:700;color:#fff;margin-bottom:6px}
-.party-text p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.6;max-width:400px}
-.party-emoji{font-size:64px;line-height:1}
+    /* TABLE */
+    .table { width: 100%; border-collapse: collapse; }
+    .table th { background: var(--bg3); padding: 1rem; text-align: left; font-weight: 600; border-bottom: 1px solid var(--bdr); }
+    .table td { padding: 1rem; border-bottom: 1px solid var(--bdr); }
+    .table tr:hover { background: var(--bg3); }
 
-/* ── SNACKS CTA CARD ── */
-.snacks-cta-card{
-  background:linear-gradient(135deg,#FFF0DC,#FFE4C0);
-  border:1.5px solid rgba(232,97,26,.2);border-radius:var(--rLg);
-  padding:28px 24px;display:flex;align-items:center;
-  justify-content:space-between;gap:20px;flex-wrap:wrap;
-  box-shadow:0 8px 32px rgba(232,97,26,.12);position:relative;overflow:hidden;
-}
-.snacks-cta-card::before{
-  content:'';position:absolute;top:-40px;right:-40px;
-  width:160px;height:160px;border-radius:50%;
-  background:rgba(232,97,26,.07);pointer-events:none;
-}
-.snacks-cta-label{
-  display:inline-block;font-size:10px;font-weight:800;letter-spacing:1.5px;
-  text-transform:uppercase;background:var(--orange);color:#fff;
-  padding:3px 10px;border-radius:99px;margin-bottom:8px;
-}
-.snacks-cta-card h3{font-family:var(--display);font-size:21px;font-weight:700;color:var(--brown);margin-bottom:7px;line-height:1.2}
-.snacks-cta-card p{font-size:13.5px;color:var(--muted);line-height:1.65;max-width:400px}
-.snacks-pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
-.snacks-pills span{
-  font-size:11.5px;font-weight:600;padding:4px 11px;border-radius:99px;
-  background:rgba(44,24,16,.07);border:1px solid rgba(44,24,16,.12);color:var(--brown);
-}
-.snacks-wa-btn{border-color:rgba(44,24,16,.15)!important;color:var(--brown)!important}
-.snacks-wa-btn:hover{border-color:#25D366!important;color:#136843!important;background:rgba(37,211,102,.06)!important}
-.snacks-emojis{display:flex;flex-direction:column;gap:10px;flex:0 0 auto}
-.se-row{display:flex;gap:10px}
-.se-row span{
-  width:52px;height:52px;border-radius:14px;background:#fff;
-  border:1px solid rgba(44,24,16,.10);display:flex;align-items:center;
-  justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(44,24,16,.08);
-}
+    /* TOAST */
+    #toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--green); color: white; padding: 1rem 2rem; border-radius: var(--r); transition: bottom .3s; z-index: 2000; }
+    #toast.show { bottom: 20px; }
 
-/* ── FOOTER ── */
-footer{
-  background:var(--brown);color:rgba(255,255,255,.55);
-  text-align:center;padding:24px 16px;font-size:13px;
-}
-footer a{color:rgba(255,255,255,.7);font-weight:600}
+    /* HIDDEN INPUT */
+    input[type="file"] { display: none; }
 
-/* ── TOAST ── */
-.toast{
-  position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
-  background:#1E0E04;color:#fff;padding:10px 18px;border-radius:12px;
-  font-size:13px;font-weight:500;z-index:600;display:none;
-  box-shadow:0 8px 24px rgba(0,0,0,.2);white-space:nowrap;
-}
-
-.menu-card--off{opacity:.55;background:rgba(255,255,255,.6)}
-.menu-card--off .mc-name{color:var(--muted)}
-.mc-price--off{color:var(--muted)!important}
-.avail-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;margin-top:6px}
-.avail-on{background:rgba(27,140,90,.09);border:1px solid rgba(27,140,90,.18);color:#136843}
-.avail-off{background:rgba(120,100,80,.07);border:1px solid rgba(120,100,80,.14);color:var(--muted)}
-.closed-tag{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
-.off-tag{font-size:18px;color:rgba(120,100,80,.3);font-weight:300}
-
-/* ── CLOSED BANNER ── */
-.closed-banner{
-  display:flex;align-items:flex-start;gap:14px;
-  padding:18px 20px;border-radius:var(--rLg);
-  background:linear-gradient(135deg,#2C1810,#4a2316);
-  border:1px solid rgba(232,97,26,.25);
-  margin-bottom:24px;
-}
-.cb-icon{font-size:32px;line-height:1;flex:0 0 auto;margin-top:2px}
-.cb-title{font-family:var(--display);font-size:18px;font-weight:700;color:#fff;margin-bottom:4px}
-.cb-sub{font-size:13px;color:rgba(255,255,255,.6);line-height:1.6}
-.cb-wa{
-  display:inline-flex;align-items:center;gap:6px;margin-top:12px;
-  padding:9px 18px;border-radius:99px;border:none;
-  background:#25D366;color:#fff;font-size:13px;font-weight:700;
-  font-family:var(--font);cursor:pointer;text-decoration:none;
-  box-shadow:0 4px 14px rgba(37,211,102,.28);transition:all .18s;
-}
-.cb-wa:hover{background:#1db954;transform:translateY(-1px)}
-
-/* ── PAYMENT STEP (inside cart modal after order) ── */
-.pay-step{padding:4px 0}
-.pay-step-title{font-family:var(--display);font-size:17px;font-weight:700;color:var(--brown);margin-bottom:4px}
-.pay-step-sub{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5}
-.pay-qr-wrap{
-  width:160px;height:160px;background:#fff;border-radius:14px;
-  border:1px solid var(--border);padding:10px;
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 14px;box-shadow:0 4px 14px rgba(44,24,16,.08);
-}
-.pay-qr-wrap img{width:100%;height:100%;object-fit:contain;border-radius:8px}
-.pay-upi{
-  font-family:monospace;font-size:13px;font-weight:700;
-  background:rgba(232,97,26,.07);border:1px solid rgba(232,97,26,.16);
-  color:var(--orange);padding:7px 16px;border-radius:99px;
-  display:inline-block;margin-bottom:16px;cursor:pointer;
-  transition:background .15s;
-}
-.pay-upi:hover{background:rgba(232,97,26,.12)}
-.pay-actions{display:grid;gap:10px}
-.pay-done-btn{
-  width:100%;padding:13px;border-radius:14px;border:none;
-  background:linear-gradient(135deg,#25D366,#1db954);
-  color:#fff;font-weight:700;font-size:14px;font-family:var(--font);
-  box-shadow:0 6px 18px rgba(37,211,102,.24);transition:all .2s;
-}
-.pay-done-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(37,211,102,.34)}
-.pay-cod-note{
-  text-align:center;padding:12px;border-radius:var(--r);
-  background:rgba(44,24,16,.04);border:1px solid var(--border);
-  font-size:13px;color:var(--muted);line-height:1.5;
-}
-
-/* ── FLOATING WA ── */
-.wa-fab{position:fixed;bottom:22px;right:20px;z-index:300;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#25D366,#1db954);box-shadow:0 6px 24px rgba(37,211,102,.45);display:flex;align-items:center;justify-content:center;font-size:26px;transition:all .2s;text-decoration:none}
-.wa-fab:hover{transform:scale(1.08);box-shadow:0 8px 30px rgba(37,211,102,.55)}
-
-/* ── RESPONSIVE ── */
-@media(max-width:640px){
-  .header-text .subtitle{display:none}
-  .header-btns .btn{padding:8px 12px;font-size:12px;gap:5px}
-  .header-text h1{font-size:17px}
-  .form-row{grid-template-columns:1fr}
-  .modal-overlay{padding:0}
-  .modal{width:100%;max-height:100vh;border-radius:22px 22px 0 0}
-  .party-emoji{display:none}
-  .section-title{font-size:22px}
-}
-@media(max-width:400px){
-  .header-btns .btn span,.header-btns .btn-wa{font-size:0}
-  .header-btns .btn{padding:8px 10px}
-}
-</style>
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav ul { gap: 1rem; }
+      .hero-title { font-size: 2rem; }
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .news-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
-<header>
-  <div class="header-inner">
-    <div class="header-brand">
-      <div class="logo-wrap" id="logoWrap">
-        <img src="logo.png" alt="TasteHub" onerror="this.remove();document.getElementById('logoWrap').innerHTML='<div class=logo-fallback>TH</div>'">
-      </div>
-      <div class="header-text">
-        <h1>TasteHub 🍽</h1>
-        <div class="subtitle">Fresh homemade food · Kannuru</div>
-      </div>
-    </div>
-    <div class="header-btns">
-      <a class="btn btn-wa" href="https://chat.whatsapp.com/KL7nnhmc2nbIgSyfYQBkv5" target="_blank">
-        💬 Join WhatsApp
-      </a>
-      <a class="btn btn-outline" href="party.html">
-        🎉 Party & Subscription
-      </a>
-      <a class="btn btn-primary" href="admin.html">
-        ⚙️ Admin
-      </a>
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">DigiCafe</div>
+  <ul>
+    <li><a onclick="showPage('home')" data-p="home" class="active">Home</a></li>
+    <li><a onclick="showPage('news')" data-p="news">News</a></li>
+    <li><a onclick="showPage('assistance')" data-p="assistance">Digital Assistance</a></li>
+    <li><a onclick="showPage('auth')" data-p="auth" id="auth-btn">Log In</a></li>
+  </ul>
+</nav>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home" style="padding-top:68px">
+  <div class="hero">
+    <h1 class="hero-title">India's #1 <span class="g-text">AI-Powered</span> Tax & Compliance Platform</h1>
+    <p class="hero-subtitle">Simplify your business compliance with expert guidance and automated services</p>
+    <div class="hero-buttons">
+      <button class="btn btn-primary" onclick="showPage('auth')">Start Free</button>
+      <button class="btn btn-secondary">Explore Services</button>
     </div>
   </div>
-</header>
 
-
-
-<!-- ── MAIN CONTENT ── -->
-<div class="wrap">
-
-  <!-- MENU -->
-  <section class="section" id="menu-section">
-    <div class="section-label">Today's Menu</div>
-    <div class="section-title">What would you like?</div>
-    <p class="section-sub">100% vegetarian · Made fresh daily · Delivered nearby</p>
-
-    <div class="tabs-wrap" id="tabs"></div>
-
-    <!-- ORDER TIMINGS under tabs -->
-    <div class="timing-row">
-      <span class="timing-row-label">⏰ Order by:</span>
-      <div class="timing-items" id="timingChips"></div>
+  <div class="c">
+    <div class="sh">
+      <h2>DigiCafe <span class="g-text">Services</span></h2>
+      <p>Professional compliance services across India</p>
     </div>
-
-    <div class="status-banner" id="statusBanner">
-      <span class="sb-icon">❌</span>
-      <span id="statusText">Ordering is currently closed for this meal.</span>
-    </div>
-
-    <div class="menu-grid" id="menuGrid"></div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- PARTY CTA -->
-  <section class="section">
-    <div class="party-card">
-      <div class="party-text">
-        <h3>Planning a Party? 🎊</h3>
-        <p>Bulk orders, event catering, and monthly subscriptions available. We serve 10 to 500+ guests with fresh homemade food.</p>
-        <div style="margin-top:16px">
-          <a class="btn btn-primary" href="party.html" style="display:inline-flex">View Party & Plans →</a>
-        </div>
-      </div>
-      <div class="party-emoji">🎉</div>
-    </div>
-  </section>
-
-  <!-- SNACKS CTA -->
-  <section class="section" style="padding-top:0">
-    <div class="snacks-cta-card">
-      <div class="snacks-cta-left">
-        <div class="snacks-cta-label">🏠 Made In Our Kitchen</div>
-        <h3>TasteHub Homemade Snacks 🥨</h3>
-        <p>Our very own recipe — Masala Peanuts, Ratlami Sev, Charkha Mixture & more. Every batch made fresh by us with pure peanut oil and zero preservatives.</p>
-        <div class="snacks-pills">
-          <span>👩‍🍳 Our Own Recipe</span>
-          <span>🌿 No Preservatives</span>
-          <span>🥜 Pure Peanut Oil</span>
-          <span>🔥 10% OFF Now</span>
-          <span>🎁 Gift Packs Available</span>
-        </div>
-        <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
-          <a class="btn btn-primary" href="snacks.html" style="display:inline-flex">🥨 Order Our Snacks →</a>
-          <a class="btn btn-outline snacks-wa-btn" href="https://chat.whatsapp.com/KL7nnhmc2nbIgSyfYQBkv5" target="_blank" style="display:inline-flex">💬 Ask on WhatsApp</a>
-        </div>
-      </div>
-      <div class="snacks-emojis">
-        <div class="se-row"><span>🥜</span><span>🌾</span></div>
-        <div class="se-row"><span>🌶</span><span>🎡</span></div>
-      </div>
-    </div>
-  </section>
-
-</div><!-- /wrap -->
-
-<!-- ── SUBSCRIPTION ── -->
-<section class="sub-section" id="subscribe">
-  <div class="wrap">
-    <div class="section-label">Meal Plans</div>
-    <div class="section-title">Subscribe & Save</div>
-    <p class="section-sub">Consistent, fresh, home-cooked meals — every week or every month.</p>
-    <div class="sub-grid" id="subGrid"></div>
+    <div class="svc-grid" id="svc-home"></div>
   </div>
-</section>
 
-<!-- ── REVIEWS SECTION ── -->
-<section class="reviews-section">
-  <div class="wrap">
-    <div class="section-label">Customer Love</div>
-    <div class="section-title">What Our Customers Say ⭐</div>
-    <p class="section-sub">Real reviews from our happy customers on Google Business</p>
-
-    <div class="reviews-grid">
-
-      <div class="review-card">
-        <div class="rc-top">
-          <div class="rc-avatar">S</div>
-          <div><div class="rc-name">Sanket Kumar</div><div class="rc-time">27 weeks ago</div></div>
-        </div>
-        <div class="rc-stars">★★★★★</div>
-        <div class="rc-text">"Absolutely amazing home-cooked vegetarian food! Each dish tasted fresh, authentic, and full of flavor. You can truly feel the love and care put into the cooking — it reminded me of a warm, comforting homemade meal. Healthy, hygienic, and perfectly balanced!"</div>
-        <div style="margin-top:10px;font-size:11.5px;color:var(--muted)">🍽 Food 5/5 · Service 5/5 · Ambience 5/5</div>
-        <span class="rc-tag">✅ Verified Purchase</span>
-      </div>
-
-      <div class="review-card">
-        <div class="rc-top">
-          <div class="rc-avatar">A</div>
-          <div><div class="rc-name">Ashok Sekharan</div><div class="rc-time">43 weeks ago</div></div>
-        </div>
-        <div class="rc-stars">★★★★★</div>
-        <div class="rc-text">"Amazing food quantity and quality management.. very cool packing.. tasty paneer kadhai and chapatis.. best food ever one can hope for!"</div>
-        <div style="margin-top:10px;font-size:11.5px;color:var(--muted)">🍽 Food 5/5 · Service 4/5 · Ambience 4/5</div>
-        <span class="rc-tag">✅ Verified Purchase</span>
-      </div>
-
-      <div class="review-card">
-        <div class="rc-top">
-          <div class="rc-avatar">O</div>
-          <div><div class="rc-name">Oli Gupta</div><div class="rc-time">43 weeks ago · Local Guide</div></div>
-        </div>
-        <div class="rc-stars">★★★★★</div>
-        <div class="rc-text">"Neha is a wonderful person. She adds that flavor of simplicity and warmth to her cuisines as well."</div>
-        <div style="margin-top:10px;font-size:11.5px;color:var(--muted)">🍽 Food 5/5 · Service 5/5 · Ambience 5/5</div>
-        <span class="rc-tag">✅ Local Guide</span>
-      </div>
-
-      <div class="review-card">
-        <div class="rc-top">
-          <div class="rc-avatar">P</div>
-          <div><div class="rc-name">Pratiyush Mishra</div><div class="rc-time">14 weeks ago</div></div>
-        </div>
-        <div class="rc-stars">★★★★★</div>
-        <div class="rc-text">"Very hygienic and food tastes good."</div>
-        <span class="rc-tag">✅ Verified Purchase</span>
-      </div>
-
-      <div class="review-card">
-        <div class="rc-top">
-          <div class="rc-avatar">M</div>
-          <div><div class="rc-name">Meena Pathak</div><div class="rc-time">43 weeks ago</div></div>
-        </div>
-        <div class="rc-stars">★★★★★</div>
-        <div class="rc-text">"Fresh, wholesome and tasty homemade vegetarian meals. Truly made with love and care every day!"</div>
-        <span class="rc-tag">✅ Verified Purchase</span>
-      </div>
-
-      <div class="review-card">
-        <div class="rc-top">
-          <div class="rc-avatar">J</div>
-          <div><div class="rc-name">Jyoti Jha</div><div class="rc-time">44 weeks ago</div></div>
-        </div>
-        <div class="rc-stars">★★★★★</div>
-        <div class="rc-text">"Delighted with the fresh homemade vegetarian meals from TasteHub. Highly recommended for anyone who loves real, soulful food!"</div>
-        <span class="rc-tag">✅ Verified Purchase</span>
-      </div>
-
+  <div class="c" style="margin-bottom:3rem">
+    <div class="sh">
+      <h2>Latest <span class="g-text">News</span></h2>
+      <p>Stay updated with compliance and business news</p>
     </div>
-
-    <!-- QR + CTA -->
-    <div class="review-cta">
-      <div class="review-qr-wrap">
-        <img src="google-review-qr.png" alt="Google Review QR" onerror="this.parentElement.style.display='none'">
-      </div>
-      <div class="review-cta-text">
-        <h4>Enjoyed our food? 🙏</h4>
-        <p>Scan the QR or tap below to leave us a Google review. It takes just 30 seconds and means the world to us!</p>
-        <a class="google-btn" href="https://g.page/r/CdP5HqjumrJHEBM/review" target="_blank">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Rate us on Google
-        </a>
-      </div>
-    </div>
+    <div class="news-grid" id="news-home"></div>
   </div>
-</section>
 
-<!-- ── FOOTER ── -->
-<footer>
-  <p>© 2026 <strong style="color:rgba(255,255,255,.8)">TasteHub 🍽</strong> · Kannuru, Bengaluru</p>
-  <p style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap">
-    <a href="https://wa.me/919632035612" target="_blank">💬 Contact Us</a>
-    <a href="https://g.page/r/CdP5HqjumrJHEBM/review" target="_blank">⭐ Leave a Review</a>
-  </p>
-</footer>
-
-<!-- ── FLOATING CART ── -->
-<button class="cart-fab" id="cartFab" onclick="openCart()">
-  🛒 View Cart
-  <span class="badge" id="cartBadge">0</span>
-</button>
-
-<!-- ── CART MODAL ── -->
-<div class="modal-overlay" id="cartModal" onclick="e=>e.target.id==='cartModal'&&closeCart()">
-  <div class="modal">
-    <div class="modal-head">
-      <h3>🛒 Your Cart</h3>
-      <button class="close-btn" onclick="closeCart()">✕</button>
+  <div class="c" style="margin-bottom:3rem">
+    <div style="background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r2);padding:3rem;text-align:center">
+      <h3 style="font-size:1.5rem;font-weight:800;margin-bottom:1rem">Need Help?</h3>
+      <p style="color:var(--txt2);margin-bottom:1.5rem">Get instant support on WhatsApp</p>
+      <a href="https://wa.me/918539979271" target="_blank" class="btn btn-primary">
+        <i class="fab fa-whatsapp"></i> WhatsApp: +91 85399 79271
+      </a>
     </div>
-    <div class="modal-body" id="cartModalBody"></div>
   </div>
 </div>
 
-<!-- FLOATING WA -->
-<a class="wa-fab" href="https://wa.me/919632035612" target="_blank" title="Chat on WhatsApp">💬</a>
+<!-- NEWS PAGE -->
+<div class="page" id="page-news" style="padding:80px 20px">
+  <div class="c">
+    <div class="sh">
+      <h2>Tax & <span class="g-text">Compliance News</span></h2>
+      <p>Latest updates on Income Tax, GST, Companies Act, and Government notifications</p>
+    </div>
+    <div class="news-grid" id="news-full"></div>
+  </div>
+</div>
+
+<!-- DIGITAL ASSISTANCE PAGE -->
+<div class="page" id="page-assistance" style="padding:80px 20px">
+  <div class="c">
+    <div class="sh">
+      <h2>Digital <span class="g-text">Assistance</span></h2>
+      <p>Get expert help whenever you need it</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <div class="svc-icon">💰</div>
+        <div class="svc-name">Tax & Compliance Guidance</div>
+        <div style="color:var(--txt2);font-size:.9rem">Expert advice on ITR, GST, and compliance matters</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🏛️</div>
+        <div class="svc-name">Government Services</div>
+        <div style="color:var(--txt2);font-size:.9rem">Navigate government registrations and filings</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">💬</div>
+        <div class="svc-name">WhatsApp Support</div>
+        <div style="color:var(--txt2);font-size:.9rem">Real-time support on WhatsApp</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">📄</div>
+        <div class="svc-name">Document Assistance</div>
+        <div style="color:var(--txt2);font-size:.9rem">Help with document preparation and verification</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">👨‍💼</div>
+        <div class="svc-name">Expert Consultation</div>
+        <div style="color:var(--txt2);font-size:.9rem">One-on-one consultation with compliance experts</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">📞</div>
+        <div class="svc-name">Phone Support</div>
+        <div style="color:var(--txt2);font-size:.9rem">Dedicated phone support for urgent matters</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH PAGE -->
+<div class="page" id="page-auth" style="padding:80px 20px">
+  <div class="c" style="max-width:500px">
+    <div class="sh">
+      <h2><span class="g-text">Create Account</span></h2>
+      <p>Sign up to get started</p>
+    </div>
+
+    <div id="login-form" style="background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r2);padding:2rem">
+      <div style="margin-bottom:1.5rem">
+        <label style="display:block;margin-bottom:.5rem;font-weight:600">Email</label>
+        <input type="email" id="signup-email" placeholder="your@email.com" style="width:100%;padding:.75rem;border:1px solid var(--bdr);border-radius:var(--r);background:var(--bg3);color:var(--txt)">
+      </div>
+
+      <div style="margin-bottom:1.5rem">
+        <label style="display:block;margin-bottom:.5rem;font-weight:600">Password</label>
+        <input type="password" id="signup-password" placeholder="••••••••" style="width:100%;padding:.75rem;border:1px solid var(--bdr);border-radius:var(--r);background:var(--bg3);color:var(--txt)">
+      </div>
+
+      <div style="margin-bottom:1.5rem">
+        <label style="display:block;margin-bottom:.5rem;font-weight:600">Full Name</label>
+        <input type="text" id="signup-name" placeholder="Your Name" style="width:100%;padding:.75rem;border:1px solid var(--bdr);border-radius:var(--r);background:var(--bg3);color:var(--txt)">
+      </div>
+
+      <button class="btn btn-primary" onclick="signupUser()" style="width:100%;margin-bottom:1rem">Create Account</button>
+      <button class="btn btn-secondary" onclick="googleSignup()" style="width:100%"><i class="fab fa-google"></i> Sign up with Google</button>
+    </div>
+
+    <div style="text-align:center;margin-top:1rem">
+      <p style="color:var(--txt2)">Already have an account? <a onclick="loginUser()" style="color:var(--blue);cursor:pointer;text-decoration:underline">Log In</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD PAGE -->
+<div class="page" id="page-dashboard" style="padding:80px 20px">
+  <div class="c">
+    <div class="dashboard">
+      <div class="client-info">
+        <div class="avatar" id="user-avatar">VK</div>
+        <div>
+          <div style="font-size:1.5rem;font-weight:800" id="user-name">Welcome</div>
+          <button class="btn btn-secondary" onclick="logoutUser()" style="margin-top:.5rem">Log Out</button>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="sidebar">
+          <div class="sidebar-item active">📊 Overview</div>
+          <div class="sidebar-item">📝 My Applications</div>
+          <div class="sidebar-item">📄 Documents</div>
+          <div class="sidebar-item">⚙️ Settings</div>
+        </div>
+
+        <div>
+          <h3 style="font-size:1.5rem;font-weight:800;margin-bottom:1rem">DigiCafe Services Available for You</h3>
+          <div class="svc-grid" id="dashboard-services"></div>
+
+          <h3 style="font-size:1.5rem;font-weight:800;margin:2rem 0 1rem">My Applications</h3>
+          <table class="table" id="applications-table">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody id="applications-body">
+              <tr>
+                <td colspan="4" style="text-align:center;color:var(--txt3)">No applications yet</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 style="font-size:1.5rem;font-weight:800;margin:2rem 0 1rem">My Documents & Files</h3>
+          <div class="upload-card" onclick="triggerFileUpload()">
+            <i class="fas fa-cloud-upload-alt" style="font-size:2rem;margin-bottom:1rem;color:var(--blue)"></i>
+            <div style="font-weight:600;margin-bottom:.5rem">Upload Documents</div>
+            <div style="color:var(--txt3);font-size:.9rem">Drag & drop or click to select files</div>
+          </div>
+          <input type="file" id="file-input" multiple onchange="handleFileUpload(event)">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>File Name</th>
+                <th>Size</th>
+                <th>Uploaded</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="files-body">
+              <tr>
+                <td colspan="4" style="text-align:center;color:var(--txt3)">No files uploaded</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- TOAST -->
-<div class="toast" id="toast"></div>
+<div id="toast"></div>
 
 <script>
-// ── CONFIG ──
-const WA = "919632035612";
-const UPI_ID = "email.vikashpathak-1@okicici";
-
-// ── SET THIS TO true ON HOLIDAYS / CLOSED DAYS ──
-const SHOP_CLOSED = false;
-
-// ── MENU DATA — now loaded live from Google Sheets ──
-// Edit items anytime from admin.html — this page fetches the latest menu automatically.
-const SHEET_API = "https://script.google.com/macros/s/AKfycbyOFJ2Om_4EtBuYnWqmtUEFaDiZIGFQWlssXGYZ-B_MSJESygHr4JAXbjuhTYPKMqkf/exec";
-
-let MENU = {
-  breakfast: { label: "🌅 Breakfast", cutoff: 10, items: [] },
-  lunch: { label: "☀️ Lunch", cutoff: 14, items: [] },
-  snacks: { label: "🍿 Snacks", cutoff: 18, items: [] },
-  dinner: { label: "🌙 Dinner", cutoff: 21, items: [] }
+// ═══ FIREBASE CONFIG ═══
+const firebaseConfig = {
+  apiKey: "AIzaSyDcdR-ba5Lh-DfG-wuABRntQm1sSYSr3Kk",
+  authDomain: "digicafe-ee519.firebaseapp.com",
+  projectId: "digicafe-ee519",
+  storageBucket: "digicafe-ee519.appspot.com",
+  messagingSenderId: "582268562769",
+  appId: "1:582268562769:web:720288e24fd8de7166f770",
+  measurementId: "G-25T4WHH8X4"
 };
 
-async function loadMenuFromSheet() {
-  try {
-    const res = await fetch(SHEET_API);
-    const data = await res.json();
-    MENU = data;
-  } catch (err) {
-    console.error("Menu fetch failed, showing empty menu:", err);
-  }
-}
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-const SUBSCRIPTIONS = [
-  { icon: "🌅", name: "Breakfast Plan", weekly: 399, monthly: 1499, key: "Breakfast" },
-  { icon: "☀️", name: "Lunch Plan", weekly: 599, monthly: 2199, key: "Lunch" },
-  { icon: "🌙", name: "Dinner Plan", weekly: 599, monthly: 2199, key: "Dinner" },
-  { icon: "🍱", name: "Lunch + Dinner Plan", weekly: 999, monthly: 3499, key: "Lunch + Dinner" },
+// ═══ DATA ═══
+const services = [
+  {icon:'💰', name:'Income Tax (ITR)', price:'999'},
+  {icon:'📊', name:'GST Registration', price:'1999'},
+  {icon:'🏢', name:'Company Registration', price:'4999'},
+  {icon:'📋', name:'TDS Compliance', price:'1499'},
+  {icon:'™️', name:'Trademark Registration', price:'2999'},
+  {icon:'🔐', name:'Digital Signature (DSC)', price:'1299'},
+  {icon:'🚀', name:'MSME/Udyam Registration', price:'1499'},
+  {icon:'👤', name:'PAN/TAN/Aadhaar', price:'499'},
 ];
 
-// ── STATE ──
-let activeTab = "breakfast";
-const cart = new Map(); // key → { name, price, qty }
+const news = [
+  {title:'Ministry of Corporate Affairs Announces New Company Registration Guidelines',date:'22 Jul 2026',cat:'Ministry',desc:'New streamlined process for company registration launched. Expected processing time reduced from 7 days to 24 hours.'},
+  {title:'Digital India Initiative: 500 New Common Service Centers Inaugurated',date:'21 Jul 2026',cat:'Digital India',desc:'Government inaugurates 500 CSCs in rural areas. Free Wi-Fi and digital services now available.'},
+  {title:'MSME Registration Crosses 5 Crore Mark: Udyam Portal Success',date:'20 Jul 2026',cat:'MSME',desc:'Ministry announces 5 crore+ businesses registered. Government extends GST exemption.'},
+  {title:'Bangalore Startup Ecosystem Valued at $100 Billion',date:'19 Jul 2026',cat:'Local News',desc:'Bangalore tech industry shows strong growth with 12,000+ startups operating.'},
+  {title:'Stock Market Hits New Record: Sensex Crosses 85,000 Mark',date:'18 Jul 2026',cat:'Business',desc:'Indian stock markets show strong performance with auto and IT sectors leading.'},
+  {title:'GST Council Approves Changes: Tax Rate Modifications Effective August 2026',date:'17 Jul 2026',cat:'GST',desc:'New GST rate structure approved for 40+ commodities.'},
+  {title:'Ministry Launches Digital Rupee: Pilot Phase Complete',date:'16 Jul 2026',cat:'Digital India',desc:'RBI completes e-Rupee pilot testing. Full launch planned September 2026.'},
+  {title:'Union Budget 2026: Major Tax Changes Announced',date:'15 Jul 2026',cat:'Income Tax',desc:'Finance Ministry announces significant changes in tax slabs for FY 2026-27.'},
+  {title:'GST Rate on IT Services Revised Effective July 2026',date:'14 Jul 2026',cat:'GST',desc:'New GST rate structure for Information Technology services sector.'},
+  {title:'CBDT Updates ITR Schedules for AY 2026-27',date:'13 Jul 2026',cat:'Income Tax',desc:'New schedules released for Income Tax Returns filing.'},
+  {title:'GST Council Approves New Compliance Framework',date:'12 Jul 2026',cat:'GST',desc:'Streamlined procedures effective from 1st August 2026.'},
+  {title:'RBI Issues New Guidelines for Digital Payments',date:'11 Jul 2026',cat:'Income Tax',desc:'Updated rules on digital payment reporting and TDS applicability.'},
+  {title:'Company Law: Simplified Compliance Rules 2026',date:'10 Jul 2026',cat:'Ministry',desc:'Ministry releases simplified annual compliance procedures.'},
+  {title:'MSME Credit Guarantee Scheme Extended',date:'09 Jul 2026',cat:'MSME',desc:'50 lakh loans approved with guarantee coverage increased.'},
+  {title:'Startup India Registration Surges: 2.5 Lakh New Startups',date:'08 Jul 2026',cat:'Business',desc:'Record registrations with tech startups dominating.'},
+  {title:'National Digital Literacy Mission Reaches 2 Crore Citizens',date:'07 Jul 2026',cat:'Digital India',desc:'Digital literacy initiative covers rural and urban areas.'},
+  {title:'Bangalore Tech Park Expansion: New 500 Acre IT Hub Announced',date:'06 Jul 2026',cat:'Local News',desc:'White-field IT park development approved on Outer Ring Road.'},
+  {title:'Foreign Institutional Investors Increase India Investments by 22%',date:'05 Jul 2026',cat:'Business',desc:'FII inflow increases to $45 billion in H1 2026.'},
+  {title:'Income Tax Department Launches AI-Powered Compliance Portal',date:'04 Jul 2026',cat:'Income Tax',desc:'New digital platform for ITR filing and refund tracking.'},
+  {title:'Ministry of Commerce: India-UAE Trade Pact Boosts Exports',date:'03 Jul 2026',cat:'Business',desc:'40% tariff reduction on 500+ products for MSME.'},
+  {title:'Bengaluru Attracts 50% of India\'s VC Funding in H1 2026',date:'02 Jul 2026',cat:'Local News',desc:'Venture capital funding reaches $8.2 billion.'},
+  {title:'GST Compliance: Government Extends Deadline for August Filings',date:'01 Jul 2026',cat:'GST',desc:'GSTN announces deadline extension for technical upgrades.'},
+];
 
-// ── TIME UTILS ──
-function getHour() { return new Date().getHours(); }
-function isOpen(cutoff) { return getHour() < cutoff; }
-function cutoffLabel(cutoff) {
-  if (cutoff < 12) return `Before ${cutoff}:00 AM`;
-  if (cutoff === 12) return `Before 12:00 PM`;
-  return `Before ${cutoff - 12}:00 PM`;
+// ═══ RENDER FUNCTIONS ═══
+function renderServices(cont) {
+  if(!cont) return;
+  cont.innerHTML = services.map(s => `
+    <div class="svc-card">
+      <div class="svc-icon">${s.icon}</div>
+      <div class="svc-name">${s.name}</div>
+      <div class="svc-price">₹${s.price}+</div>
+    </div>
+  `).join('');
 }
 
-// ── TIMING CHIPS ──
-function renderTimingChips() {
-  const el = document.getElementById("timingChips");
-  const entries = [
-    { label: "Breakfast", cutoff: 11 },
-    { label: "Lunch", cutoff: 15 },
-    { label: "Snacks", cutoff: 19 },
-    { label: "Dinner", cutoff: 22 },
-  ];
-  el.innerHTML = entries.map(e => {
-    const open = isOpen(e.cutoff);
-    return `<span class="timing-chip ${open ? "open" : "closed"}">
-      ${open ? "✅" : "⏰"} ${e.label} ${cutoffLabel(e.cutoff)}
-    </span>`;
-  }).join("");
+function renderNews(cont) {
+  if(!cont) return;
+  cont.innerHTML = news.map(n => `
+    <div class="news-card">
+      <span class="n-cat">${n.cat}</span>
+      <div class="n-title">${n.title}</div>
+      <div class="n-desc">${n.desc}</div>
+      <div class="n-date"><i class="fas fa-calendar"></i> ${n.date}</div>
+    </div>
+  `).join('');
 }
 
-// ── TABS ──
-function renderTabs() {
-  const el = document.getElementById("tabs");
-  el.innerHTML = Object.entries(MENU).map(([key, val]) => `
-    <button class="tab-btn ${key === activeTab ? "active" : ""}" onclick="switchTab('${key}')">
-      ${val.label}
-    </button>
-  `).join("");
-}
-
-function switchTab(key) {
-  activeTab = key;
-  renderTabs();
-  renderMenu();
-}
-
-// ── MENU ──
-function renderMenu() {
-  const section = MENU[activeTab];
-  const windowOpen = isOpen(section.cutoff);
-  const banner = document.getElementById("statusBanner");
-  const statusText = document.getElementById("statusText");
-
-  if (!SHOP_CLOSED && !windowOpen) {
-    banner.classList.add("show");
-    statusText.textContent = `Ordering is closed. ${section.label.replace(/[^\w\s]/g, "").trim()} orders open before ${cutoffLabel(section.cutoff)}.`;
-  } else {
-    banner.classList.remove("show");
+// ═══ PAGE ROUTING ═══
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  const page = document.getElementById('page-' + p);
+  if(page) page.classList.add('active');
+  
+  document.querySelectorAll('nav a').forEach(x => x.classList.remove('active'));
+  document.querySelector(`[data-p="${p}"]`)?.classList.add('active');
+  
+  window.scrollTo(0, 0);
+  
+  if(p === 'news') {
+    const newsFull = document.getElementById('news-full');
+    if(newsFull) renderNews(newsFull);
   }
-
-  const grid = document.getElementById("menuGrid");
-  grid.innerHTML = section.items.map((item, idx) => {
-    const id = `${activeTab}:${idx}`;
-    const qty = cart.has(id) ? cart.get(id).qty : 0;
-    const isAvailable = item.available === true;
-    // can only order if shop is open, time window is open, and item is available today
-    const canOrder = !SHOP_CLOSED && windowOpen && isAvailable;
-
-    return `
-      <div class="menu-card ${!isAvailable ? 'menu-card--off' : ''}">
-        <div class="mc-left">
-          <div class="mc-top">
-            <span class="veg-dot"></span>
-            <div class="mc-name">${item.name}</div>
-          </div>
-          <div class="mc-price ${!isAvailable ? 'mc-price--off' : ''}">₹${item.price}</div>
-          ${isAvailable
-            ? `<span class="avail-badge avail-on"> Available Today</span>`
-            : `<span class="avail-badge avail-off">Not available today</span>`
-          }
-        </div>
-        <div class="mc-right">
-          ${canOrder
-            ? (qty > 0
-              ? `<div class="qty-ctrl">
-                  <button class="q-btn" onclick="changeQty('${id}','${item.name.replace(/'/g,"\\'")}',${item.price},-1)">−</button>
-                  <div class="q-num">${qty}</div>
-                  <button class="q-btn" onclick="changeQty('${id}','${item.name.replace(/'/g,"\\'")}',${item.price},1)">+</button>
-                </div>`
-              : `<button class="add-btn" onclick="changeQty('${id}','${item.name.replace(/'/g,"\\'")}',${item.price},1)">ADD</button>`)
-            : isAvailable
-              ? `<span class="closed-tag">${SHOP_CLOSED ? '🔒 Closed' : '⏰ Closed'}</span>`
-              : `<span class="off-tag">—</span>`
-          }
-        </div>
-      </div>`;
-  }).join("");
-}
-
-// ── CART ──
-function changeQty(id, name, price, delta) {
-  const cur = cart.has(id) ? cart.get(id).qty : 0;
-  const next = cur + delta;
-  if (next <= 0) cart.delete(id);
-  else cart.set(id, { name, price, qty: next });
-  renderMenu();
-  updateCartFab();
-  if (delta > 0) toast(`✅ ${name} added`);
-}
-
-function cartTotal() {
-  let total = 0, count = 0;
-  cart.forEach(v => { total += v.price * v.qty; count += v.qty; });
-  return { total, count };
-}
-
-function updateCartFab() {
-  const fab = document.getElementById("cartFab");
-  const badge = document.getElementById("cartBadge");
-  const { count, total } = cartTotal();
-  if (count > 0) {
-    fab.classList.add("show");
-    badge.textContent = count;
-    fab.querySelector("span:not(.badge)") && (fab.childNodes[0].textContent = `🛒 ₹${total} `);
-  } else {
-    fab.classList.remove("show");
+  
+  if(p === 'dashboard') {
+    renderServices(document.getElementById('dashboard-services'));
   }
 }
 
-function openCart() {
-  document.getElementById("cartModal").classList.add("open");
-  document.body.style.overflow = "hidden";
-  renderCartModal();
+// ═══ AUTH ═══
+function signupUser() {
+  const email = document.getElementById('signup-email').value;
+  const password = document.getElementById('signup-password').value;
+  const name = document.getElementById('signup-name').value;
+  
+  if(!email || !password || !name) {
+    showToast('Please fill all fields');
+    return;
+  }
+  
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(u => {
+      u.user.updateProfile({displayName: name});
+      showToast('✅ Account created! Welcome ' + name);
+      setTimeout(() => showDashboard(u.user), 500);
+    })
+    .catch(e => showToast('❌ ' + e.message));
 }
-function closeCart() {
-  document.getElementById("cartModal").classList.remove("open");
-  document.body.style.overflow = "";
+
+function googleSignup() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider)
+    .then(result => {
+      showToast('✅ Welcome ' + result.user.displayName);
+      showDashboard(result.user);
+    })
+    .catch(e => showToast('❌ ' + e.message));
 }
-document.getElementById("cartModal").addEventListener("click", e => {
-  if (e.target.id === "cartModal") closeCart();
+
+function loginUser() {
+  const email = prompt('Email:');
+  if(!email) return;
+  const password = prompt('Password:');
+  if(!password) return;
+  
+  auth.signInWithEmailAndPassword(email, password)
+    .then(u => {
+      showToast('✅ Welcome back!');
+      showDashboard(u.user);
+    })
+    .catch(e => showToast('❌ ' + e.message));
+}
+
+function logoutUser() {
+  auth.signOut().then(() => {
+    showToast('👋 Logged out');
+    showPage('home');
+    document.getElementById('auth-btn').textContent = 'Log In';
+  });
+}
+
+function showDashboard(user) {
+  document.getElementById('user-name').textContent = 'Welcome, ' + (user.displayName || user.email);
+  document.getElementById('user-avatar').textContent = (user.displayName || user.email).charAt(0).toUpperCase();
+  document.getElementById('auth-btn').textContent = 'Dashboard';
+  document.getElementById('auth-btn').onclick = () => showPage('dashboard');
+  showPage('dashboard');
+}
+
+// ═══ FILE UPLOAD ═══
+function triggerFileUpload() {
+  document.getElementById('file-input').click();
+}
+
+function handleFileUpload(event) {
+  const files = event.target.files;
+  let html = '';
+  
+  for(let f of files) {
+    html += `
+      <tr>
+        <td>${f.name}</td>
+        <td>${(f.size / 1024).toFixed(2)} KB</td>
+        <td>${new Date().toLocaleDateString()}</td>
+        <td><button class="btn btn-secondary" onclick="deleteFile(this)">Delete</button></td>
+      </tr>
+    `;
+  }
+  
+  document.getElementById('files-body').innerHTML = html;
+  showToast('✅ ' + files.length + ' file(s) uploaded');
+}
+
+function deleteFile(btn) {
+  btn.parentElement.parentElement.remove();
+  showToast('🗑️ File deleted');
+}
+
+// ═══ TOAST ═══
+function showToast(m) {
+  const t = document.getElementById('toast');
+  t.textContent = m;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ═══ INIT ═══
+window.addEventListener('load', () => {
+  renderServices(document.getElementById('svc-home'));
+  renderNews(document.getElementById('news-home'));
+  
+  auth.onAuthStateChanged(user => {
+    if(user) {
+      showDashboard(user);
+    }
+  });
 });
-
-function renderCartModal() {
-  const body = document.getElementById("cartModalBody");
-  const { total, count } = cartTotal();
-
-  if (count === 0) {
-    body.innerHTML = `<div class="empty-cart">
-      <div class="ec-icon">🛒</div>
-      <p>Your cart is empty</p>
-      <p style="font-size:12px;margin-top:4px">Add some delicious items from the menu!</p>
-    </div>`;
-    return;
-  }
-
-  const lines = Array.from(cart.values()).map(v =>
-    `<div class="cart-item">
-      <div>
-        <div class="ci-name">${v.name}</div>
-        <div class="ci-price">₹${v.price} × ${v.qty} = ₹${v.price * v.qty}</div>
-      </div>
-      <div class="qty-ctrl">
-        <button class="q-btn" onclick="changeCartQty('${[...cart.entries()].find(([,val])=>val===v)?.[0]}',${v.price},-1)">−</button>
-        <div class="q-num">${v.qty}</div>
-        <button class="q-btn" onclick="changeCartQty('${[...cart.entries()].find(([,val])=>val===v)?.[0]}',${v.price},1)">+</button>
-      </div>
-    </div>`
-  ).join("");
-
-  body.innerHTML = `
-    <div class="cart-list">${lines}</div>
-    <div class="cart-total">
-      <span class="ct-label">Order Total</span>
-      <span class="ct-amt">₹${total}</span>
-    </div>
-    <div class="order-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label>Your Name *</label>
-          <input id="custName" placeholder="Full name" />
-        </div>
-        <div class="form-group">
-          <label>Phone *</label>
-          <input id="custPhone" placeholder="10-digit number" inputmode="numeric" />
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Apartment / Flat *</label>
-          <input id="custFlat" placeholder="Block / Flat no." />
-        </div>
-        <div class="form-group">
-          <label>Payment Method</label>
-          <select id="custPay">
-            <option>UPI</option>
-            <option>Cash on Delivery</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Notes (optional)</label>
-        <input id="custNotes" placeholder="Less spicy, no onion, etc." />
-      </div>
-    </div>
-    <button class="order-btn" onclick="placeOrder()">✅ Place Order on WhatsApp</button>
-  `;
-}
-
-function changeCartQty(id, price, delta) {
-  if (!cart.has(id)) return;
-  const v = cart.get(id);
-  const next = v.qty + delta;
-  if (next <= 0) cart.delete(id);
-  else cart.set(id, { ...v, qty: next });
-  renderMenu();
-  updateCartFab();
-  renderCartModal();
-}
-
-function placeOrder() {
-  const name = document.getElementById("custName")?.value.trim();
-  const phone = document.getElementById("custPhone")?.value.trim();
-  const flat = document.getElementById("custFlat")?.value.trim();
-  const pay = document.getElementById("custPay")?.value;
-  const notes = document.getElementById("custNotes")?.value.trim();
-
-  if (!name || !phone || !flat) {
-    toast("⚠️ Please fill Name, Phone & Flat");
-    return;
-  }
-
-  const { total } = cartTotal();
-  const itemLines = Array.from(cart.values())
-    .map(v => `• ${v.name} × ${v.qty} = ₹${v.price * v.qty}`)
-    .join("\n");
-
-  const orderId = `TH-${Date.now().toString().slice(-6)}`;
-  let msg = `Hi TasteHub 🍽\n\n*New Order — ${orderId}*\n`;
-  msg += `Name: ${name}\nPhone: ${phone}\nFlat: ${flat}\nPayment: ${pay}\n\n`;
-  msg += `*Items:*\n${itemLines}\n\n*Total: ₹${total}*`;
-  if (notes) msg += `\n\nNotes: ${notes}`;
-  msg += `\n\nPlease confirm my order. Thank you! 🙏`;
-
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
-
-  // Show payment step inside the modal
-  showPaymentStep(pay, total, orderId);
-}
-
-function showPaymentStep(payMethod, total, orderId) {
-  const body = document.getElementById("cartModalBody");
-  const isUPI = payMethod === "UPI";
-
-  body.innerHTML = `
-    <div class="pay-step">
-      <div style="text-align:center;margin-bottom:18px">
-        <div style="font-size:40px;margin-bottom:8px">🎉</div>
-        <div class="pay-step-title">Order sent on WhatsApp!</div>
-        <div class="pay-step-sub">Order ID: <b>${orderId}</b> · Total: <b>₹${total}</b><br>
-        ${isUPI ? "Now complete your payment below." : "Pay cash at delivery. You're all set!"}</div>
-      </div>
-
-      ${isUPI ? `
-        <div style="text-align:center">
-          <div class="pay-qr-wrap">
-            <img src="upi-qr.png" alt="UPI QR" onerror="this.parentElement.innerHTML='<div style=font-size:12px;color:#7A5C4A;text-align:center;line-height:1.5>Upload<br><b>upi-qr.png</b></div>'">
-          </div>
-          <div class="pay-upi" onclick="copyUPI()">📋 ${UPI_ID}</div>
-          <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Tap to copy · Scan QR to pay ₹${total}</div>
-        </div>
-        <div class="pay-actions">
-          <button class="pay-done-btn" onclick="paidOnWhatsApp()">✅ I Have Paid — Notify on WhatsApp</button>
-        </div>
-      ` : `
-        <div class="pay-cod-note">
-          💵 <b>Cash on Delivery</b><br>
-          Keep ₹${total} ready at the time of delivery.<br>
-          Your order has been sent to TasteHub for confirmation.
-        </div>
-      `}
-
-      <button onclick="closeCart();cart.clear();updateCartFab();renderMenu();"
-        style="width:100%;margin-top:12px;padding:11px;border-radius:12px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-weight:600;font-size:13px;font-family:var(--font)">
-        Done — Back to Menu
-      </button>
-    </div>`;
-}
-
-function copyUPI() {
-  navigator.clipboard.writeText(UPI_ID).then(() => toast("✅ UPI ID copied!")).catch(() => toast("Copy failed"));
-}
-
-// ── SUBSCRIPTIONS ──
-function renderSubscriptions() {
-  const el = document.getElementById("subGrid");
-  el.innerHTML = SUBSCRIPTIONS.map(s => `
-    <div class="sub-card">
-      <div class="sub-icon">${s.icon}</div>
-      <div class="sub-name">${s.name}</div>
-      <div class="sub-prices">
-        <div class="sub-price-row">
-          <span class="sp-label">Weekly (5 Days)</span>
-          <span class="sp-price">₹${s.weekly}</span>
-        </div>
-        <div class="sub-price-row">
-          <span class="sp-label">Monthly (20 Days)</span>
-          <span class="sp-price">₹${s.monthly}</span>
-        </div>
-      </div>
-      <button class="sub-btn" onclick="subscribeWA('${s.name}')">Subscribe on WhatsApp →</button>
-    </div>
-  `).join("");
-}
-
-function subscribeWA(planName) {
-  const msg = `Hi TasteHub 🍽\n\nI'd like to subscribe to the *${planName}*.\nPlease share the details and confirm availability. Thank you!`;
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
-}
-
-// ── PAYMENT ──
-function paidOnWhatsApp() {
-  const { total } = cartTotal();
-  const msg = `Hi TasteHub 🍽\n\nI have completed the UPI payment of *₹${total}*. 💳\nUPI ID: ${UPI_ID}\n\nKindly confirm my order. Thank you!`;
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
-}
-
-// ── TOAST ──
-function toast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.style.display = "block";
-  clearTimeout(t._t);
-  t._t = setTimeout(() => t.style.display = "none", 2200);
-}
-
-// ── CART FAB TEXT FIX ──
-function updateCartFabLabel() {
-  const fab = document.getElementById("cartFab");
-  const { count, total } = cartTotal();
-  if (count > 0) {
-    fab.classList.add("show");
-    fab.innerHTML = `🛒 ₹${total} <span class="badge">${count}</span>`;
-    fab.onclick = openCart;
-  } else {
-    fab.classList.remove("show");
-  }
-}
-
-// override updateCartFab to use better label
-function updateCartFab() { updateCartFabLabel(); }
-
-// ── INIT ──
-async function init() {
-  await loadMenuFromSheet();
-  renderTimingChips();
-  renderTabs();
-  renderMenu();
-  renderSubscriptions();
-
-  // auto-select open tab
-  const hour = getHour();
-  if (hour >= 9 && hour < 14) switchTab("lunch");
-  else if (hour >= 13 && hour < 18) switchTab("snacks");
-  else if (hour >= 15) switchTab("dinner");
-
-  // refresh chips every minute
-  setInterval(renderTimingChips, 60000);
-
-  // refresh menu from sheet every 2 minutes so admin changes show up without reload
-  setInterval(async () => {
-    await loadMenuFromSheet();
-    renderTabs();
-    renderMenu();
-  }, 120000);
-}
-
-init();
 </script>
+
 </body>
 </html>
