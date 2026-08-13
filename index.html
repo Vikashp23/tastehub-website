@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>TasteHub 🍽 | Fresh Homemade Food · Kannuru</title>
 <meta name="description" content="TasteHub – Fresh homemade veg meals near Kannuru. Order breakfast, lunch, snacks & dinner. Subscribe for monthly plans."/>
+
+<!-- ── PWA: makes this website installable as an app ── -->
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#E8611A"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="TasteHub"/>
+<link rel="apple-touch-icon" href="icons/icon-192.png"/>
+<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png"/>
+<link rel="apple-touch-icon" sizes="144x144" href="icons/icon-144.png"/>
+<link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128.png"/>
+<!-- ────────────────────────────────────────────────── -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 /* ── RESET & VARS ── */
@@ -131,6 +144,14 @@ header{
   transition:box-shadow .2s,border-color .2s;
 }
 .menu-card:hover{box-shadow:var(--shadow);border-color:rgba(44,24,16,.15)}
+/* ── food photo thumbnail ── */
+.mc-img{
+  width:72px;height:72px;flex:0 0 72px;border-radius:12px;overflow:hidden;
+  background:linear-gradient(135deg,#FFF0DC,#FFE4C0);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;margin-right:4px;border:1px solid var(--border);
+}
+.mc-img img{width:100%;height:100%;object-fit:cover;display:block}
 .mc-left{min-width:0;flex:1}
 .mc-top{display:flex;align-items:center;gap:8px;margin-bottom:2px}
 .veg-dot{
@@ -769,8 +790,16 @@ function renderMenu() {
     // can only order if shop is open, time window is open, and item is available today
     const canOrder = !SHOP_CLOSED && windowOpen && isAvailable;
 
+    // emoji fallback per category when no photo
+    const catEmoji = {breakfast:'🍳',lunch:'🍱',snacks:'🍿',dinner:'🌙'};
+    const imgHTML = item.img
+      ? `<div class="mc-img"><img src="${item.img}" alt="${item.name}"
+           onerror="this.parentElement.innerHTML='${catEmoji[activeTab]||'🍽'}'"></div>`
+      : `<div class="mc-img">${catEmoji[activeTab]||'🍽'}</div>`;
+
     return `
       <div class="menu-card ${!isAvailable ? 'menu-card--off' : ''}">
+        ${imgHTML}
         <div class="mc-left">
           <div class="mc-top">
             <span class="veg-dot"></span>
@@ -887,11 +916,36 @@ function renderCartModal() {
           <input id="custPhone" placeholder="10-digit number" inputmode="numeric" />
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Apartment / Flat *</label>
-          <input id="custFlat" placeholder="Block / Flat no." />
+      <div class="form-group">
+        <label>Society / Apartment Building *</label>
+        <select id="custSociety" onchange="updateDeliveryFee()">
+          <option value="">-- Select your society --</option>
+          <option value="Kolte Patil Raaga, Kannuru" data-lat="13.0720" data-lon="77.6050" data-fee="0">Kolte Patil Raaga (Self Pickup / Same Campus)</option>
+          <option value="Casa Serenita, Sobha City, Kannuru" data-lat="13.0685" data-lon="77.6065" data-fee="30">Casa Serenita — Sobha City</option>
+          <option value="Bellahalli, Bengaluru" data-lat="13.0650" data-lon="77.6030" data-fee="30">Bellahalli area</option>
+          <option value="Thanisandra, Bengaluru" data-lat="13.0550" data-lon="77.6100" data-fee="40">Thanisandra</option>
+          <option value="Hennur, Bengaluru" data-lat="13.0450" data-lon="77.6200" data-fee="50">Hennur</option>
+          <option value="Jakkur, Bengaluru" data-lat="13.0800" data-lon="77.5900" data-fee="40">Jakkur</option>
+          <option value="Yelahanka, Bengaluru" data-lat="13.1007" data-lon="77.5963" data-fee="60">Yelahanka</option>
+          <option value="other">Other (we'll contact you)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Flat / Block Number *</label>
+        <input id="custFlat" placeholder="e.g. J-1301, Block A, Flat 204" />
+      </div>
+      <div id="deliveryFeeBox" style="display:none;background:rgba(232,97,26,.07);border:1px solid rgba(232,97,26,.18);border-radius:11px;padding:12px 14px;margin-bottom:2px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600;color:var(--brown)">🛵 GoDeliver Delivery Fee</span>
+          <span id="deliveryFeeAmt" style="font-size:16px;font-weight:800;color:var(--orange)">₹0</span>
         </div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:4px">Auto-booked via GoDeliver · OTP verified pickup & drop · Live tracking</div>
+      </div>
+      <div id="selfPickupBox" style="display:none;background:rgba(27,140,90,.07);border:1px solid rgba(27,140,90,.18);border-radius:11px;padding:12px 14px;margin-bottom:2px">
+        <span style="font-size:13px;font-weight:600;color:#136843">🏠 Self Pickup — No delivery charge!</span>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:4px">Collect from: J 1301, Kolte Patil Raaga, Kannuru</div>
+      </div>
+      <div class="form-row">
         <div class="form-group">
           <label>Payment Method</label>
           <select id="custPay">
@@ -899,18 +953,17 @@ function renderCartModal() {
             <option>Cash on Delivery</option>
           </select>
         </div>
-      </div>
-      <div class="form-group" style="background:rgba(232,97,26,.06);border:1px solid rgba(232,97,26,.14);border-radius:11px;padding:10px 12px">
-        <span style="font-size:12.5px;color:var(--brown);line-height:1.5">
-          🚚 Outside our regular delivery zone? Book a <a href="https://porter.in" target="_blank" style="color:var(--orange);font-weight:700;text-decoration:underline">Porter pickup</a> yourself from our address — fast and reliable.
-        </span>
-      </div>
-      <div class="form-group">
-        <label>Notes (optional)</label>
-        <input id="custNotes" placeholder="Less spicy, no onion, etc." />
+        <div class="form-group">
+          <label>Notes (optional)</label>
+          <input id="custNotes" placeholder="Less spicy, no onion, etc." />
+        </div>
       </div>
     </div>
-    <button class="order-btn" onclick="placeOrder()">✅ Place Order on WhatsApp</button>
+    <div id="grandTotalBox" style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:linear-gradient(135deg,rgba(232,97,26,.10),rgba(44,24,16,.06));border:1.5px solid rgba(232,97,26,.20);border-radius:var(--r);margin-bottom:14px">
+      <span style="font-size:14px;font-weight:700;color:var(--brown)">Grand Total (incl. delivery)</span>
+      <span id="grandTotalAmt" style="font-size:22px;font-weight:800;color:var(--orange);font-family:var(--display)">₹${total}</span>
+    </div>
+    <button class="order-btn" onclick="placeOrder()">✅ Place Order + Auto-Book Delivery</button>
   `;
 }
 
@@ -925,71 +978,138 @@ function changeCartQty(id, price, delta) {
   renderCartModal();
 }
 
-function placeOrder() {
-  const name = document.getElementById("custName")?.value.trim();
-  const phone = document.getElementById("custPhone")?.value.trim();
-  const flat = document.getElementById("custFlat")?.value.trim();
-  const pay = document.getElementById("custPay")?.value;
-  const notes = document.getElementById("custNotes")?.value.trim();
+// ── DELIVERY FEE ──────────────────────────────────────────────
+let currentDeliveryFee = 0;
 
-  if (!name || !phone || !flat) {
-    toast("⚠️ Please fill Name, Phone & Flat");
+function updateDeliveryFee() {
+  const select = document.getElementById("custSociety");
+  const opt    = select?.options[select.selectedIndex];
+  const fee    = parseInt(opt?.dataset.fee || "0");
+  currentDeliveryFee = fee;
+
+  const feeBox      = document.getElementById("deliveryFeeBox");
+  const pickupBox   = document.getElementById("selfPickupBox");
+  const feeAmt      = document.getElementById("deliveryFeeAmt");
+  const grandEl     = document.getElementById("grandTotalAmt");
+  const { total }   = cartTotal();
+
+  if (!opt || !opt.value) {
+    feeBox?.style && (feeBox.style.display = "none");
+    pickupBox?.style && (pickupBox.style.display = "none");
     return;
   }
 
+  if (fee === 0) {
+    feeBox.style.display    = "none";
+    pickupBox.style.display = "block";
+  } else {
+    feeBox.style.display    = "block";
+    pickupBox.style.display = "none";
+    if (feeAmt) feeAmt.textContent = `₹${fee}`;
+  }
+
+  if (grandEl) grandEl.textContent = `₹${total + fee}`;
+}
+
+// ── PLACE ORDER (WhatsApp + GoDeliver auto-book) ──────────────
+async function placeOrder() {
+  const name     = document.getElementById("custName")?.value.trim();
+  const phone    = document.getElementById("custPhone")?.value.trim();
+  const flat     = document.getElementById("custFlat")?.value.trim();
+  const society  = document.getElementById("custSociety");
+  const socVal   = society?.value;
+  const socText  = society?.options[society.selectedIndex]?.text || "";
+  const opt      = society?.options[society.selectedIndex];
+  const dropLat  = parseFloat(opt?.dataset.lat || "0");
+  const dropLon  = parseFloat(opt?.dataset.lon || "0");
+  const pay      = document.getElementById("custPay")?.value;
+  const notes    = document.getElementById("custNotes")?.value.trim();
   const { total } = cartTotal();
+  const grandTotal = total + currentDeliveryFee;
+
+  if (!name || !phone || !flat || !socVal) {
+    toast("⚠️ Please fill Name, Phone, Society & Flat");
+    return;
+  }
+
   const itemLines = Array.from(cart.values())
     .map(v => `• ${v.name} × ${v.qty} = ₹${v.price * v.qty}`)
     .join("\n");
+  const itemsSummary = Array.from(cart.values())
+    .map(v => `${v.name} x${v.qty}`)
+    .join(", ");
 
-  const orderId = `TH-${Date.now().toString().slice(-6)}`;
+  const orderId    = `TH-${Date.now().toString().slice(-6)}`;
+  const fullAddr   = `${flat}, ${socVal}`;
+
+  // ── 1. Send WhatsApp order message ──
   let msg = `Hi TasteHub 🍽\n\n*New Order — ${orderId}*\n`;
-  msg += `Name: ${name}\nPhone: ${phone}\nFlat: ${flat}\nPayment: ${pay}\n\n`;
-  msg += `*Items:*\n${itemLines}\n\n*Total: ₹${total}*`;
+  msg += `Name: ${name}\nPhone: ${phone}\n`;
+  msg += `Address: ${fullAddr}\nPayment: ${pay}\n\n`;
+  msg += `*Items:*\n${itemLines}\n\n`;
+  msg += `*Food Total: ₹${total}*\n`;
+  if (currentDeliveryFee > 0) msg += `*Delivery: ₹${currentDeliveryFee}*\n`;
+  msg += `*Grand Total: ₹${grandTotal}*`;
   if (notes) msg += `\n\nNotes: ${notes}`;
-  msg += `\n\nPlease confirm my order. Thank you! 🙏\n📢 Follow us on Telegram: https://t.me/tastehub_meals`;
+  msg += `\n\nPlease confirm my order. Thank you! 🙏\n📢 Telegram: https://t.me/tastehub_meals`;
 
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
 
-  // Show payment step inside the modal
-  showPaymentStep(pay, total, orderId);
+  // ── 2. Show processing screen ──
+  showBookingScreen(orderId, grandTotal, pay);
+
+  // ── 3. Auto-book GoDeliver if delivery needed ──
+  if (currentDeliveryFee > 0 && dropLat && dropLon) {
+    bookGoDeliver({
+      orderId, name, phone, flat,
+      fullAddr, dropLat, dropLon,
+      total, grandTotal, pay,
+      itemsSummary, notes
+    });
+  }
 }
 
-function showPaymentStep(payMethod, total, orderId) {
-  const body = document.getElementById("cartModalBody");
-  const isUPI = payMethod === "UPI";
+// ── Show booking in-progress screen ──────────────────────────
+function showBookingScreen(orderId, grandTotal, pay) {
+  const body  = document.getElementById("cartModalBody");
+  const isUPI = pay === "UPI";
 
   body.innerHTML = `
     <div class="pay-step">
-      <div style="text-align:center;margin-bottom:18px">
+      <div style="text-align:center;margin-bottom:16px">
         <div style="font-size:40px;margin-bottom:8px">🎉</div>
         <div class="pay-step-title">Order sent on WhatsApp!</div>
-        <div class="pay-step-sub">Order ID: <b>${orderId}</b> · Total: <b>₹${total}</b><br>
-        ${isUPI ? "Now complete your payment below." : "Pay cash at delivery. You're all set!"}</div>
+        <div class="pay-step-sub">Order ID: <b>${orderId}</b> · Total: <b>₹${grandTotal}</b></div>
+      </div>
+
+      <div id="deliveryStatus" style="
+        background:rgba(232,97,26,.07);border:1px solid rgba(232,97,26,.18);
+        border-radius:12px;padding:14px;margin-bottom:14px;text-align:center
+      ">
+        <div style="font-size:20px;margin-bottom:6px">🛵</div>
+        <div style="font-weight:700;font-size:13.5px;color:var(--brown)">Booking GoDeliver rider...</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">This takes a few seconds</div>
       </div>
 
       ${isUPI ? `
         <div style="text-align:center">
           <div class="pay-qr-wrap">
-            <img src="upi-qr.png" alt="UPI QR" onerror="this.parentElement.innerHTML='<div style=font-size:12px;color:#7A5C4A;text-align:center;line-height:1.5>Upload<br><b>upi-qr.png</b></div>'">
+            <img src="upi-qr.png" alt="UPI QR" onerror="this.parentElement.innerHTML='<div style=font-size:12px;color:#7A5C4A;text-align:center>Upload<br><b>upi-qr.png</b></div>'">
           </div>
           <div class="pay-upi" onclick="copyUPI()">📋 ${UPI_ID}</div>
-          <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Tap to copy · Scan QR to pay ₹${total}</div>
-        </div>
-        <div class="pay-actions">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Tap to copy · Scan QR to pay ₹${grandTotal}</div>
           <button class="pay-done-btn" onclick="paidOnWhatsApp()">✅ I Have Paid — Notify on WhatsApp</button>
         </div>
       ` : `
         <div class="pay-cod-note">
           💵 <b>Cash on Delivery</b><br>
-          Keep ₹${total} ready at the time of delivery.<br>
-          Your order has been sent to TasteHub for confirmation.
+          Keep ₹${grandTotal} ready at the time of delivery.
         </div>
       `}
 
       <a href="https://t.me/tastehub_meals" target="_blank"
         style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;padding:11px;border-radius:12px;background:#229ED9;color:#fff;font-weight:700;font-size:13px;text-decoration:none">
-        ✈️ Join our Telegram for daily menu updates
+        ✈️ Join Telegram for daily menu updates
       </a>
 
       <button onclick="closeCart();cart.clear();updateCartFab();renderMenu();"
@@ -997,6 +1117,64 @@ function showPaymentStep(payMethod, total, orderId) {
         Done — Back to Menu
       </button>
     </div>`;
+}
+
+// ── Call Apps Script to book GoDeliver ────────────────────────
+async function bookGoDeliver({ orderId, name, phone, fullAddr, dropLat, dropLon, total, grandTotal, pay, itemsSummary, notes }) {
+  try {
+    const res = await fetch(SHEET_API, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        action:         "bookDelivery",
+        order_id:       orderId,
+        customer_name:  name,
+        customer_phone: phone,
+        drop_address:   fullAddr,
+        drop_lat:       dropLat,
+        drop_lon:       dropLon,
+        order_total:    total,
+        delivery_fee:   currentDeliveryFee,
+        payment_method: pay,
+        items_summary:  itemsSummary
+      })
+    });
+
+    const data = await res.json();
+    updateDeliveryStatus(data);
+  } catch (err) {
+    updateDeliveryStatus({ success: false, error: "Network error" });
+  }
+}
+
+// ── Update the delivery status box after booking ──────────────
+function updateDeliveryStatus(data) {
+  const el = document.getElementById("deliveryStatus");
+  if (!el) return;
+
+  if (data.success) {
+    el.style.background = "rgba(27,140,90,.07)";
+    el.style.border     = "1px solid rgba(27,140,90,.2)";
+    el.innerHTML = `
+      <div style="font-size:20px;margin-bottom:6px">✅</div>
+      <div style="font-weight:700;font-size:13.5px;color:#136843">GoDeliver Rider Booked!</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">
+        Trip ID: <b>${data.trip_id || "confirmed"}</b>
+        ${data.eta ? `· ETA: <b>${data.eta} mins</b>` : ""}
+      </div>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:4px">Rider will be assigned shortly · OTP verified pickup</div>
+    `;
+  } else {
+    el.style.background = "rgba(192,57,43,.06)";
+    el.style.border     = "1px solid rgba(192,57,43,.18)";
+    el.innerHTML = `
+      <div style="font-size:20px;margin-bottom:6px">⚠️</div>
+      <div style="font-weight:700;font-size:13.5px;color:#c0392b">Auto-booking failed</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">
+        We'll arrange delivery manually. Your WhatsApp order is confirmed! 🙏
+      </div>
+    `;
+  }
 }
 
 function copyUPI() {
@@ -1089,5 +1267,87 @@ async function init() {
 
 init();
 </script>
+<!-- ── PWA: Service Worker Registration + Install Prompt ── -->
+<script>
+// Register service worker (enables offline + installability)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/tastehub-website/sw.js')
+      .then(reg => console.log('TasteHub SW registered:', reg.scope))
+      .catch(err => console.log('SW registration failed:', err));
+  });
+}
+
+// Show "Install App" button when browser fires install prompt
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  // Create install banner
+  const banner = document.createElement('div');
+  banner.id = 'installBanner';
+  banner.innerHTML = `
+    <div style="
+      position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+      background:#2C1810;color:#fff;border-radius:14px;
+      padding:12px 18px;display:flex;align-items:center;gap:12px;
+      box-shadow:0 8px 28px rgba(0,0,0,.35);z-index:9999;
+      font-family:'DM Sans',sans-serif;font-size:13.5px;
+      white-space:nowrap;max-width:92vw;
+    ">
+      <img src="icons/icon-72.png" style="width:36px;height:36px;border-radius:8px">
+      <div>
+        <div style="font-weight:700">Install TasteHub App 📱</div>
+        <div style="font-size:11.5px;opacity:.7;margin-top:1px">Add to home screen for quick ordering</div>
+      </div>
+      <button id="installBtn" style="
+        background:#E8611A;color:#fff;border:none;border-radius:9px;
+        padding:8px 14px;font-weight:700;font-size:12.5px;cursor:pointer;
+        font-family:inherit;white-space:nowrap;flex-shrink:0;
+      ">Install</button>
+      <button id="dismissBtn" style="
+        background:rgba(255,255,255,.15);color:#fff;border:none;
+        border-radius:8px;padding:6px 10px;cursor:pointer;
+        font-size:13px;font-family:inherit;flex-shrink:0;
+      ">✕</button>
+    </div>
+  `;
+  document.body.appendChild(banner);
+
+  document.getElementById('installBtn').addEventListener('click', () => {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(choice => {
+      if (choice.outcome === 'accepted') {
+        console.log('User installed TasteHub app');
+      }
+      deferredPrompt = null;
+      banner.remove();
+    });
+  });
+
+  document.getElementById('dismissBtn').addEventListener('click', () => {
+    banner.remove();
+    // Don't show again for 3 days
+    localStorage.setItem('installDismissed', Date.now());
+  });
+});
+
+// Don't show install banner if dismissed recently
+window.addEventListener('DOMContentLoaded', () => {
+  const dismissed = localStorage.getItem('installDismissed');
+  if (dismissed && Date.now() - dismissed < 3 * 24 * 60 * 60 * 1000) {
+    window.addEventListener('beforeinstallprompt', e => e.preventDefault(), { once: true });
+  }
+});
+
+// Track when app is successfully installed
+window.addEventListener('appinstalled', () => {
+  console.log('TasteHub PWA installed successfully!');
+  const banner = document.getElementById('installBanner');
+  if (banner) banner.remove();
+});
+</script>
+<!-- ─────────────────────────────────────────────────────── -->
 </body>
 </html>
