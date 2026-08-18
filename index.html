@@ -372,6 +372,7 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
 .avail-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;margin-top:6px}
 .avail-on{background:rgba(27,140,90,.09);border:1px solid rgba(27,140,90,.18);color:#136843}
 .avail-off{background:rgba(120,100,80,.07);border:1px solid rgba(120,100,80,.14);color:var(--muted)}
+.avail-tomorrow{background:rgba(34,158,217,.09);border:1px solid rgba(34,158,217,.2);color:#1a6f9c}
 .closed-tag{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
 .off-tag{font-size:18px;color:rgba(120,100,80,.3);font-weight:300}
 
@@ -808,7 +809,9 @@ function renderMenu() {
           <div class="mc-price ${!isAvailable ? 'mc-price--off' : ''}">₹${item.price}</div>
           ${isAvailable
             ? `<span class="avail-badge avail-on"> Available Today</span>`
-            : `<span class="avail-badge avail-off">Not available today</span>`
+            : (activeTab === 'breakfast' && item.tomorrow
+              ? `<span class="avail-badge avail-tomorrow">📅 Coming Tomorrow</span>`
+              : `<span class="avail-badge avail-off">Not available today</span>`)
           }
         </div>
         <div class="mc-right">
