@@ -145,6 +145,14 @@ textarea{min-height:72px;resize:vertical}
 /* TOAST */
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1E0E04;color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:500;z-index:600;display:none;box-shadow:0 8px 24px rgba(0,0,0,.2);white-space:nowrap}
 
+/* SHEET LOADING / ERROR / EMPTY STATES */
+.sheet-loading,.sheet-error,.sheet-empty{
+  grid-column:1/-1;text-align:center;padding:28px 18px;font-size:13.5px;
+  color:var(--muted);background:#fff;border:1.5px dashed var(--border);
+  border-radius:var(--rLg);font-weight:600;
+}
+.sheet-error{color:#c0392b;border-color:rgba(192,57,43,.25);background:rgba(192,57,43,.05)}
+
 @media(max-width:520px){
   .plans-grid{grid-template-columns:1fr}
   .form-row{grid-template-columns:1fr}
@@ -176,11 +184,24 @@ textarea{min-height:72px;resize:vertical}
 
 <div class="wrap">
 
-  <!-- PARTY ORDER -->
+  <!-- PARTY PACKAGES -->
   <section class="section" id="party">
     <div class="section-label">Bulk & Event Orders</div>
-    <div class="section-title">🎉 Party / Bulk Order</div>
+    <div class="section-title">🎉 Party Packages</div>
     <p class="section-sub">Birthdays, office gatherings, festivals — we cook fresh for any occasion.</p>
+
+    <div class="plans-grid" id="partyPackagesGrid">
+      <div class="sheet-loading">🎉 Loading party packages…</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PARTY ORDER FORM -->
+  <section class="section">
+    <div class="section-label">Tell Us Your Requirement</div>
+    <div class="section-title">📝 Request a Custom Quote</div>
+    <p class="section-sub">Pick a package above or tell us what you need — we'll confirm on WhatsApp.</p>
 
     <div class="card">
       <label style="margin-bottom:10px;display:block">Select Meal Type *</label>
@@ -219,67 +240,8 @@ textarea{min-height:72px;resize:vertical}
       <div class="offer-text"><b>Special Offer</b>Get an extra 10% OFF on Monthly Plans when ordering for 3 people.</div>
     </div>
 
-    <div class="plans-grid">
-      <div class="plan-card">
-        <div class="save-badge">SAVE 10%</div>
-        <div class="plan-badge">Daily Plan</div>
-        <div class="plan-name">3 Meals / Day</div>
-        <div class="plan-desc">Breakfast + Lunch + Dinner</div>
-        <div class="plan-mrp">₹395</div>
-        <div class="plan-price"><sup>₹</sup>356</div>
-        <div class="plan-period">per day</div>
-        <button class="plan-btn" onclick="subscribePlan('Daily Plan (3 Meals) – ₹356/day')">Subscribe →</button>
-      </div>
-      <div class="plan-card">
-        <div class="save-badge">SAVE 10%</div>
-        <div class="plan-badge pop">Weekly Plan</div>
-        <div class="plan-name">21 Meals</div>
-        <div class="plan-desc">Breakfast + Lunch + Dinner — 7 days</div>
-        <div class="plan-mrp">₹2,765</div>
-        <div class="plan-price"><sup>₹</sup>2,490</div>
-        <div class="plan-period">per week</div>
-        <button class="plan-btn" onclick="subscribePlan('Weekly Plan (21 Meals) – ₹2,490')">Subscribe →</button>
-      </div>
-      <div class="plan-card">
-        <div class="save-badge">SAVE 10%</div>
-        <div class="plan-badge pop">Monthly Plan</div>
-        <div class="plan-name">90 Meals</div>
-        <div class="plan-desc">Breakfast + Lunch + Dinner — 30 days</div>
-        <div class="plan-mrp">₹11,850</div>
-        <div class="plan-price"><sup>₹</sup>10,699</div>
-        <div class="plan-period">per month</div>
-        <button class="plan-btn" onclick="subscribePlan('Monthly Plan (90 Meals) – ₹10,699')">Subscribe →</button>
-      </div>
-      <div class="plan-card">
-        <div class="save-badge">SAVE 10%</div>
-        <div class="plan-badge">Breakfast Only</div>
-        <div class="plan-name">30 Days</div>
-        <div class="plan-desc">Breakfast only, daily rotation</div>
-        <div class="plan-mrp">₹3,300</div>
-        <div class="plan-price"><sup>₹</sup>2,970</div>
-        <div class="plan-period">per month</div>
-        <button class="plan-btn" onclick="subscribePlan('Breakfast Only (30 Days) – ₹2,970')">Subscribe →</button>
-      </div>
-      <div class="plan-card">
-        <div class="save-badge">SAVE 10%</div>
-        <div class="plan-badge">Lunch + Dinner</div>
-        <div class="plan-name">30 Days</div>
-        <div class="plan-desc">Lunch + Dinner, daily rotation</div>
-        <div class="plan-mrp">₹8,550</div>
-        <div class="plan-price"><sup>₹</sup>7,695</div>
-        <div class="plan-period">per month</div>
-        <button class="plan-btn" onclick="subscribePlan('Lunch + Dinner (30 Days) – ₹7,695')">Subscribe →</button>
-      </div>
-      <div class="plan-card">
-        <div class="save-badge">SAVE 10%</div>
-        <div class="plan-badge">Flexible</div>
-        <div class="plan-name">Any 1 Meal / Day</div>
-        <div class="plan-desc">Choose any one meal — 30 days</div>
-        <div class="plan-mrp">₹4,050</div>
-        <div class="plan-price"><sup>₹</sup>3,645</div>
-        <div class="plan-period">per month</div>
-        <button class="plan-btn" onclick="subscribePlan('Any 1 Meal Per Day (30 Days) – ₹3,645')">Subscribe →</button>
-      </div>
+    <div class="plans-grid" id="plansGrid">
+      <div class="sheet-loading">📦 Loading subscription plans…</div>
     </div>
 
     <div class="plan-note">
@@ -314,12 +276,7 @@ textarea{min-height:72px;resize:vertical}
         <div>
           <label>Plan *</label>
           <select id="subPlan">
-            <option>Daily Plan (3 Meals) – ₹356</option>
-            <option>Weekly Plan (21 Meals) – ₹2,490</option>
-            <option>Monthly Plan (90 Meals) – ₹10,699</option>
-            <option>Breakfast Only – ₹2,970</option>
-            <option>Lunch + Dinner – ₹7,695</option>
-            <option>Any 1 Meal Per Day – ₹3,645</option>
+            <option>Loading plans…</option>
           </select>
         </div>
         <div>
@@ -487,10 +444,128 @@ textarea{min-height:72px;resize:vertical}
 const WA = "919632035612";
 let selectedMeal = "Snacks";
 
+// ── GOOGLE SHEETS BACKEND ──
+// Same Apps Script Web App that powers the Daily Menu (index.html / admin.html),
+// now also serving the "Subscription" and "PartyOrders" sheets via ?type=.
+const SHEET_API = "https://script.google.com/macros/s/AKfycbyOFJ2Om_4EtBuYnWqmtUEFaDiZIGFQWlssXGYZ-B_MSJESygHr4JAXbjuhTYPKMqkf/exec";
+
+let SUBSCRIPTIONS = [];
+let PARTY_PACKAGES = [];
+
 function toggleMeal(btn) {
   document.querySelectorAll(".meal-toggle").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
   selectedMeal = btn.dataset.val;
+}
+
+// ── FETCH: Subscription sheet (Plan | Meals | Duration | Price | Description | Active) ──
+async function fetchSubscriptions() {
+  const grid = document.getElementById("plansGrid");
+  grid.innerHTML = `<div class="sheet-loading">📦 Loading subscription plans…</div>`;
+  try {
+    const res = await fetch(`${SHEET_API}?type=subscription`);
+    if (!res.ok) throw new Error("Bad response: " + res.status);
+    const data = await res.json();
+    const rows = Array.isArray(data) ? data : [];
+
+    SUBSCRIPTIONS = rows.map(r => ({
+      plan: r.plan,
+      meals: r.meals,
+      duration: r.duration,
+      price: Number(r.price) || 0,
+      description: r.description || ""
+    }));
+
+    renderPlans();
+    populateSubPlanSelect();
+  } catch (err) {
+    console.error("Subscription fetch failed:", err);
+    grid.innerHTML = `<div class="sheet-error">⚠️ Plans unavailable. Please refresh or check back shortly.</div>`;
+  }
+}
+
+// ── FETCH: PartyOrders sheet (Package | Serves | Price | Includes | Active) ──
+async function fetchPartyPackages() {
+  const grid = document.getElementById("partyPackagesGrid");
+  grid.innerHTML = `<div class="sheet-loading">🎉 Loading party packages…</div>`;
+  try {
+    const res = await fetch(`${SHEET_API}?type=partyorders`);
+    if (!res.ok) throw new Error("Bad response: " + res.status);
+    const data = await res.json();
+    const rows = Array.isArray(data) ? data : [];
+
+    PARTY_PACKAGES = rows.map(r => ({
+      package: r.package,
+      serves: r.serves,
+      price: Number(r.price) || 0,
+      includes: r.includes || ""
+    }));
+
+    renderPartyPackages();
+  } catch (err) {
+    console.error("Party packages fetch failed:", err);
+    grid.innerHTML = `<div class="sheet-error">⚠️ Packages unavailable. Please refresh or check back shortly.</div>`;
+  }
+}
+
+// ── RENDER: Subscription Plans ──
+function renderPlans() {
+  const grid = document.getElementById("plansGrid");
+  if (SUBSCRIPTIONS.length === 0) {
+    grid.innerHTML = `<div class="sheet-empty">No plans available right now — check back soon!</div>`;
+    return;
+  }
+  grid.innerHTML = SUBSCRIPTIONS.map(s => {
+    const label = `${s.plan} (${s.meals} Meal${Number(s.meals) === 1 ? "" : "s"}) – ₹${s.price}`.replace(/'/g, "\\'");
+    return `
+      <div class="plan-card">
+        <div class="plan-badge">${s.duration || ""}</div>
+        <div class="plan-name">${s.plan}</div>
+        <div class="plan-desc">${s.description}</div>
+        <div class="plan-price"><sup>₹</sup>${s.price}</div>
+        <div class="plan-period">${s.duration || ""}</div>
+        <button class="plan-btn" onclick="subscribePlan('${label}')">Subscribe →</button>
+      </div>`;
+  }).join("");
+}
+
+// ── RENDER: Party Packages ──
+function renderPartyPackages() {
+  const grid = document.getElementById("partyPackagesGrid");
+  if (PARTY_PACKAGES.length === 0) {
+    grid.innerHTML = `<div class="sheet-empty">No packages available right now — message us on WhatsApp for a custom quote!</div>`;
+    return;
+  }
+  grid.innerHTML = PARTY_PACKAGES.map(p => {
+    const label = `${p.package} Package (Serves ${p.serves}) – ₹${p.price}`.replace(/'/g, "\\'");
+    return `
+      <div class="plan-card">
+        <div class="plan-badge pop">Serves ${p.serves}</div>
+        <div class="plan-name">${p.package} Package</div>
+        <div class="plan-desc">${p.includes}</div>
+        <div class="plan-price"><sup>₹</sup>${p.price}</div>
+        <div class="plan-period">per event</div>
+        <button class="plan-btn" onclick="enquireParty('${label}')">Enquire →</button>
+      </div>`;
+  }).join("");
+}
+
+// ── POPULATE: Quick Subscribe dropdown ──
+function populateSubPlanSelect() {
+  const sel = document.getElementById("subPlan");
+  if (!sel) return;
+  if (SUBSCRIPTIONS.length === 0) {
+    sel.innerHTML = `<option>No plans available</option>`;
+    return;
+  }
+  sel.innerHTML = SUBSCRIPTIONS.map(s =>
+    `<option>${s.plan} (${s.meals} Meal${Number(s.meals) === 1 ? "" : "s"}) – ₹${s.price}</option>`
+  ).join("");
+}
+
+function enquireParty(packageLabel) {
+  const msg = `Hi TasteHub 🍽\n\nI'd like to enquire about the *${packageLabel}*.\nPlease share the details and confirm availability. Thank you!`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
 }
 
 function sendPartyOrder() {
@@ -533,6 +608,13 @@ function showToast(msg) {
   t.textContent = msg; t.style.display = "block";
   clearTimeout(t._t); t._t = setTimeout(() => t.style.display = "none", 2400);
 }
+
+// ── INIT ──
+fetchSubscriptions();
+fetchPartyPackages();
+
+// refresh from the sheet every 2 minutes so admin/sheet edits show up without a reload
+setInterval(() => { fetchSubscriptions(); fetchPartyPackages(); }, 120000);
 </script>
 </body>
 </html>
