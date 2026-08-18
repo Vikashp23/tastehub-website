@@ -51,8 +51,10 @@ button{
 .badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:99px;margin-left:6px}
 .badge.on{background:rgba(27,140,90,.12);color:#136843}
 .badge.off{background:rgba(120,100,80,.12);color:var(--muted)}
+.badge.tomorrow{background:rgba(34,158,217,.12);color:#1a6f9c}
 .item-actions{display:flex;gap:6px;flex:0 0 auto}
 .toggle-btn{padding:6px 10px;font-size:11px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--brown)}
+.toggle-btn.tomorrow-on{border-color:#229ED9;color:#1a6f9c;background:rgba(34,158,217,.08)}
 .login-box{max-width:340px;margin:80px auto;text-align:center}
 .login-box h2{font-family:var(--display);margin-bottom:18px}
 .status{font-size:12px;color:var(--muted);margin-top:10px;text-align:center}
@@ -81,7 +83,7 @@ button{
     <div class="card">
       <h3>➕ Add New Item</h3>
       <label>Meal Category</label>
-      <select id="newMeal">
+      <select id="newMeal" onchange="onNewMealChange()">
         <option value="breakfast">🌅 Breakfast</option>
         <option value="lunch">☀️ Lunch</option>
         <option value="snacks">🍿 Snacks</option>
@@ -101,6 +103,10 @@ button{
             <label style="margin:0">Available today</label>
           </div>
         </div>
+      </div>
+      <div class="check-row" id="newTomorrowRow">
+        <input type="checkbox" id="newTomorrow"/>
+        <label style="margin:0">📅 Available tomorrow (Breakfast)</label>
       </div>
       <button class="btn-primary" onclick="addItem()">Add Item</button>
       <div class="status" id="addStatus"></div>
@@ -122,6 +128,13 @@ const SHEET_API = "https://script.google.com/macros/s/AKfycbyOFJ2Om_4EtBuYnWqmtU
 let ADMIN_PASSWORD = "";
 let MENU = {};
 let activeMeal = "breakfast";
+
+function onNewMealChange() {
+  const meal = document.getElementById("newMeal").value;
+  const row = document.getElementById("newTomorrowRow");
+  if (meal === "breakfast") row.classList.remove("hidden");
+  else row.classList.add("hidden");
+}
 
 function login() {
   const pass = document.getElementById("loginPass").value.trim();
@@ -195,9 +208,14 @@ function renderList() {
       <div class="item-info">
         <span class="item-name">${escapeHtml(item.name)}</span>
         <span class="badge ${item.available ? 'on' : 'off'}">${item.available ? 'Available' : 'Off'}</span>
+        ${activeMeal === 'breakfast' && item.tomorrow ? `<span class="badge tomorrow">📅 Tomorrow</span>` : ''}
         <div class="item-price">₹${item.price}</div>
       </div>
       <div class="item-actions">
+        ${activeMeal === 'breakfast' ? `
+        <button class="toggle-btn ${item.tomorrow ? 'tomorrow-on' : ''}" onclick="toggleTomorrow(${item.row}, ${!item.tomorrow})">
+          📅 ${item.tomorrow ? 'Unset Tmrw' : 'Set Tmrw'}
+        </button>` : ''}
         <button class="toggle-btn" onclick="toggleAvailable(${item.row}, ${!item.available})">
           ${item.available ? 'Mark Off' : 'Mark On'}
         </button>
@@ -218,6 +236,7 @@ async function addItem() {
   const name = document.getElementById("newName").value.trim();
   const price = document.getElementById("newPrice").value;
   const available = document.getElementById("newAvailable").checked;
+  const tomorrow = meal === "breakfast" ? document.getElementById("newTomorrow").checked : false;
   const statusEl = document.getElementById("addStatus");
 
   if (!name || !price) {
@@ -231,7 +250,7 @@ async function addItem() {
 
   const result = await callApi({
     action: "add",
-    meal, name, price: Number(price), available
+    meal, name, price: Number(price), available, tomorrow
   });
 
   if (result.success) {
@@ -239,6 +258,7 @@ async function addItem() {
     statusEl.className = "status success";
     document.getElementById("newName").value = "";
     document.getElementById("newPrice").value = "";
+    document.getElementById("newTomorrow").checked = false;
     activeMeal = meal;
     await loadMenu();
   } else {
@@ -249,6 +269,15 @@ async function addItem() {
 
 async function toggleAvailable(row, newAvailable) {
   const result = await callApi({ action: "toggleAvailable", row, available: newAvailable });
+  if (result.success) {
+    await loadMenu();
+  } else {
+    alert("Failed: " + (result.error || "unknown error"));
+  }
+}
+
+async function toggleTomorrow(row, newTomorrow) {
+  const result = await callApi({ action: "toggleTomorrow", row, tomorrow: newTomorrow });
   if (result.success) {
     await loadMenu();
   } else {
