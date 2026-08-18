@@ -189,6 +189,15 @@ button{font-family:var(--font);cursor:pointer}
 
 /* NO PRICE */
 .pc-noprice{font-size:11px;color:var(--muted);font-style:italic;margin-top:2px}
+.pc-price-tag{font-size:15px;font-weight:800;color:var(--orange);margin-top:2px}
+
+/* SHEET LOADING / ERROR / EMPTY STATES */
+.sheet-loading,.sheet-error,.sheet-empty{
+  grid-column:1/-1;text-align:center;padding:32px 20px;font-size:13.5px;
+  color:var(--muted);background:var(--white);border:1.5px dashed var(--border2);
+  border-radius:var(--rLg);font-weight:600;
+}
+.sheet-error{color:#c0392b;border-color:rgba(192,57,43,.25);background:rgba(192,57,43,.05)}
 
 /* QTY + ADD */
 .pc-footer{padding:10px 13px 13px;margin-top:auto}
@@ -412,12 +421,12 @@ footer a{color:rgba(255,255,255,.68);font-weight:600}
   <div class="section">
     <div class="sec-label">Our Collection</div>
     <div class="sec-title">Homemade Snacks 🥨</div>
-    <p class="sec-sub">Pick your favourites — price confirmed on WhatsApp before you pay.</p>
-    <div class="products-grid" id="productsGrid"></div>
+    <p class="sec-sub">Pick your favourites — live prices &amp; availability, straight from our kitchen sheet.</p>
+    <div class="products-grid" id="productsGrid"><div class="sheet-loading">🍿 Loading fresh snacks…</div></div>
 
     <div class="price-note-banner">
       <span class="pn-icon">💬</span>
-      <div><b>Price shared on WhatsApp after order</b>Select items, tap "Order on WhatsApp" — we'll confirm price & availability before you pay. No hidden charges.</div>
+      <div><b>Order confirmed on WhatsApp</b>Select items, tap "Order on WhatsApp" — we'll confirm final availability before you pay. No hidden charges.</div>
     </div>
   </div>
 
@@ -493,72 +502,80 @@ footer a{color:rgba(255,255,255,.68);font-weight:600}
 <script>
 const WA = "919632035612";
 
-const PRODUCTS = [
+// ── GOOGLE SHEETS BACKEND ──
+// Same Apps Script Web App that powers the Daily Menu (index.html / admin.html),
+// now also serving the "Snacks" sheet via the ?type=snacks query param.
+const SHEET_API = "https://script.google.com/macros/s/AKfycbyOFJ2Om_4EtBuYnWqmtUEFaDiZIGFQWlssXGYZ-B_MSJESygHr4JAXbjuhTYPKMqkf/exec";
 
-  {
-  id:"gujiya", name:"Gujiya (Thin-Crust)",
-  desc:"Freshly prepared with rich mawa & premium dry fruits",
-  emoji:"🥟", badge:"Festive", badgeClass:"badge-new",
-  tags:["tag-veg ✔ Veg","tag-gift ✔ Festive Special","tag-fresh ✔ Fresh"],
-  price:"₹700"
-},
-{
-  id:"chiwra", name:"Chiwra (Chiwda Mix)",
-  desc:"Light & crunchy poha mix with peanuts and mild spices",
-  emoji:"🥣", badge:"Light Snack", badgeClass:"badge-popular",
-  tags:["tag-veg ✔ Veg","tag-crispy ✔ Light","tag-fresh ✔ Fresh"],
-  price:"₹280"
-},
-{
-  id:"nimki", name:"Nimki",
-  desc:"Crunchy, flaky & perfectly spiced traditional snack",
-  emoji:"🔶", badge:"Classic", badgeClass:"badge-popular",
-  tags:["tag-veg ✔ Veg","tag-crispy ✔ Crunchy","tag-fresh ✔ Traditional"],
-  price:"₹500"
-},
-{
-  id:"thekua", name:"Thekua",
-  desc:"Authentic Bihari sweet — crunchy, aromatic & traditional",
-  emoji:"🍪", badge:"Sweet", badgeClass:"badge-best",
-  tags:["tag-veg ✔ Veg","tag-gift ✔ Sweet","tag-fresh ✔ Traditional"],
-  price:"₹560"
-},
-{
-  id:"methi_mathari", name:"Methi Mathari",
-  desc:"Crispy fenugreek mathari with rich flavour & crunch",
-  emoji:"🥯", badge:"New", badgeClass:"badge-new",
-  tags:["tag-veg ✔ Veg","tag-crispy ✔ Crunchy","tag-fresh ✔ Fresh"],
-  price:"₹350"
-}
+// Fallback emoji per Category column value (falls back to 🍽 if category is unknown/blank)
+const CATEGORY_EMOJI = {
+  morning: "🥞", evening: "🍿", festive: "🥟", sweet: "🍪",
+  savoury: "🔶", traditional: "🥯", default: "🍽"
+};
 
-];
-
+let SNACKS = []; // populated from the Snacks sheet
 const cart = new Map(); // id → qty
+
+// ── FETCH: Snacks sheet (Item | Price | Category | Available) ──
+async function fetchSnacks() {
+  const grid = document.getElementById("productsGrid");
+  grid.innerHTML = `<div class="sheet-loading">🍿 Loading fresh snacks…</div>`;
+  try {
+    const res = await fetch(`${SHEET_API}?type=snacks`);
+    if (!res.ok) throw new Error("Bad response: " + res.status);
+    const data = await res.json();
+    const rows = Array.isArray(data) ? data : [];
+
+    SNACKS = rows.map(r => {
+      const cat = (r.category || "").toString().trim();
+      return {
+        id: "snack-" + r.row,               // stable id from the sheet row number
+        name: r.item,
+        price: Number(r.price) || 0,
+        category: cat,
+        emoji: CATEGORY_EMOJI[cat.toLowerCase()] || CATEGORY_EMOJI.default
+      };
+    });
+
+    renderCards();
+    updateBar();
+  } catch (err) {
+    console.error("Snacks fetch failed:", err);
+    grid.innerHTML = `<div class="sheet-error">⚠️ Menu unavailable. Please refresh or check back shortly.</div>`;
+  }
+}
 
 // ── RENDER CARDS ──
 function renderCards() {
   const grid = document.getElementById("productsGrid");
-  grid.innerHTML = PRODUCTS.map(p => {
-    const tagHTML = p.tags.map(t => {
-      const [cls, ...label] = t.split(" ");
-      return `<span class="pc-tag ${cls}">${label.join(" ")}</span>`;
-    }).join("");
+
+  if (SNACKS.length === 0) {
+    grid.innerHTML = `<div class="sheet-empty">No snacks available right now — check back soon! 🥲</div>`;
+    return;
+  }
+
+  grid.innerHTML = SNACKS.map(p => {
+    const qty = cart.get(p.id) || 0;
+    const footerHTML = qty > 0
+      ? `<div class="pc-qty-ctrl">
+           <button class="pq-btn" onclick="decCart('${p.id}')">−</button>
+           <div class="pq-num">${qty}</div>
+           <button class="pq-btn" onclick="incCart('${p.id}')">+</button>
+         </div>`
+      : `<button class="pc-add-btn" onclick="addToCart('${p.id}')">+ Add to Cart</button>`;
+
     return `
-    <div class="pcard" id="pcard-${p.id}">
+    <div class="pcard ${qty > 0 ? "in-cart" : ""}" id="pcard-${p.id}">
       <div class="pc-img-wrap">
         <img src="snacks/${p.id}.jpg" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="pc-emoji-fallback" style="display:none">${p.emoji}</div>
-        <div class="pc-badge ${p.badgeClass}">${p.badge}</div>
+        ${p.category ? `<div class="pc-badge badge-popular">${p.category}</div>` : ""}
       </div>
       <div class="pc-body">
         <div class="pc-name">${p.name}</div>
-        <div class="pc-desc">${p.desc}</div>
-        <div class="pc-tags">${tagHTML}</div>
-        <div class="pc-noprice">💬 Price on WhatsApp</div>
+        <div class="pc-price-tag">₹${p.price}</div>
       </div>
-      <div class="pc-footer" id="pcf-${p.id}">
-        <button class="pc-add-btn" onclick="addToCart('${p.id}')">+ Add to Cart</button>
-      </div>
+      <div class="pc-footer" id="pcf-${p.id}">${footerHTML}</div>
     </div>`;
   }).join("");
 }
@@ -568,8 +585,8 @@ function addToCart(id) {
   cart.set(id, (cart.get(id) || 0) + 1);
   updateUI(id);
   updateBar();
-  const p = PRODUCTS.find(x => x.id === id);
-  showToast(`✅ ${p.name} added`);
+  const p = SNACKS.find(x => x.id === id);
+  if (p) showToast(`✅ ${p.name} added`);
 }
 function incCart(id) { cart.set(id, (cart.get(id) || 0) + 1); updateUI(id); updateBar(); }
 function decCart(id) {
@@ -599,13 +616,17 @@ function updateUI(id) {
 }
 
 function cartTotals() {
-  let items = 0, packs = 0;
-  cart.forEach(v => { items++; packs += v; });
-  return { items, packs };
+  let items = 0, packs = 0, total = 0;
+  cart.forEach((qty, id) => {
+    items++; packs += qty;
+    const p = SNACKS.find(x => x.id === id);
+    if (p) total += p.price * qty;
+  });
+  return { items, packs, total };
 }
 
 function updateBar() {
-  const { items, packs } = cartTotals();
+  const { items, packs, total } = cartTotals();
   const btn = document.getElementById("fbBtn");
   const count = document.getElementById("fbCount");
   const sub = document.getElementById("fbSub");
@@ -618,8 +639,8 @@ function updateBar() {
     btn.disabled = true;
     btn.textContent = "View Cart";
   } else {
-    count.textContent = `${items} item${items > 1 ? "s" : ""} · ${packs} pack${packs > 1 ? "s" : ""}`;
-    sub.textContent = "Price confirmed on WhatsApp";
+    count.textContent = `₹${total} · ${packs} pack${packs > 1 ? "s" : ""}`;
+    sub.textContent = "Confirmed on WhatsApp before payment";
     btn.disabled = false;
     btn.textContent = `View Cart (${packs})`;
   }
@@ -638,7 +659,7 @@ function closeCart() {
 
 function renderDrawer() {
   const body = document.getElementById("drawerBody");
-  const { items, packs } = cartTotals();
+  const { items, packs, total } = cartTotals();
 
   if (items === 0) {
     body.innerHTML = `
@@ -651,12 +672,13 @@ function renderDrawer() {
   }
 
   const rows = Array.from(cart.entries()).map(([id, qty]) => {
-    const p = PRODUCTS.find(x => x.id === id);
+    const p = SNACKS.find(x => x.id === id);
+    if (!p) return "";
     return `
       <div class="cart-row">
         <div>
           <div class="cr-name">${p.emoji} ${p.name}</div>
-          <div class="cr-qty">${qty} pack${qty > 1 ? "s" : ""} · Price on confirmation</div>
+          <div class="cr-qty">₹${p.price} × ${qty} = ₹${p.price * qty}</div>
         </div>
         <div class="cr-ctrl">
           <button class="cr-btn" onclick="decCart('${id}');renderDrawer();updateBar()">−</button>
@@ -668,8 +690,12 @@ function renderDrawer() {
 
   body.innerHTML = `
     <div class="cart-list">${rows}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 2px;font-weight:700;color:var(--brown)">
+      <span>Estimated Total</span>
+      <span style="font-size:18px;color:var(--orange)">₹${total}</span>
+    </div>
     <div style="font-size:11.5px;color:var(--muted);padding:0 2px;margin-bottom:12px;line-height:1.5">
-      💬 We'll confirm the final price on WhatsApp before any payment.
+      💬 We'll confirm final availability on WhatsApp before any payment.
     </div>
     <div class="cart-footer">
       <div style="font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">Your Details</div>
@@ -693,12 +719,13 @@ function placeOrder() {
   const notes = document.getElementById("cNotes")?.value.trim();
   if (!name || !phone) { showToast("⚠️ Please enter Name & Phone"); return; }
 
-  const { packs } = cartTotals();
+  const { packs, total } = cartTotals();
   const lines = Array.from(cart.entries())
     .map(([id, qty]) => {
-      const p = PRODUCTS.find(x => x.id === id);
-      return `• ${p.name} × ${qty} pack${qty > 1 ? "s" : ""}`;
-    }).join("\n");
+      const p = SNACKS.find(x => x.id === id);
+      if (!p) return "";
+      return `• ${p.name} × ${qty} pack${qty > 1 ? "s" : ""} = ₹${p.price * qty}`;
+    }).filter(Boolean).join("\n");
 
    let msg = `Hi TasteHub\n\n`;
    msg += `Snacks Order Request\n\n`;
@@ -711,6 +738,7 @@ function placeOrder() {
    msg += `\n\nOrder Items\n${lines}\n`;
 
    msg += `\nTotal Packs: ${packs}`;
+   msg += `\nEstimated Total: ₹${total}`;
 
    if (notes) msg += `\nNotes: ${notes}`;
 
@@ -728,8 +756,11 @@ function showToast(msg) {
 }
 
 // ── INIT ──
-renderCards();
+fetchSnacks();
 updateBar();
+
+// refresh from the sheet every 2 minutes so kitchen changes show up without a reload
+setInterval(fetchSnacks, 120000);
 </script>
 </body>
 </html>
