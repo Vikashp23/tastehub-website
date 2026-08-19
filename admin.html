@@ -41,6 +41,9 @@ button{
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
 .tab-btn{padding:8px 16px;border-radius:99px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-weight:600;font-size:12.5px}
 .tab-btn.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.section-tabs{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.sec-tab-btn{flex:1;min-width:140px;padding:12px 10px;border-radius:12px;border:1.5px solid var(--border);background:#fff;color:var(--brown);font-weight:700;font-size:12.5px}
+.sec-tab-btn.active{background:var(--brown);border-color:var(--brown);color:#fff}
 .item-row{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:12px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;background:var(--cream);
@@ -78,46 +81,136 @@ button{
 
   <div id="adminPanel" class="hidden">
     <h1>🍽 TasteHub Admin</h1>
-    <p class="sub">Manage today's menu — changes reflect on the live website instantly.</p>
+    <p class="sub">Manage your menu, plans & packages — changes reflect on the live website instantly.</p>
 
-    <div class="card">
-      <h3>➕ Add New Item</h3>
-      <label>Meal Category</label>
-      <select id="newMeal" onchange="onNewMealChange()">
-        <option value="breakfast">🌅 Breakfast</option>
-        <option value="lunch">☀️ Lunch</option>
-        <option value="snacks">🍿 Snacks</option>
-        <option value="dinner">🌙 Dinner</option>
-      </select>
-      <label>Item Name</label>
-      <input id="newName" placeholder="e.g. Masala Dosa"/>
-      <div class="row">
-        <div>
-          <label>Price (₹)</label>
-          <input id="newPrice" type="number" placeholder="130"/>
-        </div>
-        <div>
-          <label style="margin-bottom:14px;display:block">&nbsp;</label>
-          <div class="check-row">
-            <input type="checkbox" id="newAvailable" checked/>
-            <label style="margin:0">Available today</label>
+    <div class="section-tabs" id="sectionTabs">
+      <button class="sec-tab-btn active" id="sectab-daily" onclick="switchSection('daily')">🍽 Daily Menu</button>
+      <button class="sec-tab-btn" id="sectab-sub" onclick="switchSection('sub')">📦 Subscriptions</button>
+      <button class="sec-tab-btn" id="sectab-party" onclick="switchSection('party')">🎉 Party Packages</button>
+      <button class="sec-tab-btn" id="sectab-snack" onclick="switchSection('snack')">🍿 Snacks</button>
+    </div>
+
+    <!-- ══════════ DAILY MENU ══════════ -->
+    <div id="dailySection">
+      <div class="card">
+        <h3>➕ Add New Item</h3>
+        <label>Meal Category</label>
+        <select id="newMeal" onchange="onNewMealChange()">
+          <option value="breakfast">🌅 Breakfast</option>
+          <option value="lunch">☀️ Lunch</option>
+          <option value="snacks">🍿 Snacks</option>
+          <option value="dinner">🌙 Dinner</option>
+        </select>
+        <label>Item Name</label>
+        <input id="newName" placeholder="e.g. Masala Dosa"/>
+        <div class="row">
+          <div>
+            <label>Price (₹)</label>
+            <input id="newPrice" type="number" placeholder="130"/>
+          </div>
+          <div>
+            <label style="margin-bottom:14px;display:block">&nbsp;</label>
+            <div class="check-row">
+              <input type="checkbox" id="newAvailable" checked/>
+              <label style="margin:0">Available today</label>
+            </div>
           </div>
         </div>
+        <div class="check-row" id="newTomorrowRow">
+          <input type="checkbox" id="newTomorrow"/>
+          <label style="margin:0">📅 Available tomorrow (Breakfast)</label>
+        </div>
+        <button class="btn-primary" onclick="addItem()">Add Item</button>
+        <div class="status" id="addStatus"></div>
       </div>
-      <div class="check-row" id="newTomorrowRow">
-        <input type="checkbox" id="newTomorrow"/>
-        <label style="margin:0">📅 Available tomorrow (Breakfast)</label>
+
+      <div class="tabs" id="mealTabs"></div>
+
+      <div class="card">
+        <h3 id="listTitle">🌅 Breakfast Items</h3>
+        <div id="itemList"><div class="loader">Loading menu...</div></div>
       </div>
-      <button class="btn-primary" onclick="addItem()">Add Item</button>
-      <div class="status" id="addStatus"></div>
     </div>
 
-    <div class="tabs" id="mealTabs"></div>
-
-    <div class="card">
-      <h3 id="listTitle">🌅 Breakfast Items</h3>
-      <div id="itemList"><div class="loader">Loading menu...</div></div>
+    <!-- ══════════ SUBSCRIPTIONS ══════════ -->
+    <div id="subSection" class="hidden">
+      <div class="card">
+        <h3>➕ Add Subscription Plan</h3>
+        <label>Plan Name</label>
+        <input id="subName" placeholder="e.g. Weekly Plan"/>
+        <div class="row">
+          <div><label>Meals</label><input id="subMeals" type="number" placeholder="21"/></div>
+          <div><label>Duration</label><input id="subDuration" placeholder="per week"/></div>
+        </div>
+        <div class="row">
+          <div><label>Price (₹)</label><input id="subPrice" type="number" placeholder="2490"/></div>
+          <div>
+            <label style="margin-bottom:14px;display:block">&nbsp;</label>
+            <div class="check-row">
+              <input type="checkbox" id="subActive" checked/>
+              <label style="margin:0">Active</label>
+            </div>
+          </div>
+        </div>
+        <label>Description</label>
+        <input id="subDesc" placeholder="Breakfast + Lunch + Dinner"/>
+        <button class="btn-primary" onclick="addSubscription()">Add Plan</button>
+        <div class="status" id="subStatus"></div>
+      </div>
+      <div class="card">
+        <h3>📦 Subscription Plans</h3>
+        <div id="subList"><div class="loader">Loading...</div></div>
+      </div>
     </div>
+
+    <!-- ══════════ PARTY PACKAGES ══════════ -->
+    <div id="partySection" class="hidden">
+      <div class="card">
+        <h3>➕ Add Party Package</h3>
+        <label>Package Name</label>
+        <input id="partyName" placeholder="e.g. Silver"/>
+        <div class="row">
+          <div><label>Serves</label><input id="partyServes" type="number" placeholder="10"/></div>
+          <div><label>Price (₹)</label><input id="partyPrice" type="number" placeholder="1499"/></div>
+        </div>
+        <label>Includes</label>
+        <input id="partyIncludes" placeholder="Rice, Dal, Paneer"/>
+        <div class="check-row">
+          <input type="checkbox" id="partyActive" checked/>
+          <label style="margin:0">Active</label>
+        </div>
+        <button class="btn-primary" onclick="addParty()">Add Package</button>
+        <div class="status" id="partyStatus"></div>
+      </div>
+      <div class="card">
+        <h3>🎉 Party Packages</h3>
+        <div id="partyList"><div class="loader">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- ══════════ SNACKS ══════════ -->
+    <div id="snackSection" class="hidden">
+      <div class="card">
+        <h3>➕ Add Snack Item</h3>
+        <label>Item Name</label>
+        <input id="snackName" placeholder="e.g. Gujiya"/>
+        <div class="row">
+          <div><label>Price (₹)</label><input id="snackPrice" type="number" placeholder="700"/></div>
+          <div><label>Category</label><input id="snackCategory" placeholder="Festive"/></div>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="snackAvailable" checked/>
+          <label style="margin:0">Available</label>
+        </div>
+        <button class="btn-primary" onclick="addSnack()">Add Snack</button>
+        <div class="status" id="snackStatus"></div>
+      </div>
+      <div class="card">
+        <h3>🍿 Snacks</h3>
+        <div id="snackList"><div class="loader">Loading...</div></div>
+      </div>
+    </div>
+
   </div>
 
 </div>
@@ -128,6 +221,20 @@ const SHEET_API = "https://script.google.com/macros/s/AKfycbyOFJ2Om_4EtBuYnWqmtU
 let ADMIN_PASSWORD = "";
 let MENU = {};
 let activeMeal = "breakfast";
+let activeSection = "daily";
+let SUBS = [], PARTIES = [], SNACKS_ADMIN = [];
+
+function switchSection(sec) {
+  activeSection = sec;
+  document.querySelectorAll(".sec-tab-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("sectab-" + sec).classList.add("active");
+  ["daily", "sub", "party", "snack"].forEach(s => {
+    document.getElementById(s + "Section").classList.toggle("hidden", s !== sec);
+  });
+  if (sec === "sub" && SUBS.length === 0) loadSubscriptions();
+  if (sec === "party" && PARTIES.length === 0) loadParties();
+  if (sec === "snack" && SNACKS_ADMIN.length === 0) loadSnacksAdmin();
+}
 
 function onNewMealChange() {
   const meal = document.getElementById("newMeal").value;
@@ -293,6 +400,242 @@ async function deleteItem(row) {
   } else {
     alert("Failed: " + (result.error || "unknown error"));
   }
+}
+
+// ══════════ SUBSCRIPTIONS ══════════
+async function loadSubscriptions() {
+  const list = document.getElementById("subList");
+  list.innerHTML = `<div class="loader">Loading...</div>`;
+  try {
+    const res = await fetch(`${SHEET_API}?type=subscription&all=1`);
+    SUBS = await res.json();
+    renderSubList();
+  } catch (err) {
+    list.innerHTML = `<div class="status error">Failed to load plans.</div>`;
+  }
+}
+
+function renderSubList() {
+  const list = document.getElementById("subList");
+  if (!SUBS.length) { list.innerHTML = `<div class="status">No plans yet.</div>`; return; }
+  list.innerHTML = SUBS.map(s => {
+    const active = String(s.active).trim().toLowerCase() === "yes";
+    return `
+    <div class="item-row">
+      <div class="item-info">
+        <span class="item-name">${escapeHtml(s.plan)}</span>
+        <span class="badge ${active ? 'on' : 'off'}">${active ? 'Active' : 'Inactive'}</span>
+        <div class="item-price">₹${s.price} · ${escapeHtml(String(s.duration || ""))}</div>
+      </div>
+      <div class="item-actions">
+        <button class="toggle-btn" onclick="toggleSubscriptionActive(${s.row}, ${!active})">${active ? "Deactivate" : "Activate"}</button>
+        <button class="btn-danger btn-sm" onclick="deleteSubscription(${s.row})">Delete</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+async function addSubscription() {
+  const plan = document.getElementById("subName").value.trim();
+  const meals = document.getElementById("subMeals").value;
+  const duration = document.getElementById("subDuration").value.trim();
+  const price = document.getElementById("subPrice").value;
+  const description = document.getElementById("subDesc").value.trim();
+  const active = document.getElementById("subActive").checked;
+  const statusEl = document.getElementById("subStatus");
+
+  if (!plan || !price) {
+    statusEl.textContent = "Please fill plan name and price";
+    statusEl.className = "status error";
+    return;
+  }
+  statusEl.textContent = "Adding..."; statusEl.className = "status";
+
+  const result = await callApi({
+    action: "addSubscription", plan, meals: Number(meals) || 0, duration,
+    price: Number(price), description, active: active ? "Yes" : "No"
+  });
+
+  if (result.success) {
+    statusEl.textContent = "✅ Plan added!"; statusEl.className = "status success";
+    document.getElementById("subName").value = "";
+    document.getElementById("subMeals").value = "";
+    document.getElementById("subDuration").value = "";
+    document.getElementById("subPrice").value = "";
+    document.getElementById("subDesc").value = "";
+    await loadSubscriptions();
+  } else {
+    statusEl.textContent = "❌ " + (result.error || "Failed to add plan");
+    statusEl.className = "status error";
+  }
+}
+
+async function toggleSubscriptionActive(row, newActive) {
+  const result = await callApi({ action: "toggleSubscriptionActive", row, active: newActive ? "Yes" : "No" });
+  if (result.success) await loadSubscriptions();
+  else alert("Failed: " + (result.error || "unknown error"));
+}
+
+async function deleteSubscription(row) {
+  if (!confirm("Delete this plan permanently?")) return;
+  const result = await callApi({ action: "deleteSubscription", row });
+  if (result.success) await loadSubscriptions();
+  else alert("Failed: " + (result.error || "unknown error"));
+}
+
+// ══════════ PARTY PACKAGES ══════════
+async function loadParties() {
+  const list = document.getElementById("partyList");
+  list.innerHTML = `<div class="loader">Loading...</div>`;
+  try {
+    const res = await fetch(`${SHEET_API}?type=partyorders&all=1`);
+    PARTIES = await res.json();
+    renderPartyList();
+  } catch (err) {
+    list.innerHTML = `<div class="status error">Failed to load packages.</div>`;
+  }
+}
+
+function renderPartyList() {
+  const list = document.getElementById("partyList");
+  if (!PARTIES.length) { list.innerHTML = `<div class="status">No packages yet.</div>`; return; }
+  list.innerHTML = PARTIES.map(p => {
+    const active = String(p.active).trim().toLowerCase() === "yes";
+    return `
+    <div class="item-row">
+      <div class="item-info">
+        <span class="item-name">${escapeHtml(p.package)}</span>
+        <span class="badge ${active ? 'on' : 'off'}">${active ? 'Active' : 'Inactive'}</span>
+        <div class="item-price">₹${p.price} · Serves ${p.serves}</div>
+      </div>
+      <div class="item-actions">
+        <button class="toggle-btn" onclick="togglePartyActive(${p.row}, ${!active})">${active ? "Deactivate" : "Activate"}</button>
+        <button class="btn-danger btn-sm" onclick="deleteParty(${p.row})">Delete</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+async function addParty() {
+  const pkg = document.getElementById("partyName").value.trim();
+  const serves = document.getElementById("partyServes").value;
+  const price = document.getElementById("partyPrice").value;
+  const includes = document.getElementById("partyIncludes").value.trim();
+  const active = document.getElementById("partyActive").checked;
+  const statusEl = document.getElementById("partyStatus");
+
+  if (!pkg || !price) {
+    statusEl.textContent = "Please fill package name and price";
+    statusEl.className = "status error";
+    return;
+  }
+  statusEl.textContent = "Adding..."; statusEl.className = "status";
+
+  const result = await callApi({
+    action: "addParty", package: pkg, serves: Number(serves) || 0,
+    price: Number(price), includes, active: active ? "Yes" : "No"
+  });
+
+  if (result.success) {
+    statusEl.textContent = "✅ Package added!"; statusEl.className = "status success";
+    document.getElementById("partyName").value = "";
+    document.getElementById("partyServes").value = "";
+    document.getElementById("partyPrice").value = "";
+    document.getElementById("partyIncludes").value = "";
+    await loadParties();
+  } else {
+    statusEl.textContent = "❌ " + (result.error || "Failed to add package");
+    statusEl.className = "status error";
+  }
+}
+
+async function togglePartyActive(row, newActive) {
+  const result = await callApi({ action: "togglePartyActive", row, active: newActive ? "Yes" : "No" });
+  if (result.success) await loadParties();
+  else alert("Failed: " + (result.error || "unknown error"));
+}
+
+async function deleteParty(row) {
+  if (!confirm("Delete this package permanently?")) return;
+  const result = await callApi({ action: "deleteParty", row });
+  if (result.success) await loadParties();
+  else alert("Failed: " + (result.error || "unknown error"));
+}
+
+// ══════════ SNACKS ══════════
+async function loadSnacksAdmin() {
+  const list = document.getElementById("snackList");
+  list.innerHTML = `<div class="loader">Loading...</div>`;
+  try {
+    const res = await fetch(`${SHEET_API}?type=snacks&all=1`);
+    SNACKS_ADMIN = await res.json();
+    renderSnackList();
+  } catch (err) {
+    list.innerHTML = `<div class="status error">Failed to load snacks.</div>`;
+  }
+}
+
+function renderSnackList() {
+  const list = document.getElementById("snackList");
+  if (!SNACKS_ADMIN.length) { list.innerHTML = `<div class="status">No snacks yet.</div>`; return; }
+  list.innerHTML = SNACKS_ADMIN.map(s => {
+    const available = String(s.available).trim().toLowerCase() === "yes";
+    return `
+    <div class="item-row">
+      <div class="item-info">
+        <span class="item-name">${escapeHtml(s.item)}</span>
+        <span class="badge ${available ? 'on' : 'off'}">${available ? 'Available' : 'Off'}</span>
+        <div class="item-price">₹${s.price} · ${escapeHtml(String(s.category || ""))}</div>
+      </div>
+      <div class="item-actions">
+        <button class="toggle-btn" onclick="toggleSnackAvailable(${s.row}, ${!available})">${available ? "Mark Off" : "Mark On"}</button>
+        <button class="btn-danger btn-sm" onclick="deleteSnack(${s.row})">Delete</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+async function addSnack() {
+  const item = document.getElementById("snackName").value.trim();
+  const price = document.getElementById("snackPrice").value;
+  const category = document.getElementById("snackCategory").value.trim();
+  const available = document.getElementById("snackAvailable").checked;
+  const statusEl = document.getElementById("snackStatus");
+
+  if (!item || !price) {
+    statusEl.textContent = "Please fill item name and price";
+    statusEl.className = "status error";
+    return;
+  }
+  statusEl.textContent = "Adding..."; statusEl.className = "status";
+
+  const result = await callApi({
+    action: "addSnack", item, price: Number(price), category, available: available ? "Yes" : "No"
+  });
+
+  if (result.success) {
+    statusEl.textContent = "✅ Snack added!"; statusEl.className = "status success";
+    document.getElementById("snackName").value = "";
+    document.getElementById("snackPrice").value = "";
+    document.getElementById("snackCategory").value = "";
+    await loadSnacksAdmin();
+  } else {
+    statusEl.textContent = "❌ " + (result.error || "Failed to add snack");
+    statusEl.className = "status error";
+  }
+}
+
+async function toggleSnackAvailable(row, newAvailable) {
+  const result = await callApi({ action: "toggleSnackAvailable", row, available: newAvailable ? "Yes" : "No" });
+  if (result.success) await loadSnacksAdmin();
+  else alert("Failed: " + (result.error || "unknown error"));
+}
+
+async function deleteSnack(row) {
+  if (!confirm("Delete this snack permanently?")) return;
+  const result = await callApi({ action: "deleteSnack", row });
+  if (result.success) await loadSnacksAdmin();
+  else alert("Failed: " + (result.error || "unknown error"));
 }
 
 async function callApi(payload) {
