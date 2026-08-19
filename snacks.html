@@ -421,12 +421,12 @@ footer a{color:rgba(255,255,255,.68);font-weight:600}
   <div class="section">
     <div class="sec-label">Our Collection</div>
     <div class="sec-title">Homemade Snacks 🥨</div>
-    <p class="sec-sub">Pick your favourites — live prices &amp; availability, straight from our kitchen sheet.</p>
+    <p class="sec-sub">Pick your favourites — we'll confirm availability &amp; price on WhatsApp.</p>
     <div class="products-grid" id="productsGrid"><div class="sheet-loading">🍿 Loading fresh snacks…</div></div>
 
     <div class="price-note-banner">
       <span class="pn-icon">💬</span>
-      <div><b>Order confirmed on WhatsApp</b>Select items, tap "Order on WhatsApp" — we'll confirm final availability before you pay. No hidden charges.</div>
+      <div><b>Order confirmed on WhatsApp</b>Select items, tap "Order on WhatsApp" — we'll confirm price &amp; availability before you pay.</div>
     </div>
   </div>
 
@@ -516,6 +516,18 @@ const CATEGORY_EMOJI = {
 let SNACKS = []; // populated from the Snacks sheet
 const cart = new Map(); // id → qty
 
+// Turns "Gujiya (Thin-Crust)" into "gujiya-thin-crust" — matches image
+// filenames like snacks/gujiya-thin-crust.jpg. Adjust here if your actual
+// uploaded filenames use a different pattern (e.g. underscores).
+function slugify(str) {
+  return String(str)
+    .toLowerCase()
+    .trim()
+    .replace(/[()]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 // ── FETCH: Snacks sheet (Item | Price | Category | Available) ──
 async function fetchSnacks() {
   const grid = document.getElementById("productsGrid");
@@ -529,7 +541,7 @@ async function fetchSnacks() {
     SNACKS = rows.map(r => {
       const cat = (r.category || "").toString().trim();
       return {
-        id: "snack-" + r.row,               // stable id from the sheet row number
+        id: slugify(r.item) || ("snack-" + r.row), // name-based slug, matches uploaded image filenames
         name: r.item,
         price: Number(r.price) || 0,
         category: cat,
@@ -573,7 +585,6 @@ function renderCards() {
       </div>
       <div class="pc-body">
         <div class="pc-name">${p.name}</div>
-        <div class="pc-price-tag">₹${p.price}</div>
       </div>
       <div class="pc-footer" id="pcf-${p.id}">${footerHTML}</div>
     </div>`;
@@ -626,7 +637,7 @@ function cartTotals() {
 }
 
 function updateBar() {
-  const { items, packs, total } = cartTotals();
+  const { items, packs } = cartTotals();
   const btn = document.getElementById("fbBtn");
   const count = document.getElementById("fbCount");
   const sub = document.getElementById("fbSub");
@@ -639,8 +650,8 @@ function updateBar() {
     btn.disabled = true;
     btn.textContent = "View Cart";
   } else {
-    count.textContent = `₹${total} · ${packs} pack${packs > 1 ? "s" : ""}`;
-    sub.textContent = "Confirmed on WhatsApp before payment";
+    count.textContent = `${items} item${items > 1 ? "s" : ""} · ${packs} pack${packs > 1 ? "s" : ""}`;
+    sub.textContent = "Price confirmed on WhatsApp";
     btn.disabled = false;
     btn.textContent = `View Cart (${packs})`;
   }
@@ -659,7 +670,7 @@ function closeCart() {
 
 function renderDrawer() {
   const body = document.getElementById("drawerBody");
-  const { items, packs, total } = cartTotals();
+  const { items, packs } = cartTotals();
 
   if (items === 0) {
     body.innerHTML = `
@@ -678,7 +689,7 @@ function renderDrawer() {
       <div class="cart-row">
         <div>
           <div class="cr-name">${p.emoji} ${p.name}</div>
-          <div class="cr-qty">₹${p.price} × ${qty} = ₹${p.price * qty}</div>
+          <div class="cr-qty">${qty} pack${qty > 1 ? "s" : ""}</div>
         </div>
         <div class="cr-ctrl">
           <button class="cr-btn" onclick="decCart('${id}');renderDrawer();updateBar()">−</button>
@@ -690,12 +701,8 @@ function renderDrawer() {
 
   body.innerHTML = `
     <div class="cart-list">${rows}</div>
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 2px;font-weight:700;color:var(--brown)">
-      <span>Estimated Total</span>
-      <span style="font-size:18px;color:var(--orange)">₹${total}</span>
-    </div>
     <div style="font-size:11.5px;color:var(--muted);padding:0 2px;margin-bottom:12px;line-height:1.5">
-      💬 We'll confirm final availability on WhatsApp before any payment.
+      💬 We'll confirm final availability & price on WhatsApp before any payment.
     </div>
     <div class="cart-footer">
       <div style="font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">Your Details</div>
@@ -719,12 +726,12 @@ function placeOrder() {
   const notes = document.getElementById("cNotes")?.value.trim();
   if (!name || !phone) { showToast("⚠️ Please enter Name & Phone"); return; }
 
-  const { packs, total } = cartTotals();
+  const { packs } = cartTotals();
   const lines = Array.from(cart.entries())
     .map(([id, qty]) => {
       const p = SNACKS.find(x => x.id === id);
       if (!p) return "";
-      return `• ${p.name} × ${qty} pack${qty > 1 ? "s" : ""} = ₹${p.price * qty}`;
+      return `• ${p.name} × ${qty} pack${qty > 1 ? "s" : ""}`;
     }).filter(Boolean).join("\n");
 
    let msg = `Hi TasteHub\n\n`;
@@ -738,11 +745,10 @@ function placeOrder() {
    msg += `\n\nOrder Items\n${lines}\n`;
 
    msg += `\nTotal Packs: ${packs}`;
-   msg += `\nEstimated Total: ₹${total}`;
 
    if (notes) msg += `\nNotes: ${notes}`;
 
-   msg += `\n\nPlease share the price and confirm availability.\nThank you.`;
+   msg += `\n\nPlease confirm availability and share the price.\nThank you.`;
 
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
   showToast("✅ Opening WhatsApp...");
