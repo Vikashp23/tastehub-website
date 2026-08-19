@@ -528,6 +528,22 @@ function slugify(str) {
     .replace(/(^-|-$)/g, "");
 }
 
+// Some items were uploaded with shorter/different filenames than a full
+// auto-slug of the sheet name would produce. Add entries here (sheet name,
+// lowercased, exactly as it appears → your actual filename without .jpg)
+// whenever a photo doesn't show up.
+const IMAGE_ID_OVERRIDES = {
+  "gujiya (thin-crust)": "gujiya",
+  "chiwra (chiwda mix)": "chiwra",
+  "methi mathari": "methi_mathari"
+};
+
+function imageIdFor(name) {
+  const key = String(name).toLowerCase().trim();
+  if (IMAGE_ID_OVERRIDES[key]) return IMAGE_ID_OVERRIDES[key];
+  return slugify(name);
+}
+
 // ── FETCH: Snacks sheet (Item | Price | Category | Available) ──
 async function fetchSnacks() {
   const grid = document.getElementById("productsGrid");
@@ -541,7 +557,7 @@ async function fetchSnacks() {
     SNACKS = rows.map(r => {
       const cat = (r.category || "").toString().trim();
       return {
-        id: slugify(r.item) || ("snack-" + r.row), // name-based slug, matches uploaded image filenames
+        id: imageIdFor(r.item) || ("snack-" + r.row), // matches uploaded image filenames
         name: r.item,
         price: Number(r.price) || 0,
         category: cat,
