@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>TasteHub 🍽 | Fresh Homemade Food · Kannuru</title>
-<meta name="description" content="TasteHub – Fresh homemade veg meals near Kannuru. Order breakfast, lunch, snacks & dinner. Subscribe for monthly plans."/>
+<meta name="description" content="TasteHub – Fresh homemade veg meals near Kannuru. Order breakfast, lunch, snacks & dinner."/>
 
 <!-- ── PWA: makes this website installable as an app ── -->
 <link rel="manifest" href="manifest.json"/>
@@ -122,6 +122,25 @@ header{
 }
 .tab-btn:hover{border-color:var(--orange);color:var(--orange)}
 .tab-btn.active{
+  background:var(--orange);border-color:var(--orange);color:#fff;
+  box-shadow:0 4px 14px rgba(232,97,26,.3);
+}
+
+/* ── PAGE NAV TABS (top-level: Daily Menu / Party Order / Homemade Snacks) ── */
+.page-nav{background:#fff;border-bottom:1px solid var(--border)}
+.page-nav-inner{
+  max-width:var(--max);margin:0 auto;padding:14px 16px;
+  display:flex;gap:8px;overflow:auto;scrollbar-width:none;
+}
+.page-nav-inner::-webkit-scrollbar{display:none}
+.page-nav-tab{
+  flex:0 0 auto;padding:10px 22px;border-radius:99px;
+  border:1.5px solid var(--border);background:#fff;
+  color:var(--muted);font-weight:600;font-size:13.5px;
+  transition:all .2s;white-space:nowrap;
+}
+.page-nav-tab:hover{border-color:var(--orange);color:var(--orange)}
+.page-nav-tab.active{
   background:var(--orange);border-color:var(--orange);color:#fff;
   box-shadow:0 4px 14px rgba(232,97,26,.3);
 }
@@ -256,34 +275,6 @@ header{
 .empty-cart{text-align:center;padding:32px 16px;color:var(--muted)}
 .empty-cart .ec-icon{font-size:48px;margin-bottom:12px}
 .empty-cart p{font-size:14px;font-weight:500}
-
-/* ── SUBSCRIPTION ── */
-.sub-section{background:var(--brown);padding:40px 0}
-.sub-section .section-label{color:rgba(232,97,26,.9)}
-.sub-section .section-title{color:#fff}
-.sub-section .section-sub{color:rgba(255,255,255,.55)}
-.sub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
-.sub-card{
-  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10);
-  border-radius:var(--rLg);padding:20px;transition:all .22s;cursor:default;
-}
-.sub-card:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);transform:translateY(-3px)}
-.sub-icon{font-size:28px;margin-bottom:10px}
-.sub-name{font-family:var(--display);font-size:17px;font-weight:700;color:#fff;margin-bottom:12px}
-.sub-prices{display:grid;gap:10px;margin-bottom:16px}
-.sub-price-row{
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
-  border-radius:10px;padding:10px 12px;
-  display:flex;align-items:center;justify-content:space-between;gap:8px;
-}
-.sp-label{font-size:12px;color:rgba(255,255,255,.6);font-weight:500}
-.sp-price{font-size:16px;font-weight:700;color:var(--orange2)}
-.sub-btn{
-  width:100%;padding:10px;border-radius:11px;border:1.5px solid rgba(255,255,255,.2);
-  background:transparent;color:#fff;font-weight:700;font-size:13px;
-  font-family:var(--font);transition:all .2s;
-}
-.sub-btn:hover{background:var(--orange);border-color:var(--orange);box-shadow:0 4px 14px rgba(232,97,26,.3)}
 
 /* ── REVIEWS SECTION ── */
 .reviews-section{background:#fff;padding:40px 0}
@@ -468,12 +459,6 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
       <a class="btn btn-wa" href="https://chat.whatsapp.com/KL7nnhmc2nbIgSyfYQBkv5" target="_blank">
         💬 WhatsApp
       </a>
-      <a class="btn btn-tg" href="https://t.me/tastehub_meals" target="_blank">
-        ✈️ Telegram
-      </a>
-      <a class="btn btn-outline" href="party.html">
-        🎉 Party & Subscription
-      </a>
       <a class="btn btn-primary" href="admin.html">
         ⚙️ Admin
       </a>
@@ -481,7 +466,14 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
   </div>
 </header>
 
-
+<!-- ── TOP NAV TABS ── -->
+<nav class="page-nav">
+  <div class="page-nav-inner">
+    <a class="page-nav-tab active" href="index.html">Daily Menu</a>
+    <a class="page-nav-tab" href="party.html">Party Order</a>
+    <a class="page-nav-tab" href="snacks.html">Homemade Snacks</a>
+  </div>
+</nav>
 
 <!-- ── MAIN CONTENT ── -->
 <div class="wrap">
@@ -496,7 +488,7 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
 
     <!-- ORDER TIMINGS under tabs -->
     <div class="timing-row">
-      <span class="timing-row-label">⏰ Order by:</span>
+      <span class="timing-row-label">Order by:</span>
       <div class="timing-items" id="timingChips"></div>
     </div>
 
@@ -508,59 +500,7 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
     <div class="menu-grid" id="menuGrid"></div>
   </section>
 
-  <div class="divider"></div>
-
-  <!-- PARTY CTA -->
-  <section class="section">
-    <div class="party-card">
-      <div class="party-text">
-        <h3>Planning a Party? 🎊</h3>
-        <p>Bulk orders, event catering, and monthly subscriptions available. We serve 10 to 500+ guests with fresh homemade food.</p>
-        <div style="margin-top:16px">
-          <a class="btn btn-primary" href="party.html" style="display:inline-flex">View Party & Plans →</a>
-        </div>
-      </div>
-      <div class="party-emoji">🎉</div>
-    </div>
-  </section>
-
-  <!-- SNACKS CTA -->
-  <section class="section" style="padding-top:0">
-    <div class="snacks-cta-card">
-      <div class="snacks-cta-left">
-        <div class="snacks-cta-label">🏠 Made In Our Kitchen</div>
-        <h3>TasteHub Homemade Snacks 🥨</h3>
-        <p>Our very own recipe — Masala Peanuts, Ratlami Sev, Charkha Mixture & more. Every batch made fresh by us with pure peanut oil and zero preservatives.</p>
-        <div class="snacks-pills">
-          <span>👩‍🍳 Our Own Recipe</span>
-          <span>🌿 No Preservatives</span>
-          <span>🥜 Pure Peanut Oil</span>
-          <span>🔥 10% OFF Now</span>
-          <span>🎁 Gift Packs Available</span>
-        </div>
-        <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
-          <a class="btn btn-primary" href="snacks.html" style="display:inline-flex">🥨 Order Our Snacks →</a>
-          <a class="btn btn-outline snacks-wa-btn" href="https://wa.me/917899111308" target="_blank" style="display:inline-flex">💬 Ask on WhatsApp</a>
-        </div>
-      </div>
-      <div class="snacks-emojis">
-        <div class="se-row"><span>🥜</span><span>🌾</span></div>
-        <div class="se-row"><span>🌶</span><span>🎡</span></div>
-      </div>
-    </div>
-  </section>
-
 </div><!-- /wrap -->
-
-<!-- ── SUBSCRIPTION ── -->
-<section class="sub-section" id="subscribe">
-  <div class="wrap">
-    <div class="section-label">Meal Plans</div>
-    <div class="section-title">Subscribe & Save</div>
-    <p class="section-sub">Consistent, fresh, home-cooked meals — every week or every month.</p>
-    <div class="sub-grid" id="subGrid"></div>
-  </div>
-</section>
 
 <!-- ── REVIEWS SECTION ── -->
 <section class="reviews-section">
@@ -715,13 +655,6 @@ async function loadMenuFromSheet() {
     console.error("Menu fetch failed, showing empty menu:", err);
   }
 }
-
-const SUBSCRIPTIONS = [
-  { icon: "🌅", name: "Breakfast Plan", weekly: 399, monthly: 1499, key: "Breakfast" },
-  { icon: "☀️", name: "Lunch Plan", weekly: 599, monthly: 2199, key: "Lunch" },
-  { icon: "🌙", name: "Dinner Plan", weekly: 599, monthly: 2199, key: "Dinner" },
-  { icon: "🍱", name: "Lunch + Dinner Plan", weekly: 999, monthly: 3499, key: "Lunch + Dinner" },
-];
 
 // ── STATE ──
 let activeTab = "breakfast";
@@ -1184,33 +1117,6 @@ function copyUPI() {
   navigator.clipboard.writeText(UPI_ID).then(() => toast("✅ UPI ID copied!")).catch(() => toast("Copy failed"));
 }
 
-// ── SUBSCRIPTIONS ──
-function renderSubscriptions() {
-  const el = document.getElementById("subGrid");
-  el.innerHTML = SUBSCRIPTIONS.map(s => `
-    <div class="sub-card">
-      <div class="sub-icon">${s.icon}</div>
-      <div class="sub-name">${s.name}</div>
-      <div class="sub-prices">
-        <div class="sub-price-row">
-          <span class="sp-label">Weekly (5 Days)</span>
-          <span class="sp-price">₹${s.weekly}</span>
-        </div>
-        <div class="sub-price-row">
-          <span class="sp-label">Monthly (20 Days)</span>
-          <span class="sp-price">₹${s.monthly}</span>
-        </div>
-      </div>
-      <button class="sub-btn" onclick="subscribeWA('${s.name}')">Subscribe on WhatsApp →</button>
-    </div>
-  `).join("");
-}
-
-function subscribeWA(planName) {
-  const msg = `Hi TasteHub 🍽\n\nI'd like to subscribe to the *${planName}*.\nPlease share the details and confirm availability. Thank you!`;
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
-}
-
 // ── PAYMENT ──
 function paidOnWhatsApp() {
   const { total } = cartTotal();
@@ -1249,7 +1155,6 @@ async function init() {
   renderTimingChips();
   renderTabs();
   renderMenu();
-  renderSubscriptions();
 
   // auto-select open tab
   const hour = getHour();
