@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>TasteHub 🍽 | Fresh Homemade Food · Kannuru</title>
-<meta name="description" content="TasteHub – Fresh homemade veg meals near Kannuru. Order breakfast, lunch, snacks & dinner."/>
+<meta name="description" content="TasteHub – Homemade Vegetarian Meals, Kannuru, Bangalore. Daily breakfast, lunch, snacks & dinner. Party & bulk orders available. Call 9507415857."/>
 
 <!-- ── PWA: makes this website installable as an app ── -->
 <link rel="manifest" href="manifest.json"/>
@@ -726,8 +726,9 @@ function renderMenu() {
 
     // emoji fallback per category when no photo
     const catEmoji = {breakfast:'🍳',lunch:'🍱',snacks:'🍿',dinner:'🌙'};
-    const imgHTML = item.img
-      ? `<div class="mc-img"><img src="${item.img}" alt="${item.name}"
+    const imgSrc = (item.img || '').toString().trim();
+    const imgHTML = imgSrc
+      ? `<div class="mc-img"><img src="${imgSrc}" alt="${item.name}"
            onerror="this.parentElement.innerHTML='${catEmoji[activeTab]||'🍽'}'"></div>`
       : `<div class="mc-img">${catEmoji[activeTab]||'🍽'}</div>`;
 
