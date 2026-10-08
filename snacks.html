@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>TasteHub – Homemade Snacks 🥨</title>
-<meta name="description" content="Fresh homemade snacks from TasteHub — Masala Peanuts, Sev, Mixture & more. Preservative-free, made in pure peanut oil. Order now on WhatsApp."/>
+<meta name="description" content="TasteHub Homemade Snacks – Kannuru, Bangalore. Festive specials, gift combos & everyday snacks. 100% vegetarian, preservative-free. Call 9507415857."/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -660,6 +660,7 @@ async function fetchSnacks() {
         name: r.item,
         price: Number(r.price) || 0,
         category: cat,
+        image: (r.image || "").toString().trim(), // photo uploaded from admin (falls back to snacks/<id>.jpg)
         emoji: CATEGORY_EMOJI[cat.toLowerCase()] || CATEGORY_EMOJI.default
       };
     });
@@ -694,7 +695,7 @@ function renderCards() {
     return `
     <div class="pcard ${qty > 0 ? "in-cart" : ""}" id="pcard-${p.id}">
       <div class="pc-img-wrap">
-        <img src="snacks/${p.id}.jpg" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="${p.image || ("snacks/" + p.id + ".jpg")}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="pc-emoji-fallback" style="display:none">${p.emoji}</div>
         ${p.category ? `<div class="pc-badge badge-popular">${p.category}</div>` : ""}
       </div>
