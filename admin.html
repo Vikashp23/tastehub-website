@@ -126,7 +126,7 @@ button{
         </div>
         <div class="img-up">
           <label>Food Photo (optional)</label>
-          <input type="file" accept="image/*" id="newFile" onchange="handleImg('new')"/>
+          <input type="file" accept="image/png" id="newFile" onchange="handleImg('new')"/>
           <img id="newPreview" class="img-prev hidden" alt=""/>
           <input type="hidden" id="newImage"/>
           <div class="status" id="newImgStatus"></div>
@@ -215,7 +215,7 @@ button{
         </div>
         <div class="img-up">
           <label>Food Photo (optional)</label>
-          <input type="file" accept="image/*" id="snackFile" onchange="handleImg('snack')"/>
+          <input type="file" accept="image/png" id="snackFile" onchange="handleImg('snack')"/>
           <img id="snackPreview" class="img-prev hidden" alt=""/>
           <input type="hidden" id="snackImage"/>
           <div class="status" id="snackImgStatus"></div>
@@ -672,7 +672,7 @@ function resetImg(p) {
   document.getElementById(p + "ImgStatus").textContent = "";
 }
 
-function resizeToJpeg(file, maxSize) {
+function resizeToPng(file, maxSize) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     const url = URL.createObjectURL(file);
@@ -683,7 +683,7 @@ function resizeToJpeg(file, maxSize) {
       c.height = Math.round(img.height * scale);
       c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
       URL.revokeObjectURL(url);
-      resolve(c.toDataURL("image/jpeg", 0.82));
+      resolve(c.toDataURL("image/png"));
     };
     img.onerror = () => reject(new Error("Could not read image"));
     img.src = url;
@@ -694,15 +694,20 @@ async function handleImg(p) {
   const file = document.getElementById(p + "File").files[0];
   const st = document.getElementById(p + "ImgStatus");
   if (!file) return;
+  if (file.type !== "image/png") {
+    st.textContent = "❌ Only PNG files are allowed"; st.className = "status error";
+    document.getElementById(p + "File").value = "";
+    return;
+  }
   imgUploading = true;
   document.getElementById(p + "Image").value = "";
   st.textContent = "Uploading image..."; st.className = "status";
   try {
-    const dataUrl = await resizeToJpeg(file, 800);
+    const dataUrl = await resizeToPng(file, 800);
     const base = file.name.replace(/\.[^.]+$/, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "food";
     const result = await callApi({
       action: "uploadImage",
-      filename: base + "-" + Date.now() + ".jpg",
+      filename: base + "-" + Date.now() + ".png",
       data: dataUrl.split(",")[1]
     });
     if (result.success && result.url) {
