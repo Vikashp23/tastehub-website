@@ -65,6 +65,10 @@ button{
 .status.success{color:#136843}
 .hidden{display:none}
 .loader{text-align:center;padding:30px;color:var(--muted)}
+.img-up{margin-bottom:12px}
+.img-up input[type=file]{padding:8px;background:#fff}
+.img-prev{display:block;width:96px;height:96px;object-fit:cover;border-radius:12px;margin-top:8px;border:1px solid #e5ded3}
+.img-prev.hidden{display:none}
 </style>
 </head>
 <body>
@@ -119,6 +123,13 @@ button{
         <div class="check-row" id="newTomorrowRow">
           <input type="checkbox" id="newTomorrow"/>
           <label style="margin:0">📅 Available tomorrow (Breakfast)</label>
+        </div>
+        <div class="img-up">
+          <label>Food Photo (optional)</label>
+          <input type="file" accept="image/*" id="newFile" onchange="handleImg('new')"/>
+          <img id="newPreview" class="img-prev hidden" alt=""/>
+          <input type="hidden" id="newImage"/>
+          <div class="status" id="newImgStatus"></div>
         </div>
         <button class="btn-primary" onclick="addItem()">Add Item</button>
         <div class="status" id="addStatus"></div>
@@ -201,6 +212,13 @@ button{
         <div class="check-row">
           <input type="checkbox" id="snackAvailable" checked/>
           <label style="margin:0">Available</label>
+        </div>
+        <div class="img-up">
+          <label>Food Photo (optional)</label>
+          <input type="file" accept="image/*" id="snackFile" onchange="handleImg('snack')"/>
+          <img id="snackPreview" class="img-prev hidden" alt=""/>
+          <input type="hidden" id="snackImage"/>
+          <div class="status" id="snackImgStatus"></div>
         </div>
         <button class="btn-primary" onclick="addSnack()">Add Snack</button>
         <div class="status" id="snackStatus"></div>
@@ -345,6 +363,7 @@ async function addItem() {
   const available = document.getElementById("newAvailable").checked;
   const tomorrow = meal === "breakfast" ? document.getElementById("newTomorrow").checked : false;
   const statusEl = document.getElementById("addStatus");
+  if (imgUploading) { statusEl.textContent = "Please wait, image is still uploading..."; statusEl.className = "status error"; return; }
 
   if (!name || !price) {
     statusEl.textContent = "Please fill item name and price";
@@ -357,7 +376,8 @@ async function addItem() {
 
   const result = await callApi({
     action: "add",
-    meal, name, price: Number(price), available, tomorrow
+    meal, name, price: Number(price), available, tomorrow,
+    img: document.getElementById("newImage").value
   });
 
   if (result.success) {
@@ -366,6 +386,7 @@ async function addItem() {
     document.getElementById("newName").value = "";
     document.getElementById("newPrice").value = "";
     document.getElementById("newTomorrow").checked = false;
+    resetImg("new");
     activeMeal = meal;
     await loadMenu();
   } else {
@@ -601,6 +622,7 @@ async function addSnack() {
   const category = document.getElementById("snackCategory").value.trim();
   const available = document.getElementById("snackAvailable").checked;
   const statusEl = document.getElementById("snackStatus");
+  if (imgUploading) { statusEl.textContent = "Please wait, image is still uploading..."; statusEl.className = "status error"; return; }
 
   if (!item || !price) {
     statusEl.textContent = "Please fill item name and price";
@@ -610,7 +632,8 @@ async function addSnack() {
   statusEl.textContent = "Adding..."; statusEl.className = "status";
 
   const result = await callApi({
-    action: "addSnack", item, price: Number(price), category, available: available ? "Yes" : "No"
+    action: "addSnack", item, price: Number(price), category, available: available ? "Yes" : "No",
+    image: document.getElementById("snackImage").value
   });
 
   if (result.success) {
@@ -618,6 +641,7 @@ async function addSnack() {
     document.getElementById("snackName").value = "";
     document.getElementById("snackPrice").value = "";
     document.getElementById("snackCategory").value = "";
+    resetImg("snack");
     await loadSnacksAdmin();
   } else {
     statusEl.textContent = "❌ " + (result.error || "Failed to add snack");
@@ -636,6 +660,63 @@ async function deleteSnack(row) {
   const result = await callApi({ action: "deleteSnack", row });
   if (result.success) await loadSnacksAdmin();
   else alert("Failed: " + (result.error || "unknown error"));
+}
+
+// ── IMAGE UPLOAD (resized in the browser, saved to Google Drive by Apps Script) ──
+let imgUploading = false;
+
+function resetImg(p) {
+  document.getElementById(p + "File").value = "";
+  document.getElementById(p + "Image").value = "";
+  document.getElementById(p + "Preview").classList.add("hidden");
+  document.getElementById(p + "ImgStatus").textContent = "";
+}
+
+function resizeToJpeg(file, maxSize) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.width * scale);
+      c.height = Math.round(img.height * scale);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      resolve(c.toDataURL("image/jpeg", 0.82));
+    };
+    img.onerror = () => reject(new Error("Could not read image"));
+    img.src = url;
+  });
+}
+
+async function handleImg(p) {
+  const file = document.getElementById(p + "File").files[0];
+  const st = document.getElementById(p + "ImgStatus");
+  if (!file) return;
+  imgUploading = true;
+  document.getElementById(p + "Image").value = "";
+  st.textContent = "Uploading image..."; st.className = "status";
+  try {
+    const dataUrl = await resizeToJpeg(file, 800);
+    const base = file.name.replace(/\.[^.]+$/, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "food";
+    const result = await callApi({
+      action: "uploadImage",
+      filename: base + "-" + Date.now() + ".jpg",
+      data: dataUrl.split(",")[1]
+    });
+    if (result.success && result.url) {
+      document.getElementById(p + "Image").value = result.url;
+      const prev = document.getElementById(p + "Preview");
+      prev.src = dataUrl; prev.classList.remove("hidden");
+      st.textContent = "✅ Image uploaded"; st.className = "status success";
+    } else {
+      st.textContent = "❌ " + (result.error || "Upload failed"); st.className = "status error";
+    }
+  } catch (e) {
+    st.textContent = "❌ " + e.message; st.className = "status error";
+  }
+  imgUploading = false;
 }
 
 async function callApi(payload) {
