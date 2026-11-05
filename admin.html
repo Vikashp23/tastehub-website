@@ -264,7 +264,7 @@ function onNewMealChange() {
   else row.classList.add("hidden");
 }
 
-function login() {
+async function login() {
   const email = document.getElementById("loginEmail").value.trim().toLowerCase();
   const pass = document.getElementById("loginPass").value;
   const statusEl = document.getElementById("loginStatus");
@@ -281,11 +281,23 @@ function login() {
     return;
   }
 
+  statusEl.textContent = "Verifying login...";
+  statusEl.className = "status";
   ADMIN_EMAIL = email;
   ADMIN_PASSWORD = pass;
+
+  const result = await callApi({ action: "verifyAdmin" });
+
+  if (!result.success) {
+    statusEl.textContent = "Login failed. Check your email and password.";
+    statusEl.className = "status error";
+    ADMIN_EMAIL = "";
+    ADMIN_PASSWORD = "";
+    return;
+  }
+
   sessionStorage.setItem("th_admin_email", email);
   sessionStorage.setItem("th_admin_pass", pass);
-
   document.getElementById("loginScreen").classList.add("hidden");
   document.getElementById("adminPanel").classList.remove("hidden");
   loadMenu();
