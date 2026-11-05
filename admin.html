@@ -303,18 +303,29 @@ async function login() {
   loadMenu();
 }
 
-// Restore credentials for this browser session.
-window.addEventListener("load", () => {
+// Restore and re-verify credentials for this browser session.
+window.addEventListener("load", async () => {
   const savedEmail = sessionStorage.getItem("th_admin_email");
   const savedPassword = sessionStorage.getItem("th_admin_pass");
 
   if (savedEmail && savedPassword) {
     ADMIN_EMAIL = savedEmail;
     ADMIN_PASSWORD = savedPassword;
-    document.getElementById("loginEmail").value = savedEmail;
-    document.getElementById("loginScreen").classList.add("hidden");
-    document.getElementById("adminPanel").classList.remove("hidden");
-    loadMenu();
+
+    const result = await callApi({ action: "verifyAdmin" });
+
+    if (result.success) {
+      document.getElementById("loginScreen").classList.add("hidden");
+      document.getElementById("adminPanel").classList.remove("hidden");
+      loadMenu();
+    } else {
+      sessionStorage.removeItem("th_admin_email");
+      sessionStorage.removeItem("th_admin_pass");
+      ADMIN_EMAIL = "";
+      ADMIN_PASSWORD = "";
+      document.getElementById("loginStatus").textContent = "Please log in again.";
+      document.getElementById("loginStatus").className = "status error";
+    }
   }
 });
 
