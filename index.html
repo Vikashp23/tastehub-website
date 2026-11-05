@@ -696,7 +696,23 @@ function renderTimingChips() {
 // ── TABS ──
 function renderTabs() {
   const el = document.getElementById("tabs");
-  el.innerHTML = Object.entries(MENU).map(([key, val]) => `
+  // Hide meal categories with no items on the customer-facing website.
+  const visibleEntries = Object.entries(MENU).filter(([key, section]) =>
+    Array.isArray(section?.items) && section.items.length > 0
+  );
+
+  if (!visibleEntries.length) {
+    el.innerHTML = "";
+    document.getElementById("menuGrid").innerHTML =
+      '<div class="empty-cart"><p>Menu is being updated. Please check back soon.</p></div>';
+    return;
+  }
+
+  if (!visibleEntries.some(([key]) => key === activeTab)) {
+    activeTab = visibleEntries[0][0];
+  }
+
+  el.innerHTML = visibleEntries.map(([key, val]) => `
     <button class="tab-btn ${key === activeTab ? "active" : ""}" onclick="switchTab('${key}')">
       ${val.label}
     </button>
@@ -712,6 +728,10 @@ function switchTab(key) {
 // ── MENU ──
 function renderMenu() {
   const section = MENU[activeTab];
+  if (!section || !Array.isArray(section.items) || section.items.length === 0) {
+    renderTabs();
+    return;
+  }
   const windowOpen = isOpen(section.cutoff);
   const banner = document.getElementById("statusBanner");
   const statusText = document.getElementById("statusText");
