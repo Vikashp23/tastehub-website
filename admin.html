@@ -77,8 +77,10 @@ button{
 
   <div id="loginScreen" class="login-box">
     <h2>🔒 TasteHub Admin</h2>
+    <label>Admin Email</label>
+    <input type="email" id="loginEmail" placeholder="Enter admin email" autocomplete="username" onkeydown="if(event.key==='Enter')login()"/>
     <label>Admin Password</label>
-    <input type="password" id="loginPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')login()"/>
+    <input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"/>
     <button class="btn-primary" style="width:100%" onclick="login()">Login</button>
     <div class="status" id="loginStatus"></div>
   </div>
@@ -236,6 +238,7 @@ button{
 <script>
 const SHEET_API = "https://script.google.com/macros/s/AKfycbw9-76VMjCdoxDoVP1cR8a9FahAoDApO47zPqpE8aSMN1os0KR6S-JszGnNTX_j4CJJ/exec";
 
+let ADMIN_EMAIL = "";
 let ADMIN_PASSWORD = "";
 let MENU = {};
 let activeMeal = "breakfast";
@@ -262,25 +265,41 @@ function onNewMealChange() {
 }
 
 function login() {
-  const pass = document.getElementById("loginPass").value.trim();
+  const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+  const pass = document.getElementById("loginPass").value;
   const statusEl = document.getElementById("loginStatus");
-  if (!pass) {
-    statusEl.textContent = "Please enter the password";
+
+  if (!email || !pass) {
+    statusEl.textContent = "Please enter both admin email and password";
     statusEl.className = "status error";
     return;
   }
+
+  if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+    statusEl.textContent = "Please enter a valid email address";
+    statusEl.className = "status error";
+    return;
+  }
+
+  ADMIN_EMAIL = email;
   ADMIN_PASSWORD = pass;
+  sessionStorage.setItem("th_admin_email", email);
   sessionStorage.setItem("th_admin_pass", pass);
+
   document.getElementById("loginScreen").classList.add("hidden");
   document.getElementById("adminPanel").classList.remove("hidden");
   loadMenu();
 }
 
-// auto-login if password already verified this session
+// Restore credentials for this browser session.
 window.addEventListener("load", () => {
-  const saved = sessionStorage.getItem("th_admin_pass");
-  if (saved) {
-    ADMIN_PASSWORD = saved;
+  const savedEmail = sessionStorage.getItem("th_admin_email");
+  const savedPassword = sessionStorage.getItem("th_admin_pass");
+
+  if (savedEmail && savedPassword) {
+    ADMIN_EMAIL = savedEmail;
+    ADMIN_PASSWORD = savedPassword;
+    document.getElementById("loginEmail").value = savedEmail;
     document.getElementById("loginScreen").classList.add("hidden");
     document.getElementById("adminPanel").classList.remove("hidden");
     loadMenu();
@@ -732,6 +751,7 @@ async function handleImg(p) {
 }
 
 async function callApi(payload) {
+  payload.email = ADMIN_EMAIL;
   payload.password = ADMIN_PASSWORD;
   try {
     const res = await fetch(SHEET_API, {
