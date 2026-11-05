@@ -884,13 +884,13 @@ function renderCartModal() {
         <label>Society / Apartment Building *</label>
         <select id="custSociety" onchange="updateDeliveryFee()">
           <option value="">-- Select your society --</option>
-          <option value="Kolte Patil Raaga, Kannuru" data-lat="13.0720" data-lon="77.6050" data-fee="0">Kolte Patil Raaga (Self Pickup / Same Campus)</option>
-          <option value="Casa Serenita, Sobha City, Kannuru" data-lat="13.0685" data-lon="77.6065" data-fee="30">Casa Serenita — Sobha City</option>
-          <option value="Bellahalli, Bengaluru" data-lat="13.0650" data-lon="77.6030" data-fee="30">Bellahalli area</option>
-          <option value="Thanisandra, Bengaluru" data-lat="13.0550" data-lon="77.6100" data-fee="40">Thanisandra</option>
-          <option value="Hennur, Bengaluru" data-lat="13.0450" data-lon="77.6200" data-fee="50">Hennur</option>
-          <option value="Jakkur, Bengaluru" data-lat="13.0800" data-lon="77.5900" data-fee="40">Jakkur</option>
-          <option value="Yelahanka, Bengaluru" data-lat="13.1007" data-lon="77.5963" data-fee="60">Yelahanka</option>
+          <option value="Kolte Patil Raaga, Kannuru" data-fee="0">Kolte Patil Raaga (Self Pickup / Same Campus)</option>
+          <option value="Casa Serenita, Sobha City, Kannuru" data-fee="30">Casa Serenita — Sobha City</option>
+          <option value="Bellahalli, Bengaluru" data-fee="30">Bellahalli area</option>
+          <option value="Thanisandra, Bengaluru" data-fee="40">Thanisandra</option>
+          <option value="Hennur, Bengaluru" data-fee="50">Hennur</option>
+          <option value="Jakkur, Bengaluru" data-fee="40">Jakkur</option>
+          <option value="Yelahanka, Bengaluru" data-fee="60">Yelahanka</option>
           <option value="other">Other (we'll contact you)</option>
         </select>
       </div>
@@ -900,10 +900,10 @@ function renderCartModal() {
       </div>
       <div id="deliveryFeeBox" style="display:none;background:rgba(232,97,26,.07);border:1px solid rgba(232,97,26,.18);border-radius:11px;padding:12px 14px;margin-bottom:2px">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-size:13px;font-weight:600;color:var(--brown)">🛵 GoDeliver Delivery Fee</span>
+          <span style="font-size:13px;font-weight:600;color:var(--brown)">🛵 Manual Delivery Charge</span>
           <span id="deliveryFeeAmt" style="font-size:16px;font-weight:800;color:var(--orange)">₹0</span>
         </div>
-        <div style="font-size:11.5px;color:var(--muted);margin-top:4px">Auto-booked via GoDeliver · OTP verified pickup & drop · Live tracking</div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:4px">Delivery will be arranged manually by TasteHub. We will confirm the delivery details on WhatsApp.</div>
       </div>
       <div id="selfPickupBox" style="display:none;background:rgba(27,140,90,.07);border:1px solid rgba(27,140,90,.18);border-radius:11px;padding:12px 14px;margin-bottom:2px">
         <span style="font-size:13px;font-weight:600;color:#136843">🏠 Self Pickup — No delivery charge!</span>
@@ -924,10 +924,10 @@ function renderCartModal() {
       </div>
     </div>
     <div id="grandTotalBox" style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:linear-gradient(135deg,rgba(232,97,26,.10),rgba(44,24,16,.06));border:1.5px solid rgba(232,97,26,.20);border-radius:var(--r);margin-bottom:14px">
-      <span style="font-size:14px;font-weight:700;color:var(--brown)">Grand Total (incl. delivery)</span>
+      <span style="font-size:14px;font-weight:700;color:var(--brown)">Grand Total (including delivery charge)</span>
       <span id="grandTotalAmt" style="font-size:22px;font-weight:800;color:var(--orange);font-family:var(--display)">₹${total}</span>
     </div>
-    <button class="order-btn" onclick="placeOrder()">✅ Place Order + Auto-Book Delivery</button>
+    <button class="order-btn" onclick="placeOrder()">✅ Place Order via WhatsApp</button>
   `;
 }
 
@@ -975,17 +975,13 @@ function updateDeliveryFee() {
   if (grandEl) grandEl.textContent = `₹${total + fee}`;
 }
 
-// ── PLACE ORDER (WhatsApp + GoDeliver auto-book) ──────────────
+// ── PLACE ORDER (WhatsApp; delivery arranged manually) ───────
 async function placeOrder() {
   const name     = document.getElementById("custName")?.value.trim();
   const phone    = document.getElementById("custPhone")?.value.trim();
   const flat     = document.getElementById("custFlat")?.value.trim();
   const society  = document.getElementById("custSociety");
   const socVal   = society?.value;
-  const socText  = society?.options[society.selectedIndex]?.text || "";
-  const opt      = society?.options[society.selectedIndex];
-  const dropLat  = parseFloat(opt?.dataset.lat || "0");
-  const dropLon  = parseFloat(opt?.dataset.lon || "0");
   const pay      = document.getElementById("custPay")?.value;
   const notes    = document.getElementById("custNotes")?.value.trim();
   const { total } = cartTotal();
@@ -999,10 +995,6 @@ async function placeOrder() {
   const itemLines = Array.from(cart.values())
     .map(v => `• ${v.name} × ${v.qty} = ₹${v.price * v.qty}`)
     .join("\n");
-  const itemsSummary = Array.from(cart.values())
-    .map(v => `${v.name} x${v.qty}`)
-    .join(", ");
-
   const orderId    = `TH-${Date.now().toString().slice(-6)}`;
   const fullAddr   = `${flat}, ${socVal}`;
 
@@ -1019,18 +1011,8 @@ async function placeOrder() {
 
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
 
-  // ── 2. Show processing screen ──
+  // Delivery is arranged manually by TasteHub after WhatsApp confirmation.
   showBookingScreen(orderId, grandTotal, pay);
-
-  // ── 3. Auto-book GoDeliver if delivery needed ──
-  if (currentDeliveryFee > 0 && dropLat && dropLon) {
-    bookGoDeliver({
-      orderId, name, phone, flat,
-      fullAddr, dropLat, dropLon,
-      total, grandTotal, pay,
-      itemsSummary, notes
-    });
-  }
 }
 
 // ── Show booking in-progress screen ──────────────────────────
@@ -1051,8 +1033,8 @@ function showBookingScreen(orderId, grandTotal, pay) {
         border-radius:12px;padding:14px;margin-bottom:14px;text-align:center
       ">
         <div style="font-size:20px;margin-bottom:6px">🛵</div>
-        <div style="font-weight:700;font-size:13.5px;color:var(--brown)">Booking GoDeliver rider...</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:4px">This takes a few seconds</div>
+        <div style="font-weight:700;font-size:13.5px;color:var(--brown)">Delivery arranged manually</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">TasteHub will confirm delivery details with you on WhatsApp.</div>
       </div>
 
       ${isUPI ? `
@@ -1081,64 +1063,6 @@ function showBookingScreen(orderId, grandTotal, pay) {
         Done — Back to Menu
       </button>
     </div>`;
-}
-
-// ── Call Apps Script to book GoDeliver ────────────────────────
-async function bookGoDeliver({ orderId, name, phone, fullAddr, dropLat, dropLon, total, grandTotal, pay, itemsSummary, notes }) {
-  try {
-    const res = await fetch(SHEET_API, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
-        action:         "bookDelivery",
-        order_id:       orderId,
-        customer_name:  name,
-        customer_phone: phone,
-        drop_address:   fullAddr,
-        drop_lat:       dropLat,
-        drop_lon:       dropLon,
-        order_total:    total,
-        delivery_fee:   currentDeliveryFee,
-        payment_method: pay,
-        items_summary:  itemsSummary
-      })
-    });
-
-    const data = await res.json();
-    updateDeliveryStatus(data);
-  } catch (err) {
-    updateDeliveryStatus({ success: false, error: "Network error" });
-  }
-}
-
-// ── Update the delivery status box after booking ──────────────
-function updateDeliveryStatus(data) {
-  const el = document.getElementById("deliveryStatus");
-  if (!el) return;
-
-  if (data.success) {
-    el.style.background = "rgba(27,140,90,.07)";
-    el.style.border     = "1px solid rgba(27,140,90,.2)";
-    el.innerHTML = `
-      <div style="font-size:20px;margin-bottom:6px">✅</div>
-      <div style="font-weight:700;font-size:13.5px;color:#136843">GoDeliver Rider Booked!</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px">
-        Trip ID: <b>${data.trip_id || "confirmed"}</b>
-        ${data.eta ? `· ETA: <b>${data.eta} mins</b>` : ""}
-      </div>
-      <div style="font-size:11.5px;color:var(--muted);margin-top:4px">Rider will be assigned shortly · OTP verified pickup</div>
-    `;
-  } else {
-    el.style.background = "rgba(192,57,43,.06)";
-    el.style.border     = "1px solid rgba(192,57,43,.18)";
-    el.innerHTML = `
-      <div style="font-size:20px;margin-bottom:6px">⚠️</div>
-      <div style="font-weight:700;font-size:13.5px;color:#c0392b">Auto-booking failed</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px">
-        We'll arrange delivery manually. Your WhatsApp order is confirmed! 🙏
-      </div>
-    `;
-  }
 }
 
 function copyUPI() {
