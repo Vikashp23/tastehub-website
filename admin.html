@@ -126,7 +126,7 @@ button{
         </div>
         <div class="img-up">
           <label>Food Photo (optional)</label>
-          <input type="file" accept="image/png" id="newFile" onchange="handleImg('new')"/>
+          <input type="file" accept="image/png,image/jpeg,image/webp" id="newFile" onchange="handleImg('new')"/>
           <img id="newPreview" class="img-prev hidden" alt=""/>
           <input type="hidden" id="newImage"/>
           <div class="status" id="newImgStatus"></div>
@@ -215,7 +215,7 @@ button{
         </div>
         <div class="img-up">
           <label>Food Photo (optional)</label>
-          <input type="file" accept="image/png" id="snackFile" onchange="handleImg('snack')"/>
+          <input type="file" accept="image/png,image/jpeg,image/webp" id="snackFile" onchange="handleImg('snack')"/>
           <img id="snackPreview" class="img-prev hidden" alt=""/>
           <input type="hidden" id="snackImage"/>
           <div class="status" id="snackImgStatus"></div>
@@ -694,8 +694,14 @@ async function handleImg(p) {
   const file = document.getElementById(p + "File").files[0];
   const st = document.getElementById(p + "ImgStatus");
   if (!file) return;
-  if (file.type !== "image/png") {
-    st.textContent = "❌ Only PNG files are allowed"; st.className = "status error";
+  const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+  if (!allowedTypes.includes(file.type)) {
+    st.textContent = "❌ Choose a PNG, JPG/JPEG, or WebP image"; st.className = "status error";
+    document.getElementById(p + "File").value = "";
+    return;
+  }
+  if (file.size > 12 * 1024 * 1024) {
+    st.textContent = "❌ Image too large. Choose an image under 12 MB."; st.className = "status error";
     document.getElementById(p + "File").value = "";
     return;
   }
@@ -719,9 +725,10 @@ async function handleImg(p) {
       st.textContent = "❌ " + (result.error || "Upload failed"); st.className = "status error";
     }
   } catch (e) {
-    st.textContent = "❌ " + e.message; st.className = "status error";
+    st.textContent = "❌ Upload failed: " + (e?.message || "Please retry"); st.className = "status error";
+  } finally {
+    imgUploading = false;
   }
-  imgUploading = false;
 }
 
 async function callApi(payload) {
