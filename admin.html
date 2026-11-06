@@ -444,12 +444,16 @@ async function editItem(row) {
   if (quantity === null) return;
   const price = prompt("Price (₹):", item.price);
   if (price === null) return;
-  const image = prompt("Photo URL (leave unchanged or paste a new uploaded image URL):", item.img || "");
-  if (image === null) return;
-
   if (!name.trim() || price.trim() === "" || !Number.isFinite(Number(price))) {
     alert("Please enter a product name and a valid price.");
     return;
+  }
+
+  let image = item.img || "";
+  if (confirm("Do you want to upload or replace this product photo?")) {
+    const uploaded = await chooseEditImage();
+    if (uploaded === null) return;
+    if (uploaded) image = uploaded;
   }
 
   const result = await callApi({
@@ -461,7 +465,7 @@ async function editItem(row) {
     price: Number(price),
     available: item.available,
     tomorrow: item.tomorrow,
-    img: image.trim()
+    img: image
   });
 
   if (result.success) await loadMenu();
@@ -738,12 +742,16 @@ async function editSnack(row) {
   if (price === null) return;
   const category = prompt("Category:", snack.category || "");
   if (category === null) return;
-  const image = prompt("Photo URL (leave unchanged or paste a new uploaded image URL):", snack.image || "");
-  if (image === null) return;
-
   if (!item.trim() || price.trim() === "" || !Number.isFinite(Number(price))) {
     alert("Please enter a product name and a valid price.");
     return;
+  }
+
+  let image = snack.image || "";
+  if (confirm("Do you want to upload or replace this snack photo?")) {
+    const uploaded = await chooseEditImage();
+    if (uploaded === null) return;
+    if (uploaded) image = uploaded;
   }
 
   const result = await callApi({
@@ -754,7 +762,7 @@ async function editSnack(row) {
     price: Number(price),
     category: category.trim(),
     available: snack.available,
-    image: image.trim()
+    image: image
   });
 
   if (result.success) await loadSnacksAdmin();
@@ -774,8 +782,68 @@ async function deleteSnack(row) {
   else alert("Failed: " + (result.error || "unknown error"));
 }
 
-// ── IMAGE UPLOAD (resized in the browser, saved to Google Drive by Apps Script) ──
+// ── IMAGE UPLOAD (resized in browser and saved to GitHub by Apps Script) ──
 let imgUploading = false;
+
+// Opens the computer's file picker when editing an existing product.
+// Returns the uploaded GitHub image URL, an empty string if no file was
+// selected, or null if the upload was cancelled/failed.
+function chooseEditImage() {
+  return new Promise(resolve => {
+    const picker = document.createElement("input");
+    picker.type = "file";
+    picker.accept = "image/png,image/jpeg,image/webp";
+    picker.style.display = "none";
+    document.body.appendChild(picker);
+
+    picker.addEventListener("change", async () => {
+      const file = picker.files && picker.files[0];
+      picker.remove();
+      if (!file) return resolve("");
+
+      const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+      if (!allowedTypes.includes(file.type)) {
+        alert("Choose a PNG, JPG/JPEG, or WebP image.");
+        return resolve(null);
+      }
+      if (file.size > 12 * 1024 * 1024) {
+        alert("Image too large. Choose an image under 12 MB.");
+        return resolve(null);
+      }
+
+      imgUploading = true;
+      try {
+        const dataUrl = await resizeToPng(file, 800);
+        const base = file.name
+          .replace(/\\.[^.]+$/, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "") || "food";
+
+        const result = await callApi({
+          action: "uploadImage",
+          filename: base + "-" + Date.now() + ".png",
+          data: dataUrl.split(",")[1]
+        });
+
+        if (result.success && result.url) {
+          alert("Photo uploaded successfully.");
+          return resolve(result.url);
+        }
+
+        alert("Photo upload failed: " + (result.error || "Please try again."));
+        resolve(null);
+      } catch (err) {
+        alert("Photo upload failed: " + (err.message || "Please try again."));
+        resolve(null);
+      } finally {
+        imgUploading = false;
+      }
+    }, { once: true });
+
+    picker.click();
+  });
+}
 
 function resetImg(p) {
   document.getElementById(p + "File").value = "";
