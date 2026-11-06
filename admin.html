@@ -280,7 +280,7 @@ async function login() {
   const result = await callApi({ action: "verifyAdmin" });
 
   if (!result.success) {
-    statusEl.textContent = "Login failed. Check your password.";
+    statusEl.textContent = "Login failed: " + (result.error || "The backend did not return an error detail. Check the Web App deployment URL and deployment access.");
     statusEl.className = "status error";
     ADMIN_PASSWORD = "";
     return;
