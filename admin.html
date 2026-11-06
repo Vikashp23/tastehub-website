@@ -110,6 +110,8 @@ button{
         </select>
         <label>Item Name</label>
         <input id="newName" placeholder="e.g. Masala Dosa"/>
+        <label>Quantity / Portion (optional)</label>
+        <input id="newQuantity" placeholder="e.g. 4 pieces, 200 grams, 1 plate"/>
         <div class="row">
           <div>
             <label>Price (₹)</label>
@@ -208,6 +210,8 @@ button{
         <h3>➕ Add Snack Item</h3>
         <label>Item Name</label>
         <input id="snackName" placeholder="e.g. Gujiya"/>
+        <label>Quantity / Portion (optional)</label>
+        <input id="snackQuantity" placeholder="e.g. 500 grams, 10 pieces, 1 pack"/>
         <div class="row">
           <div><label>Price (₹)</label><input id="snackPrice" type="number" placeholder="700"/></div>
           <div><label>Category</label><input id="snackCategory" placeholder="Festive"/></div>
@@ -366,8 +370,10 @@ function renderList() {
         <span class="badge ${item.available ? 'on' : 'off'}">${item.available ? 'Available' : 'Off'}</span>
         ${activeMeal === 'breakfast' && item.tomorrow ? `<span class="badge tomorrow">📅 Tomorrow</span>` : ''}
         <div class="item-price">₹${item.price}</div>
+        ${item.quantity ? `<div style="font-size:12px;color:var(--muted);margin-top:3px">${escapeHtml(String(item.quantity))}</div>` : ''}
       </div>
       <div class="item-actions">
+        <button class="toggle-btn" onclick="editItem(${item.row})">Edit</button>
         ${activeMeal === 'breakfast' ? `
         <button class="toggle-btn ${item.tomorrow ? 'tomorrow-on' : ''}" onclick="toggleTomorrow(${item.row}, ${!item.tomorrow})">
           📅 ${item.tomorrow ? 'Unset Tmrw' : 'Set Tmrw'}
@@ -408,6 +414,7 @@ async function addItem() {
   const result = await callApi({
     action: "add",
     meal, name, price: Number(price), available, tomorrow,
+    quantity: document.getElementById("newQuantity").value.trim(),
     img: document.getElementById("newImage").value
   });
 
@@ -416,6 +423,7 @@ async function addItem() {
     statusEl.className = "status success";
     document.getElementById("newName").value = "";
     document.getElementById("newPrice").value = "";
+    document.getElementById("newQuantity").value = "";
     document.getElementById("newTomorrow").checked = false;
     resetImg("new");
     activeMeal = meal;
@@ -424,6 +432,40 @@ async function addItem() {
     statusEl.textContent = "❌ " + (result.error || "Failed to add item");
     statusEl.className = "status error";
   }
+}
+
+async function editItem(row) {
+  const item = Object.values(MENU).flatMap(section => section.items || []).find(x => Number(x.row) === Number(row));
+  if (!item) return alert("Item not found. Please refresh the menu.");
+
+  const name = prompt("Product name:", item.name || "");
+  if (name === null) return;
+  const quantity = prompt("Quantity / portion (e.g. 4 pieces, 200 grams):", item.quantity || "");
+  if (quantity === null) return;
+  const price = prompt("Price (₹):", item.price);
+  if (price === null) return;
+  const image = prompt("Photo URL (leave unchanged or paste a new uploaded image URL):", item.img || "");
+  if (image === null) return;
+
+  if (!name.trim() || price.trim() === "" || !Number.isFinite(Number(price))) {
+    alert("Please enter a product name and a valid price.");
+    return;
+  }
+
+  const result = await callApi({
+    action: "update",
+    row: Number(row),
+    meal: activeMeal,
+    name: name.trim(),
+    quantity: quantity.trim(),
+    price: Number(price),
+    available: item.available,
+    tomorrow: item.tomorrow,
+    img: image.trim()
+  });
+
+  if (result.success) await loadMenu();
+  else alert("Update failed: " + (result.error || "unknown error"));
 }
 
 async function toggleAvailable(row, newAvailable) {
@@ -638,8 +680,10 @@ function renderSnackList() {
         <span class="item-name">${escapeHtml(s.item)}</span>
         <span class="badge ${available ? 'on' : 'off'}">${available ? 'Available' : 'Off'}</span>
         <div class="item-price">₹${s.price} · ${escapeHtml(String(s.category || ""))}</div>
+        ${s.quantity ? `<div style="font-size:12px;color:var(--muted);margin-top:3px">${escapeHtml(String(s.quantity))}</div>` : ''}
       </div>
       <div class="item-actions">
+        <button class="toggle-btn" onclick="editSnack(${s.row})">Edit</button>
         <button class="toggle-btn" onclick="toggleSnackAvailable(${s.row}, ${!available})">${available ? "Mark Off" : "Mark On"}</button>
         <button class="btn-danger btn-sm" onclick="deleteSnack(${s.row})">Delete</button>
       </div>
@@ -664,6 +708,7 @@ async function addSnack() {
 
   const result = await callApi({
     action: "addSnack", item, price: Number(price), category, available: available ? "Yes" : "No",
+    quantity: document.getElementById("snackQuantity").value.trim(),
     image: document.getElementById("snackImage").value
   });
 
@@ -672,12 +717,48 @@ async function addSnack() {
     document.getElementById("snackName").value = "";
     document.getElementById("snackPrice").value = "";
     document.getElementById("snackCategory").value = "";
+    document.getElementById("snackQuantity").value = "";
     resetImg("snack");
     await loadSnacksAdmin();
   } else {
     statusEl.textContent = "❌ " + (result.error || "Failed to add snack");
     statusEl.className = "status error";
   }
+}
+
+async function editSnack(row) {
+  const snack = SNACKS_ADMIN.find(x => Number(x.row) === Number(row));
+  if (!snack) return alert("Snack not found. Please refresh the list.");
+
+  const item = prompt("Product name:", snack.item || "");
+  if (item === null) return;
+  const quantity = prompt("Quantity / portion:", snack.quantity || "");
+  if (quantity === null) return;
+  const price = prompt("Price (₹):", snack.price);
+  if (price === null) return;
+  const category = prompt("Category:", snack.category || "");
+  if (category === null) return;
+  const image = prompt("Photo URL (leave unchanged or paste a new uploaded image URL):", snack.image || "");
+  if (image === null) return;
+
+  if (!item.trim() || price.trim() === "" || !Number.isFinite(Number(price))) {
+    alert("Please enter a product name and a valid price.");
+    return;
+  }
+
+  const result = await callApi({
+    action: "updateSnack",
+    row: Number(row),
+    item: item.trim(),
+    quantity: quantity.trim(),
+    price: Number(price),
+    category: category.trim(),
+    available: snack.available,
+    image: image.trim()
+  });
+
+  if (result.success) await loadSnacksAdmin();
+  else alert("Update failed: " + (result.error || "unknown error"));
 }
 
 async function toggleSnackAvailable(row, newAvailable) {
