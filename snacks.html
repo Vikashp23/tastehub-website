@@ -662,6 +662,7 @@ async function fetchSnacks() {
         id: imageIdFor(r.item) || ("snack-" + r.row), // matches uploaded image filenames
         name: r.item,
         price: Number(r.price) || 0,
+        quantity: (r.quantity || "").toString().trim(),
         category: cat,
         image: (r.image || "").toString().trim(), // photo uploaded from admin (falls back to snacks/<id>.jpg)
         emoji: CATEGORY_EMOJI[cat.toLowerCase()] || CATEGORY_EMOJI.default
@@ -704,6 +705,7 @@ function renderCards() {
       </div>
       <div class="pc-body">
         <div class="pc-name">${p.name}</div>
+        ${p.quantity ? `<div style="font-size:12px;color:#7A5C4A;margin-top:4px">${p.quantity}</div>` : ''}
       </div>
       <div class="pc-footer" id="pcf-${p.id}">${footerHTML}</div>
     </div>`;
