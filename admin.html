@@ -77,8 +77,6 @@ button{
 
   <div id="loginScreen" class="login-box">
     <h2>🔒 TasteHub Admin</h2>
-    <label>Admin Email</label>
-    <input type="email" id="loginEmail" placeholder="Enter admin email" autocomplete="username" onkeydown="if(event.key==='Enter')login()"/>
     <label>Admin Password</label>
     <input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"/>
     <button class="btn-primary" style="width:100%" onclick="login()">Login</button>
@@ -265,51 +263,41 @@ function onNewMealChange() {
 }
 
 async function login() {
-  const email = document.getElementById("loginEmail").value.trim().toLowerCase();
   const pass = document.getElementById("loginPass").value;
   const statusEl = document.getElementById("loginStatus");
 
-  if (!email || !pass) {
-    statusEl.textContent = "Please enter both admin email and password";
-    statusEl.className = "status error";
-    return;
-  }
-
-  if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
-    statusEl.textContent = "Please enter a valid email address";
+  if (!pass) {
+    statusEl.textContent = "Please enter the admin password";
     statusEl.className = "status error";
     return;
   }
 
   statusEl.textContent = "Verifying login...";
   statusEl.className = "status";
-  ADMIN_EMAIL = email;
+  ADMIN_EMAIL = "";
   ADMIN_PASSWORD = pass;
 
   const result = await callApi({ action: "verifyAdmin" });
 
   if (!result.success) {
-    statusEl.textContent = "Login failed. Check your email and password.";
+    statusEl.textContent = "Login failed. Check your password.";
     statusEl.className = "status error";
-    ADMIN_EMAIL = "";
     ADMIN_PASSWORD = "";
     return;
   }
 
-  sessionStorage.setItem("th_admin_email", email);
   sessionStorage.setItem("th_admin_pass", pass);
   document.getElementById("loginScreen").classList.add("hidden");
   document.getElementById("adminPanel").classList.remove("hidden");
   loadMenu();
 }
 
-// Restore and re-verify credentials for this browser session.
+// Restore and re-verify the password for this browser session.
 window.addEventListener("load", async () => {
-  const savedEmail = sessionStorage.getItem("th_admin_email");
   const savedPassword = sessionStorage.getItem("th_admin_pass");
 
-  if (savedEmail && savedPassword) {
-    ADMIN_EMAIL = savedEmail;
+  if (savedPassword) {
+    ADMIN_EMAIL = "";
     ADMIN_PASSWORD = savedPassword;
 
     const result = await callApi({ action: "verifyAdmin" });
@@ -319,9 +307,7 @@ window.addEventListener("load", async () => {
       document.getElementById("adminPanel").classList.remove("hidden");
       loadMenu();
     } else {
-      sessionStorage.removeItem("th_admin_email");
       sessionStorage.removeItem("th_admin_pass");
-      ADMIN_EMAIL = "";
       ADMIN_PASSWORD = "";
       document.getElementById("loginStatus").textContent = "Please log in again.";
       document.getElementById("loginStatus").className = "status error";
@@ -774,7 +760,6 @@ async function handleImg(p) {
 }
 
 async function callApi(payload) {
-  payload.email = ADMIN_EMAIL;
   payload.password = ADMIN_PASSWORD;
   try {
     const res = await fetch(SHEET_API, {
