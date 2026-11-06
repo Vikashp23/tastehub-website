@@ -771,6 +771,7 @@ function renderMenu() {
             <div class="mc-name">${item.name}</div>
           </div>
           <div class="mc-price ${!isAvailable ? 'mc-price--off' : ''}">₹${item.price}</div>
+          ${item.quantity ? `<div style="font-size:12px;color:#7A5C4A;margin-top:3px">${item.quantity}</div>` : ''}
           ${isAvailable
             ? `<span class="avail-badge avail-on"> Available Today</span>`
             : (activeTab === 'breakfast' && item.tomorrow
