@@ -256,12 +256,14 @@ button{
         <input id="manualCustomer" placeholder="Customer name"/>
         <div class="row">
           <div><label>Mobile Number</label><input id="manualMobile" placeholder="Mobile number"/></div>
-          <div><label>Total Amount (₹)</label><input id="manualTotal" type="number" min="0" placeholder="0"/></div>
+          <div><label>Total Amount (₹)</label><input id="manualTotal" type="number" min="0" placeholder="0" readonly/></div>
         </div>
         <label>Items Ordered</label>
-        <input id="manualItems" placeholder="Item name × quantity"/>
+        <div id="manualItemRows"></div>
+        <button type="button" class="toggle-btn" onclick="addManualItemRow()">＋ Add Another Item</button>
+        <p class="status" style="text-align:left;margin:8px 0 14px">Choose items from the available menu. The total updates automatically.</p>
         <div class="row">
-          <div><label>Quantity</label><input id="manualQuantity" placeholder="e.g. 3"/></div>
+          <div><label>Total Quantity</label><input id="manualQuantity" readonly placeholder="Auto calculated"/></div>
           <div><label>Delivery Address</label><input id="manualAddress" placeholder="Address"/></div>
         </div>
         <label>Notes</label>
@@ -312,7 +314,7 @@ function switchSection(sec) {
   if (sec === "sub" && SUBS.length === 0) loadSubscriptions();
   if (sec === "party" && PARTIES.length === 0) loadParties();
   if (sec === "snack" && SNACKS_ADMIN.length === 0) loadSnacksAdmin();
-  if (sec === "orders") loadOrders();
+  if (sec === "orders") { loadOrders(); loadSnacksAdmin().then(initManualOrderItems); }
   if (sec === "invoices") loadInvoices();
 }
 
@@ -907,14 +909,93 @@ async function saveOrderUpdate(orderId, row) {
   } else alert("Update failed: " + (result.error || "Unknown error"));
 }
 
+let MANUAL_CATALOG = [];
+let manualItemRowCount = 0;
+
+function initManualOrderItems() {
+  MANUAL_CATALOG = [];
+  const mealLabels = { breakfast: "Breakfast", lunch: "Lunch", snacks: "Snacks", dinner: "Dinner" };
+  Object.keys(mealLabels).forEach(meal => {
+    (MENU[meal]?.items || []).forEach(item => {
+      if (item.available && Number(item.price) >= 0) {
+        MANUAL_CATALOG.push({ name: item.name, price: Number(item.price), portion: item.quantity || "", category: mealLabels[meal] });
+      }
+    });
+  });
+  (SNACKS_ADMIN || []).forEach(item => {
+    if (String(item.available).trim().toLowerCase() === "yes" && Number(item.price) >= 0) {
+      MANUAL_CATALOG.push({ name: item.item, price: Number(item.price), portion: item.quantity || "", category: "Snacks" });
+    }
+  });
+  const rows = document.getElementById("manualItemRows");
+  if (rows && !rows.children.length) addManualItemRow();
+  updateManualOrderTotal();
+}
+
+function addManualItemRow() {
+  const container = document.getElementById("manualItemRows");
+  if (!container) return;
+  const rowId = ++manualItemRowCount;
+  const options = MANUAL_CATALOG.map((item, index) =>
+    '<option value="' + index + '">' + escapeHtml(item.name) + ' · ₹' + item.price + (item.portion ? ' · ' + escapeHtml(item.portion) : '') + '</option>'
+  ).join("");
+  const row = document.createElement("div");
+  row.className = "row";
+  row.id = "manualItemRow-" + rowId;
+  row.style.cssText = "grid-template-columns:minmax(0,1fr) 90px 42px;align-items:end;gap:8px;margin-bottom:10px";
+  row.innerHTML = `
+    <div><label>Menu Item</label><select class="manual-item-select" onchange="updateManualOrderTotal()">
+      <option value="">Choose an available item</option>${options}
+    </select></div>
+    <div><label>Qty</label><input class="manual-item-qty" type="number" min="1" step="1" value="1" oninput="updateManualOrderTotal()"/></div>
+    <div><label>&nbsp;</label><button type="button" class="btn-danger btn-sm" style="width:100%;padding:10px 0" onclick="removeManualItemRow(${rowId})" aria-label="Remove item">×</button></div>`;
+  container.appendChild(row);
+  if (!MANUAL_CATALOG.length) {
+    row.querySelector("select").innerHTML = '<option value="">No available menu items</option>';
+  }
+  updateManualOrderTotal();
+}
+
+function removeManualItemRow(rowId) {
+  const row = document.getElementById("manualItemRow-" + rowId);
+  if (row) row.remove();
+  if (!document.querySelector("#manualItemRows .manual-item-select")) addManualItemRow();
+  updateManualOrderTotal();
+}
+
+function updateManualOrderTotal() {
+  let total = 0;
+  let totalQty = 0;
+  document.querySelectorAll("#manualItemRows .row").forEach(row => {
+    const select = row.querySelector(".manual-item-select");
+    const qtyInput = row.querySelector(".manual-item-qty");
+    const index = select ? select.value : "";
+    const qty = Math.max(0, Math.floor(Number(qtyInput?.value || 0)));
+    if (index !== "" && MANUAL_CATALOG[Number(index)] && qty > 0) {
+      total += MANUAL_CATALOG[Number(index)].price * qty;
+      totalQty += qty;
+    }
+  });
+  document.getElementById("manualTotal").value = total.toFixed(2);
+  document.getElementById("manualQuantity").value = totalQty || "";
+}
+
 async function addManualOrder() {
   const status = document.getElementById("manualOrderStatus");
   const customerName = document.getElementById("manualCustomer").value.trim();
   const mobile = document.getElementById("manualMobile").value.trim();
-  const totalAmount = Number(document.getElementById("manualTotal").value);
-  const items = document.getElementById("manualItems").value.trim();
-  if (!customerName || !mobile || !items || !Number.isFinite(totalAmount) || totalAmount < 0) {
-    status.textContent = "Enter customer name, mobile, items and a valid total.";
+  const selectedItems = [];
+  document.querySelectorAll("#manualItemRows .row").forEach(row => {
+    const select = row.querySelector(".manual-item-select");
+    const qty = Math.floor(Number(row.querySelector(".manual-item-qty")?.value || 0));
+    const item = select && select.value !== "" ? MANUAL_CATALOG[Number(select.value)] : null;
+    if (item && qty > 0) selectedItems.push({ ...item, qty });
+  });
+  const totalAmount = selectedItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const items = selectedItems.map(item => item.name + " × " + item.qty).join(", ");
+  const quantity = selectedItems.reduce((sum, item) => sum + item.qty, 0);
+  if (!customerName || !mobile || !selectedItems.length) {
+    status.textContent = "Enter customer name and mobile, then select at least one menu item with quantity.";
     status.className = "status error";
     return;
   }
@@ -926,14 +1007,17 @@ async function addManualOrder() {
     mobile,
     totalAmount,
     items,
-    quantity: document.getElementById("manualQuantity").value.trim(),
+    quantity: String(quantity),
     address: document.getElementById("manualAddress").value.trim(),
     notes: document.getElementById("manualNotes").value.trim()
   });
   if (result.success) {
     status.textContent = "Order saved: " + result.orderId;
     status.className = "status success";
-    ["manualCustomer","manualMobile","manualTotal","manualItems","manualQuantity","manualAddress","manualNotes"].forEach(id => document.getElementById(id).value = "");
+    ["manualCustomer","manualMobile","manualAddress","manualNotes"].forEach(id => document.getElementById(id).value = "");
+    document.getElementById("manualItemRows").innerHTML = "";
+    addManualItemRow();
+    updateManualOrderTotal();
     await loadOrders();
   } else {
     status.textContent = result.error || "Could not save order";
