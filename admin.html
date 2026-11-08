@@ -980,7 +980,8 @@ function renderInvoices() {
       <div style="font-size:12px;margin-top:4px">Paid: ₹${Number(inv.amountPaid || 0).toFixed(2)} · Balance: ₹${Number(inv.balanceDue || 0).toFixed(2)}</div>
       <div class="item-actions" style="margin-top:10px;flex-wrap:wrap">
         <button class="btn-save btn-sm" onclick="recordPayment('${escapeHtml(inv.invoiceNumber)}',${Number(inv.invoiceTotal || 0)},${Number(inv.amountPaid || 0)})">Update Payment</button>
-        <button class="toggle-btn" onclick="printInvoice(${inv.row})">Print Details</button>
+        <button class="toggle-btn" onclick="printInvoice(${inv.row})">Download PDF</button>
+        <button class="toggle-btn" onclick="downloadInvoiceWord(${inv.row})">Download Word</button>
       </div>
     </div>`).join("");
 }
@@ -1007,16 +1008,14 @@ async function recordPayment(invoiceNumber, total, alreadyPaid) {
   } else alert("Payment update failed: " + (result.error || "Unknown error"));
 }
 
-function printInvoice(row) {
-  const inv = INVOICES_ADMIN.find(x => Number(x.row) === Number(row));
-  if (!inv) return;
-  const html = `<!doctype html><html><head><title>${escapeHtml(inv.invoiceNumber)}</title>
+function getInvoiceDocument(inv) {
+  return `<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(inv.invoiceNumber)}</title>
     <style>
-      @page { size: A4; margin: 15mm; }
+      @page { size: A4; margin: 14mm; }
       * { box-sizing: border-box; }
       html, body { margin: 0; padding: 0; color: #222; font-family: Arial, sans-serif; }
-      body { min-height: 267mm; display: flex; align-items: center; justify-content: center; }
-      .invoice { width: 100%; max-width: 720px; margin: auto; padding: 28px 34px; border: 1px solid #ddd; }
+      body { min-height: 269mm; display: flex; align-items: center; justify-content: center; }
+      .invoice { width: 100%; max-width: 720px; margin: auto; padding: 25px 32px; border: 1px solid #ddd; }
       .brand { text-align: center; border-bottom: 2px solid #b94b12; padding-bottom: 14px; margin-bottom: 22px; }
       h1 { color: #b94b12; margin: 0 0 5px; font-size: 30px; }
       .tagline { margin: 0; color: #666; }
@@ -1028,7 +1027,7 @@ function printInvoice(row) {
       td:last-child { text-align: right; }
       .total { font-weight: bold; font-size: 18px; background: #fff7f1; }
       .footer { text-align: center; margin-top: 28px; color: #555; }
-      @media print { body { min-height: 267mm; } .invoice { border: none; } }
+      @media print { body { min-height: 269mm; } .invoice { border: none; } }
     </style></head><body><div class="invoice">
     <div class="brand"><h1>TasteHub</h1><p class="tagline">Homemade Vegetarian Food</p></div>
     <h2>INVOICE · ${escapeHtml(inv.invoiceNumber)}</h2>
@@ -1040,14 +1039,37 @@ function printInvoice(row) {
     <tr class="total"><td>Invoice Total</td><td>₹${Number(inv.invoiceTotal || 0).toFixed(2)}</td></tr>
     <tr><td>Amount Paid</td><td>₹${Number(inv.amountPaid || 0).toFixed(2)}</td></tr>
     <tr><td>Balance Due</td><td>₹${Number(inv.balanceDue || 0).toFixed(2)}</td></tr>
-    <tr><td>Payment Status</td><td>${escapeHtml(inv.paymentStatus)}</td></tr></table>
-    <p class="footer">Thank you for ordering from TasteHub.</p></div>
-    <script>window.onload=()=>window.print()<\\/script></body></html>`;
+    <tr><td>Payment Status</td><td>${escapeHtml(inv.paymentStatus || "Pending")}</td></tr></table>
+    <p class="footer">Thank you for ordering from TasteHub.</p></div></body></html>`;
+}
+
+function printInvoice(row) {
+  const inv = INVOICES_ADMIN.find(x => Number(x.row) === Number(row));
+  if (!inv) return;
   const w = window.open("", "_blank");
-  if (!w) return alert("Allow pop-ups to print the invoice.");
+  if (!w) return alert("Allow pop-ups for invoice PDF export.");
   w.document.open();
-  w.document.write(html);
+  w.document.write(getInvoiceDocument(inv));
   w.document.close();
+  w.onload = () => {
+    w.focus();
+    w.print(); // In the print dialog, choose "Save as PDF".
+  };
+}
+
+function downloadInvoiceWord(row) {
+  const inv = INVOICES_ADMIN.find(x => Number(x.row) === Number(row));
+  if (!inv) return;
+  const wordHtml = getInvoiceDocument(inv).replace("</head>", '<meta name="ProgId" content="Word.Document"></head>');
+  const blob = new Blob(["\\ufeff", wordHtml], { type: "application/msword;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = (inv.invoiceNumber || "TasteHub-Invoice") + ".doc";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
 }
 
 // ── IMAGE UPLOAD (resized in browser and saved to GitHub by Apps Script) ──
