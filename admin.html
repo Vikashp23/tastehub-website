@@ -1011,11 +1011,29 @@ function printInvoice(row) {
   const inv = INVOICES_ADMIN.find(x => Number(x.row) === Number(row));
   if (!inv) return;
   const html = `<!doctype html><html><head><title>${escapeHtml(inv.invoiceNumber)}</title>
-    <style>body{font-family:Arial,sans-serif;padding:32px;color:#222}h1{color:#b94b12}table{width:100%;border-collapse:collapse;margin-top:20px}td{padding:10px;border-bottom:1px solid #ddd}.total{font-weight:bold;font-size:18px}</style>
-    </head><body><h1>TasteHub</h1><p>Homemade Vegetarian Food</p>
-    <h2>Invoice: ${escapeHtml(inv.invoiceNumber)}</h2>
-    <p>Date: ${escapeHtml(inv.invoiceDate)}<br>Order ID: ${escapeHtml(inv.orderId)}</p>
-    <p><b>Customer:</b> ${escapeHtml(inv.customerName)}<br><b>Mobile:</b> ${escapeHtml(inv.mobile)}<br><b>Address:</b> ${escapeHtml(inv.address)}</p>
+    <style>
+      @page { size: A4; margin: 15mm; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; color: #222; font-family: Arial, sans-serif; }
+      body { min-height: 267mm; display: flex; align-items: center; justify-content: center; }
+      .invoice { width: 100%; max-width: 720px; margin: auto; padding: 28px 34px; border: 1px solid #ddd; }
+      .brand { text-align: center; border-bottom: 2px solid #b94b12; padding-bottom: 14px; margin-bottom: 22px; }
+      h1 { color: #b94b12; margin: 0 0 5px; font-size: 30px; }
+      .tagline { margin: 0; color: #666; }
+      h2 { text-align: center; margin: 18px 0; }
+      .meta { display: flex; justify-content: space-between; gap: 18px; margin-bottom: 18px; }
+      .customer { line-height: 1.7; margin-bottom: 20px; }
+      table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+      td { padding: 10px 8px; border-bottom: 1px solid #ddd; vertical-align: top; }
+      td:last-child { text-align: right; }
+      .total { font-weight: bold; font-size: 18px; background: #fff7f1; }
+      .footer { text-align: center; margin-top: 28px; color: #555; }
+      @media print { body { min-height: 267mm; } .invoice { border: none; } }
+    </style></head><body><div class="invoice">
+    <div class="brand"><h1>TasteHub</h1><p class="tagline">Homemade Vegetarian Food</p></div>
+    <h2>INVOICE · ${escapeHtml(inv.invoiceNumber)}</h2>
+    <div class="meta"><span><b>Date:</b> ${escapeHtml(inv.invoiceDate)}</span><span><b>Order ID:</b> ${escapeHtml(inv.orderId)}</span></div>
+    <div class="customer"><b>Bill To</b><br>${escapeHtml(inv.customerName)}<br><b>Mobile:</b> ${escapeHtml(inv.mobile)}<br><b>Address:</b> ${escapeHtml(inv.address)}</div>
     <table><tr><td><b>Items</b></td><td>${escapeHtml(inv.items)}</td></tr>
     <tr><td>Subtotal</td><td>₹${Number(inv.subtotal || 0).toFixed(2)}</td></tr>
     <tr><td>Delivery</td><td>₹${Number(inv.deliveryCharges || 0).toFixed(2)}</td></tr>
@@ -1023,7 +1041,8 @@ function printInvoice(row) {
     <tr><td>Amount Paid</td><td>₹${Number(inv.amountPaid || 0).toFixed(2)}</td></tr>
     <tr><td>Balance Due</td><td>₹${Number(inv.balanceDue || 0).toFixed(2)}</td></tr>
     <tr><td>Payment Status</td><td>${escapeHtml(inv.paymentStatus)}</td></tr></table>
-    <p style="margin-top:30px">Thank you for ordering from TasteHub.</p><script>window.onload=()=>window.print()<\/script></body></html>`;
+    <p class="footer">Thank you for ordering from TasteHub.</p></div>
+    <script>window.onload=()=>window.print()<\\/script></body></html>`;
   const w = window.open("", "_blank");
   if (!w) return alert("Allow pop-ups to print the invoice.");
   w.document.open();
