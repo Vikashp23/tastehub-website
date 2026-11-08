@@ -1228,28 +1228,43 @@ async function init() {
 init();
 </script>
 <script>
-// Show a daily greeting, with a separate 10 PM ordering reminder (India time).
+// Show daily greetings plus advance menu reminders (India time).
 (function(){
   const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
   const part=name=>parts.find(p=>p.type===name)?.value||'';
   const today=part('year')+'-'+part('month')+'-'+part('day');
   const hour=Number(part('hour')), minute=Number(part('minute'));
-  const nightWindow=(hour===21 && minute>=30) || (hour===22 && minute<30);
-  const greetingKey='tastehub_daily_greeting_seen', nightKey='tastehub_night_order_popup_seen';
-  let greeting,icon,line,message,action;
-  if(nightWindow){
-    if(localStorage.getItem(nightKey)===today) return;
-    greeting='Tomorrow’s Breakfast Menu Is Coming!'; icon='🌙 🍽️';
+  const morningMenuWindow=(hour===9 && minute>=30) || hour===10;
+  const nightBreakfastWindow=(hour===21 && minute>=30) || (hour===22 && minute<30);
+  const greetingKey='tastehub_daily_greeting_seen';
+  const morningMenuKey='tastehub_day_menu_reminder_seen';
+  const nightBreakfastKey='tastehub_night_order_popup_seen';
+  let greeting,icon,line,message,action,key;
+  if(nightBreakfastWindow){
+    key=nightBreakfastKey;
+    if(localStorage.getItem(key)===today) return;
+    greeting='Tomorrow’s Breakfast Menu Is Coming!';
+    icon='🌙 🍽️';
     line='Order before 10:30 PM for faster order confirmation.';
     message='TasteHub will publish tomorrow’s breakfast menu at 10:00 PM tonight. Check the menu when it goes live and place your order by 10:30 PM for faster confirmation and preparation.';
-    action='View Breakfast Menu'; window.tasteHubActivePopupKey=nightKey;
+    action='View Breakfast Menu';
+  }else if(morningMenuWindow){
+    key=morningMenuKey;
+    if(localStorage.getItem(key)===today) return;
+    greeting='Today’s Meal Menus Are Coming!';
+    icon='☀️ 🍽️';
+    line='Lunch, snacks and dinner menus will be shared between 10:00 AM and 11:00 AM.';
+    message='Keep an eye on TasteHub today. We’ll share the lunch, snacks and dinner menus between 10:00 AM and 11:00 AM. Check the menu and place your orders early.';
+    action='View Today’s Menu';
   }else{
-    if(localStorage.getItem(greetingKey)===today) return;
+    key=greetingKey;
+    if(localStorage.getItem(key)===today) return;
     if(hour>=5 && hour<12){ greeting='Good Morning!'; icon='🌅 ☀️'; line='Wishing you a bright and beautiful day.'; message='Start your day with positivity and a delicious homemade breakfast. Explore today’s fresh vegetarian menu at TasteHub.'; }
     else if(hour>=12 && hour<17){ greeting='Good Afternoon!'; icon='☀️ 🌼'; line='Hope your day is going wonderfully.'; message='Take a tasty break and explore our homemade vegetarian meals and snacks, prepared with care at TasteHub.'; }
     else { greeting='Good Evening!'; icon='🌇 ✨'; line='Wishing you a peaceful and happy evening.'; message='Relax and enjoy something delicious. Check TasteHub’s daily menu, homemade snacks and party food.'; }
-    action='Explore Today’s Menu'; window.tasteHubActivePopupKey=greetingKey;
+    action='Explore Today’s Menu';
   }
+  window.tasteHubActivePopupKey=key;
   window.addEventListener('load',()=>setTimeout(()=>{
     const popup=document.getElementById('tasteHubPromo'); if(!popup) return;
     document.getElementById('tasteHubPromoTitle').textContent=greeting;
@@ -1267,7 +1282,8 @@ function closeTasteHubPromo(){
   const date=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata'}).format(new Date());
   localStorage.setItem(key,date);
 }
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTasteHubPromo();});</script>
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTasteHubPromo();});
+</script>
 <!-- ── PWA: Service Worker Registration + Install Prompt ── -->
 <script>
 // Register service worker (enables offline + installability)
