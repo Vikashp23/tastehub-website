@@ -1033,7 +1033,7 @@ async function placeOrder() {
     toast("⚠️ Please complete your details and select food");
     return;
   }
-  if (!/^[0-9+\\s-]{7,20}$/.test(phone)) {
+  if (!/^[0-9+\s-]{7,20}$/.test(phone)) {
     toast("⚠️ Please enter a valid phone number");
     return;
   }
