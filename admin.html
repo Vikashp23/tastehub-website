@@ -95,6 +95,8 @@ button{
       <button class="sec-tab-btn" id="sectab-sub" onclick="switchSection('sub')">📦 Subscriptions</button>
       <button class="sec-tab-btn" id="sectab-party" onclick="switchSection('party')">🎉 Party Packages</button>
       <button class="sec-tab-btn" id="sectab-snack" onclick="switchSection('snack')">🍿 Snacks</button>
+      <button class="sec-tab-btn" id="sectab-orders" onclick="switchSection('orders')">🧾 Orders</button>
+      <button class="sec-tab-btn" id="sectab-invoices" onclick="switchSection('invoices')">💳 Invoices</button>
     </div>
 
     <!-- ══════════ DAILY MENU ══════════ -->
@@ -236,6 +238,46 @@ button{
       </div>
     </div>
 
+    <!-- ══════════ ORDERS ══════════ -->
+    <div id="ordersSection" class="hidden">
+      <div class="card">
+        <h3>➕ Add Manual Order</h3>
+        <label>Customer Name</label>
+        <input id="manualCustomer" placeholder="Customer name"/>
+        <div class="row">
+          <div><label>Mobile Number</label><input id="manualMobile" placeholder="Mobile number"/></div>
+          <div><label>Total Amount (₹)</label><input id="manualTotal" type="number" min="0" placeholder="0"/></div>
+        </div>
+        <label>Items Ordered</label>
+        <input id="manualItems" placeholder="Item name × quantity"/>
+        <div class="row">
+          <div><label>Quantity</label><input id="manualQuantity" placeholder="e.g. 3"/></div>
+          <div><label>Delivery Address</label><input id="manualAddress" placeholder="Address"/></div>
+        </div>
+        <label>Notes</label>
+        <input id="manualNotes" placeholder="Optional notes"/>
+        <button class="btn-primary" onclick="addManualOrder()">Save Manual Order</button>
+        <div class="status" id="manualOrderStatus"></div>
+      </div>
+      <div class="card">
+        <h3>📋 Customer Orders</h3>
+        <button class="btn-save btn-sm" onclick="loadOrders()">Refresh Orders</button>
+        <div id="ordersList"><div class="loader">Open this tab to load orders.</div></div>
+      </div>
+    </div>
+
+    <!-- ══════════ INVOICES ══════════ -->
+    <div id="invoicesSection" class="hidden">
+      <div class="card">
+        <h3>🧾 Invoice Register</h3>
+        <p style="font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:12px">
+          Create an invoice from a saved order. The order total is carried into the invoice.
+        </p>
+        <button class="btn-save btn-sm" onclick="loadInvoices()">Refresh Invoices</button>
+        <div id="invoicesList"><div class="loader">Open this tab to load invoices.</div></div>
+      </div>
+    </div>
+
   </div>
 
 </div>
@@ -254,12 +296,14 @@ function switchSection(sec) {
   activeSection = sec;
   document.querySelectorAll(".sec-tab-btn").forEach(b => b.classList.remove("active"));
   document.getElementById("sectab-" + sec).classList.add("active");
-  ["daily", "sub", "party", "snack"].forEach(s => {
+  ["daily", "sub", "party", "snack", "orders", "invoices"].forEach(s => {
     document.getElementById(s + "Section").classList.toggle("hidden", s !== sec);
   });
   if (sec === "sub" && SUBS.length === 0) loadSubscriptions();
   if (sec === "party" && PARTIES.length === 0) loadParties();
   if (sec === "snack" && SNACKS_ADMIN.length === 0) loadSnacksAdmin();
+  if (sec === "orders") loadOrders();
+  if (sec === "invoices") loadInvoices();
 }
 
 function onNewMealChange() {
@@ -780,6 +824,211 @@ async function deleteSnack(row) {
   const result = await callApi({ action: "deleteSnack", row });
   if (result.success) await loadSnacksAdmin();
   else alert("Failed: " + (result.error || "unknown error"));
+}
+
+// ══════════ CUSTOMER ORDERS ══════════
+let ORDERS_ADMIN = [];
+let INVOICES_ADMIN = [];
+
+async function loadOrders() {
+  const list = document.getElementById("ordersList");
+  list.innerHTML = '<div class="loader">Loading orders...</div>';
+  const result = await callApi({ action: "getOrders" });
+  if (!result.success) {
+    list.innerHTML = '<div class="status error">' + escapeHtml(result.error || "Could not load orders") + '</div>';
+    return;
+  }
+  ORDERS_ADMIN = result.orders || [];
+  renderOrders();
+}
+
+function renderOrders() {
+  const list = document.getElementById("ordersList");
+  if (!ORDERS_ADMIN.length) {
+    list.innerHTML = '<div class="status">No orders have been received yet.</div>';
+    return;
+  }
+  list.innerHTML = ORDERS_ADMIN.map(o => {
+    const status = String(o.status || "Pending");
+    const options = ["Pending","Confirmed","Preparing","Ready","Out for Delivery","Delivered","Cancelled"];
+    return `
+      <div class="item-row" style="display:block">
+        <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <strong>${escapeHtml(o.orderId)}</strong>
+          <span class="badge ${status === "Delivered" ? "on" : "off"}">${escapeHtml(status)}</span>
+        </div>
+        <div style="font-size:13px;margin-top:7px"><b>${escapeHtml(o.customerName)}</b> · ${escapeHtml(o.mobile)}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">${escapeHtml(o.items)} · Qty: ${escapeHtml(o.quantity)}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">${escapeHtml(o.address)}</div>
+        <div class="item-price" style="margin:7px 0">₹${Number(o.totalAmount || 0).toFixed(2)}</div>
+        <div class="row">
+          <div>
+            <label>Order Status</label>
+            <select id="orderStatus-${o.row}" style="margin-bottom:8px">
+              ${options.map(x => `<option value="${x}" ${x === status ? "selected" : ""}>${x}</option>`).join("")}
+            </select>
+          </div>
+          <div>
+            <label>Estimated Delivery</label>
+            <input id="orderEta-${o.row}" value="${escapeHtml(o.estimatedDelivery || "")}" placeholder="e.g. 7:30 PM" style="margin-bottom:8px"/>
+          </div>
+        </div>
+        <label>Admin Notes</label>
+        <input id="orderNotes-${o.row}" value="${escapeHtml(o.notes || "")}" placeholder="Notes" style="margin-bottom:8px"/>
+        <div class="item-actions" style="flex-wrap:wrap">
+          <button class="btn-save btn-sm" onclick="saveOrderUpdate('${escapeHtml(o.orderId)}',${o.row})">Save Update</button>
+          <button class="btn-primary btn-sm" onclick="makeInvoice('${escapeHtml(o.orderId)}')">Create Invoice</button>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+async function saveOrderUpdate(orderId, row) {
+  const result = await callApi({
+    action: "updateOrder",
+    orderId,
+    status: document.getElementById("orderStatus-" + row).value,
+    estimatedDelivery: document.getElementById("orderEta-" + row).value.trim(),
+    notes: document.getElementById("orderNotes-" + row).value.trim()
+  });
+  if (result.success) {
+    alert("Order updated.");
+    await loadOrders();
+  } else alert("Update failed: " + (result.error || "Unknown error"));
+}
+
+async function addManualOrder() {
+  const status = document.getElementById("manualOrderStatus");
+  const customerName = document.getElementById("manualCustomer").value.trim();
+  const mobile = document.getElementById("manualMobile").value.trim();
+  const totalAmount = Number(document.getElementById("manualTotal").value);
+  const items = document.getElementById("manualItems").value.trim();
+  if (!customerName || !mobile || !items || !Number.isFinite(totalAmount) || totalAmount < 0) {
+    status.textContent = "Enter customer name, mobile, items and a valid total.";
+    status.className = "status error";
+    return;
+  }
+  status.textContent = "Saving...";
+  status.className = "status";
+  const result = await callApi({
+    action: "addManualOrder",
+    customerName,
+    mobile,
+    totalAmount,
+    items,
+    quantity: document.getElementById("manualQuantity").value.trim(),
+    address: document.getElementById("manualAddress").value.trim(),
+    notes: document.getElementById("manualNotes").value.trim()
+  });
+  if (result.success) {
+    status.textContent = "Order saved: " + result.orderId;
+    status.className = "status success";
+    ["manualCustomer","manualMobile","manualTotal","manualItems","manualQuantity","manualAddress","manualNotes"].forEach(id => document.getElementById(id).value = "");
+    await loadOrders();
+  } else {
+    status.textContent = result.error || "Could not save order";
+    status.className = "status error";
+  }
+}
+
+// Invoice totals use the saved order total. The customer checkout total
+// already includes any delivery fee, so delivery is not added twice here.
+async function makeInvoice(orderId) {
+  const order = ORDERS_ADMIN.find(o => String(o.orderId) === String(orderId));
+  if (!order) return alert("Order not found. Refresh the order list.");
+  if (!confirm("Create invoice for " + orderId + " for ₹" + Number(order.totalAmount || 0) + "?")) return;
+  const result = await callApi({
+    action: "createInvoice",
+    orderId,
+    subtotal: Number(order.totalAmount || 0),
+    deliveryCharges: 0,
+    amountPaid: 0,
+    paymentMethod: ""
+  });
+  if (result.success) {
+    alert("Invoice created: " + result.invoiceNumber);
+    loadInvoices();
+  } else alert("Invoice creation failed: " + (result.error || "Unknown error"));
+}
+
+async function loadInvoices() {
+  const list = document.getElementById("invoicesList");
+  list.innerHTML = '<div class="loader">Loading invoices...</div>';
+  const result = await callApi({ action: "getInvoices" });
+  if (!result.success) {
+    list.innerHTML = '<div class="status error">' + escapeHtml(result.error || "Could not load invoices") + '</div>';
+    return;
+  }
+  INVOICES_ADMIN = result.invoices || [];
+  renderInvoices();
+}
+
+function renderInvoices() {
+  const list = document.getElementById("invoicesList");
+  if (!INVOICES_ADMIN.length) {
+    list.innerHTML = '<div class="status">No invoices created yet. Create an invoice from the Orders tab.</div>';
+    return;
+  }
+  list.innerHTML = INVOICES_ADMIN.map(inv => `
+    <div class="item-row" style="display:block">
+      <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">
+        <strong>${escapeHtml(inv.invoiceNumber)}</strong>
+        <span class="badge ${inv.paymentStatus === "Paid" ? "on" : "off"}">${escapeHtml(inv.paymentStatus || "Pending")}</span>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:6px">Order: ${escapeHtml(inv.orderId)} · ${escapeHtml(inv.customerName)}</div>
+      <div class="item-price" style="margin-top:6px">Total ₹${Number(inv.invoiceTotal || 0).toFixed(2)}</div>
+      <div style="font-size:12px;margin-top:4px">Paid: ₹${Number(inv.amountPaid || 0).toFixed(2)} · Balance: ₹${Number(inv.balanceDue || 0).toFixed(2)}</div>
+      <div class="item-actions" style="margin-top:10px;flex-wrap:wrap">
+        <button class="btn-save btn-sm" onclick="recordPayment('${escapeHtml(inv.invoiceNumber)}',${Number(inv.invoiceTotal || 0)},${Number(inv.amountPaid || 0)})">Update Payment</button>
+        <button class="toggle-btn" onclick="printInvoice(${inv.row})">Print Details</button>
+      </div>
+    </div>`).join("");
+}
+
+async function recordPayment(invoiceNumber, total, alreadyPaid) {
+  const input = prompt("Enter total amount paid so far (₹):", String(alreadyPaid));
+  if (input === null) return;
+  const amountPaid = Number(input);
+  if (!Number.isFinite(amountPaid) || amountPaid < 0 || amountPaid > total) {
+    alert("Enter an amount between ₹0 and ₹" + total);
+    return;
+  }
+  const paymentMethod = prompt("Payment method (UPI / Cash / Bank Transfer / Card / Other):", "UPI");
+  if (paymentMethod === null) return;
+  const result = await callApi({
+    action: "updatePayment",
+    invoiceNumber,
+    amountPaid,
+    paymentMethod
+  });
+  if (result.success) {
+    alert("Payment updated. Balance due: ₹" + result.balanceDue);
+    await loadInvoices();
+  } else alert("Payment update failed: " + (result.error || "Unknown error"));
+}
+
+function printInvoice(row) {
+  const inv = INVOICES_ADMIN.find(x => Number(x.row) === Number(row));
+  if (!inv) return;
+  const html = `<!doctype html><html><head><title>${escapeHtml(inv.invoiceNumber)}</title>
+    <style>body{font-family:Arial,sans-serif;padding:32px;color:#222}h1{color:#b94b12}table{width:100%;border-collapse:collapse;margin-top:20px}td{padding:10px;border-bottom:1px solid #ddd}.total{font-weight:bold;font-size:18px}</style>
+    </head><body><h1>TasteHub</h1><p>Homemade Vegetarian Food</p>
+    <h2>Invoice: ${escapeHtml(inv.invoiceNumber)}</h2>
+    <p>Date: ${escapeHtml(inv.invoiceDate)}<br>Order ID: ${escapeHtml(inv.orderId)}</p>
+    <p><b>Customer:</b> ${escapeHtml(inv.customerName)}<br><b>Mobile:</b> ${escapeHtml(inv.mobile)}<br><b>Address:</b> ${escapeHtml(inv.address)}</p>
+    <table><tr><td><b>Items</b></td><td>${escapeHtml(inv.items)}</td></tr>
+    <tr><td>Subtotal</td><td>₹${Number(inv.subtotal || 0).toFixed(2)}</td></tr>
+    <tr><td>Delivery</td><td>₹${Number(inv.deliveryCharges || 0).toFixed(2)}</td></tr>
+    <tr class="total"><td>Invoice Total</td><td>₹${Number(inv.invoiceTotal || 0).toFixed(2)}</td></tr>
+    <tr><td>Amount Paid</td><td>₹${Number(inv.amountPaid || 0).toFixed(2)}</td></tr>
+    <tr><td>Balance Due</td><td>₹${Number(inv.balanceDue || 0).toFixed(2)}</td></tr>
+    <tr><td>Payment Status</td><td>${escapeHtml(inv.paymentStatus)}</td></tr></table>
+    <p style="margin-top:30px">Thank you for ordering from TasteHub.</p><script>window.onload=()=>window.print()<\/script></body></html>`;
+  const w = window.open("", "_blank");
+  if (!w) return alert("Allow pop-ups to print the invoice.");
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
 }
 
 // ── IMAGE UPLOAD (resized in browser and saved to GitHub by Apps Script) ──
