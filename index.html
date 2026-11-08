@@ -1234,15 +1234,15 @@ init();
   const part=name=>parts.find(p=>p.type===name)?.value||'';
   const today=part('year')+'-'+part('month')+'-'+part('day');
   const hour=Number(part('hour')), minute=Number(part('minute'));
-  const nightWindow=hour===22 && minute<30;
+  const nightWindow=(hour===21 && minute>=30) || (hour===22 && minute<30);
   const greetingKey='tastehub_daily_greeting_seen', nightKey='tastehub_night_order_popup_seen';
   let greeting,icon,line,message,action;
   if(nightWindow){
     if(localStorage.getItem(nightKey)===today) return;
-    greeting='Tonight’s Menu Is Live!'; icon='🌙 🍽️';
+    greeting='Tomorrow’s Breakfast Menu Is Coming!'; icon='🌙 🍽️';
     line='Order before 10:30 PM for faster order confirmation.';
-    message='TasteHub’s menu is posted at 10:00 PM every night. Place your order by 10:30 PM so we can confirm it quickly and plan your food preparation on time.';
-    action='Order Before 10:30 PM'; window.tasteHubActivePopupKey=nightKey;
+    message='TasteHub will publish tomorrow’s breakfast menu at 10:00 PM tonight. Check the menu when it goes live and place your order by 10:30 PM for faster confirmation and preparation.';
+    action='View Breakfast Menu'; window.tasteHubActivePopupKey=nightKey;
   }else{
     if(localStorage.getItem(greetingKey)===today) return;
     if(hour>=5 && hour<12){ greeting='Good Morning!'; icon='🌅 ☀️'; line='Wishing you a bright and beautiful day.'; message='Start your day with positivity and a delicious homemade breakfast. Explore today’s fresh vegetarian menu at TasteHub.'; }
