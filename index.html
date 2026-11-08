@@ -1017,44 +1017,100 @@ function updateDeliveryFee() {
   if (grandEl) grandEl.textContent = `₹${total + fee}`;
 }
 
-// ── PLACE ORDER (WhatsApp; delivery arranged manually) ───────
+// ── PLACE ORDER — SAVE TO SHEETS, THEN OPEN WHATSAPP ──────────
 async function placeOrder() {
-  const name     = document.getElementById("custName")?.value.trim();
-  const phone    = document.getElementById("custPhone")?.value.trim();
-  const flat     = document.getElementById("custFlat")?.value.trim();
-  const society  = document.getElementById("custSociety");
-  const socVal   = society?.value;
-  const pay      = document.getElementById("custPay")?.value;
-  const notes    = document.getElementById("custNotes")?.value.trim();
+  const name = document.getElementById("custName")?.value.trim();
+  const phone = document.getElementById("custPhone")?.value.trim();
+  const flat = document.getElementById("custFlat")?.value.trim();
+  const society = document.getElementById("custSociety");
+  const socVal = society?.value;
+  const pay = document.getElementById("custPay")?.value;
+  const notes = document.getElementById("custNotes")?.value.trim();
   const { total } = cartTotal();
   const grandTotal = total + currentDeliveryFee;
 
-  if (!name || !phone || !flat || !socVal) {
-    toast("⚠️ Please fill Name, Phone, Society & Flat");
+  if (!name || !phone || !flat || !socVal || cart.size === 0) {
+    toast("⚠️ Please complete your details and select food");
+    return;
+  }
+  if (!/^[0-9+\\s-]{7,20}$/.test(phone)) {
+    toast("⚠️ Please enter a valid phone number");
     return;
   }
 
   const itemLines = Array.from(cart.values())
-    .map(v => `• ${v.name} × ${v.qty} = ₹${v.price * v.qty}`)
-    .join("\n");
-  const orderId    = `TH-${Date.now().toString().slice(-6)}`;
-  const fullAddr   = `${flat}, ${socVal}`;
+    .map(v => `${v.name} × ${v.qty} = ₹${v.price * v.qty}`)
+    .join("; ");
+  const totalQty = Array.from(cart.values()).reduce((sum, v) => sum + v.qty, 0);
+  const fullAddr = `${flat}, ${socVal}`;
+  const orderNotes = `Payment: ${pay}; Food total: ₹${total}; Delivery: ₹${currentDeliveryFee}${notes ? "; Customer notes: " + notes : ""}`;
 
-  // ── 1. Send WhatsApp order message ──
-  let msg = `Hi TasteHub 🍽\n\n*New Order — ${orderId}*\n`;
-  msg += `Name: ${name}\nPhone: ${phone}\n`;
-  msg += `Address: ${fullAddr}\nPayment: ${pay}\n\n`;
-  msg += `*Items:*\n${itemLines}\n\n`;
-  msg += `*Food Total: ₹${total}*\n`;
-  if (currentDeliveryFee > 0) msg += `*Delivery: ₹${currentDeliveryFee}*\n`;
-  msg += `*Grand Total: ₹${grandTotal}*`;
-  if (notes) msg += `\n\nNotes: ${notes}`;
-  msg += `\n\nPlease confirm my order. Thank you! 🙏\n📢 Telegram: https://t.me/tastehub_meals`;
+  // Open a blank tab during the click so the browser does not block WhatsApp
+  // after the order-saving request completes.
+  const waWindow = window.open("about:blank", "_blank");
 
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank");
+  const submitButton = document.querySelector(".order-btn");
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.textContent = "Saving your order...";
+  }
 
-  // Delivery is arranged manually by TasteHub after WhatsApp confirmation.
-  showBookingScreen(orderId, grandTotal, pay);
+  try {
+    const response = await fetch(SHEET_API, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({
+        action: "createOrder",
+        customerName: name,
+        mobile: phone,
+        itemsOrdered: itemLines,
+        quantity: String(totalQty),
+        totalAmount: grandTotal,
+        address: fullAddr,
+        notes: orderNotes
+      })
+    });
+
+    const result = await response.json();
+
+    if (!result.success || !result.orderId) {
+      if (waWindow) waWindow.close();
+      toast("Order could not be saved. Please try again.");
+      console.error("TasteHub order save failed:", result.error);
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = "✅ Place Order via WhatsApp";
+      }
+      return;
+    }
+
+    const orderId = result.orderId;
+    let msg = `Hi TasteHub 🍽\n\n*New Order — ${orderId}*\n`;
+    msg += `Name: ${name}\nPhone: ${phone}\n`;
+    msg += `Address: ${fullAddr}\nPayment: ${pay}\n\n`;
+    msg += `*Items:*\n${itemLines}\n\n`;
+    msg += `*Food Total: ₹${total}*\n`;
+    if (currentDeliveryFee > 0) msg += `*Delivery: ₹${currentDeliveryFee}*\n`;
+    msg += `*Grand Total: ₹${grandTotal}*`;
+    if (notes) msg += `\n\nNotes: ${notes}`;
+    msg += `\n\nPlease confirm my order. Thank you! 🙏\n📢 Telegram: https://t.me/tastehub_meals`;
+
+    if (waWindow) {
+      waWindow.location.href = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+    } else {
+      window.location.href = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+    }
+
+    showBookingScreen(orderId, grandTotal, pay);
+  } catch (err) {
+    if (waWindow) waWindow.close();
+    console.error("TasteHub order submission error:", err);
+    toast("Network error. Your order was not confirmed. Please try again.");
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = "✅ Place Order via WhatsApp";
+    }
+  }
 }
 
 // ── Show booking in-progress screen ──────────────────────────
