@@ -472,23 +472,23 @@ footer a{color:rgba(255,255,255,.7);font-weight:600}
 <body>
 
 
-<!-- TasteHub Diwali greeting popup — visible on 8 November 2026 only -->
+<!-- TasteHub daily greeting popup -->
 <div class="promo-overlay" id="tasteHubPromo" role="dialog" aria-modal="true" aria-labelledby="tasteHubPromoTitle">
   <div class="promo-card">
-    <div class="promo-top" style="background:radial-gradient(circle at 50% 0%,#9b4a18 0%,#54220f 48%,#2c1810 100%);">
-      <button class="promo-close" type="button" aria-label="Close Diwali greeting" onclick="closeTasteHubPromo()">×</button>
-      <div style="font-size:34px;letter-spacing:8px;margin-bottom:10px" aria-hidden="true">🪔 ✨ 🪔</div>
-      <div class="promo-kicker">TasteHub wishes you</div>
-      <h2 id="tasteHubPromoTitle">Happy Diwali!</h2>
-      <p>May your home shine with happiness, health and prosperity.</p>
+    <div class="promo-top" id="tasteHubPromoTop">
+      <button class="promo-close" type="button" aria-label="Close greeting" onclick="closeTasteHubPromo()">×</button>
+      <div id="tasteHubGreetingIcon" style="font-size:34px;letter-spacing:8px;margin-bottom:10px" aria-hidden="true">☀️</div>
+      <div class="promo-kicker">TasteHub welcomes you</div>
+      <h2 id="tasteHubPromoTitle">Good Morning!</h2>
+      <p id="tasteHubGreetingLine">Wishing you a happy and refreshing day.</p>
     </div>
     <div class="promo-content">
-      <p>Celebrate the festival of lights with love, togetherness and delicious vegetarian food. Thank you for being a part of TasteHub.</p>
+      <p id="tasteHubGreetingMessage">May your day be filled with happiness. Explore our fresh homemade vegetarian food, prepared with care.</p>
       <div class="promo-actions">
-        <a class="promo-action primary" href="#menu-section" onclick="closeTasteHubPromo()">Explore TasteHub</a>
+        <a class="promo-action primary" href="#menu-section" onclick="closeTasteHubPromo()">Explore Today's Menu</a>
         <button class="promo-action secondary" type="button" onclick="closeTasteHubPromo()">Close</button>
       </div>
-      <div style="font-family:var(--display);font-weight:700;color:var(--orange);margin-top:14px">With warm wishes, Team TasteHub</div>
+      <div style="font-family:var(--display);font-weight:700;color:var(--orange);margin-top:14px">With regards, Team TasteHub</div>
     </div>
   </div>
 </div>
@@ -1228,21 +1228,46 @@ async function init() {
 init();
 </script>
 <script>
-// Show the Diwali greeting to each visitor once on 8 November 2026 (India time).
+// Show one daily greeting per visitor, using India time.
 (function(){
-  const diwaliDate='2026-11-08';
-  const today=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Kolkata'});
-  const key='tastehub_diwali_popup_seen_2026';
-  if(today!==diwaliDate || localStorage.getItem(key)==='yes') return;
+  const now=new Date();
+  const parts=new Intl.DateTimeFormat('en-CA',{
+    timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',hourCycle:'h23'
+  }).formatToParts(now);
+  const part=name=>parts.find(p=>p.type===name)?.value||'';
+  const today=part('year')+'-'+part('month')+'-'+part('day');
+  const hour=Number(part('hour'));
+  const key='tastehub_daily_greeting_seen';
+  if(localStorage.getItem(key)===today) return;
+
+  let greeting,icon,line,message;
+  if(hour>=5 && hour<12){
+    greeting='Good Morning!'; icon='🌅 ☀️'; line='Wishing you a bright and beautiful day.';
+    message='Start your day with positivity and a delicious homemade breakfast. Explore today’s fresh vegetarian menu at TasteHub.';
+  }else if(hour>=12 && hour<17){
+    greeting='Good Afternoon!'; icon='☀️ 🌼'; line='Hope your day is going wonderfully.';
+    message='Take a tasty break and explore our homemade vegetarian meals and snacks, prepared with care at TasteHub.';
+  }else{
+    greeting='Good Evening!'; icon='🌇 ✨'; line='Wishing you a peaceful and happy evening.';
+    message='Relax and enjoy something delicious. Check TasteHub’s daily menu, homemade snacks and party food.';
+  }
+
   window.addEventListener('load',()=>setTimeout(()=>{
     const popup=document.getElementById('tasteHubPromo');
-    if(popup){popup.classList.add('show');document.body.style.overflow='hidden';}
+    if(!popup) return;
+    document.getElementById('tasteHubPromoTitle').textContent=greeting;
+    document.getElementById('tasteHubGreetingIcon').textContent=icon;
+    document.getElementById('tasteHubGreetingLine').textContent=line;
+    document.getElementById('tasteHubGreetingMessage').textContent=message;
+    popup.classList.add('show');
+    document.body.style.overflow='hidden';
   },700));
 })();
 function closeTasteHubPromo(){
   const popup=document.getElementById('tasteHubPromo');
   if(popup){popup.classList.remove('show');document.body.style.overflow='';}
-  localStorage.setItem('tastehub_diwali_popup_seen_2026','yes');
+  const indiaDate=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata'}).format(new Date());
+  localStorage.setItem('tastehub_daily_greeting_seen',indiaDate);
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTasteHubPromo();});
 </script>
